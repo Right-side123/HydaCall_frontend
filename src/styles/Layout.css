@@ -1,0 +1,103 @@
+.main-layout {
+  display: flex;
+  
+}
+
+.page-content {
+  margin-left: 250px;
+  padding-left: 30px;
+  padding-right: 40px;
+  padding-top: 15px;
+  padding-bottom: 30px;
+  height: 100vh;
+  overflow-y: auto;
+  width: calc(100% - 240px);
+  background-color: #e2edf7;
+  box-sizing: border-box;
+  overflow-x: hidden;
+}
+
+.topbar {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  background-color: #e2edf7;
+  padding: 0px 0px;
+  height: 60px;
+  gap: 10px;
+}
+
+.time-section {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+}
+
+.clockicon {
+  width: 16px;
+  height: 16px;
+  margin-top: 3px
+}
+
+.time {
+  font-weight: 400;
+  font-size: 16px;
+  color: #5f5e5e;
+}
+
+.divider {
+  height: 20px;
+  width: 1px;
+  background-color: #ccc;
+  opacity: 1;
+}
+
+/* .logout_button {
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 2px;
+  border-radius: 4px;
+} */
+
+.logout-wrapper {
+  position: relative;
+}
+
+.logout_button {
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 0px 0px;
+  border-radius: 4px;
+  position: relative;
+  margin-top: 5px
+}
+
+.logoutbtn {
+  width: 18px;
+  height: 18px;
+}
+
+/* Tooltip hidden by default */
+.logout_tooltip {
+  position: absolute;
+  top: 120%;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: #333333;
+  color: #fff;
+  padding: 6px 10px;
+  font-size: 13px;
+  border-radius: 6px;
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s ease;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
+  z-index: 99;
+}
+
+.logout_button:hover .logout_tooltip {
+  opacity: 1;
+}

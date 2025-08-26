@@ -1,0 +1,282 @@
+.titel_container {
+    display: flex;
+    justify-content: space-between;
+    padding-right: 0px;
+}
+
+.calllogs_title {
+    color: #5822c5;
+    letter-spacing: 2px;
+}
+
+/* .titel_container_time{
+    padding: 200px;
+} */
+
+.callllogs_top_container {
+    display: flex;
+    gap: 15px;
+}
+
+.callllogs_top_container_left {
+    display: flex;
+    justify-content: space-around;
+    height: 120px;
+    width: 37%;
+    border: 1px solid #ac86f7;
+    border-radius: 10px;
+    padding: 15px 0px;
+    box-sizing: content-box;
+}
+
+.callllogs_top_container_right {
+    display: flex;
+    justify-content: space-around;
+    height: 120px;
+    width: 62%;
+    border: 1px solid #ac86f7;
+    border-radius: 10px;
+    padding: 15px 0px;
+    box-sizing: content-box;
+}
+
+.callllogs_top_container_card {
+    width: 160px;
+    height: 125px;
+    background-color: #fff;
+    border-radius: 12px;
+    box-shadow: 0px 0px 30px -10px #b999fa;
+    box-sizing: border-box;
+    padding: 12px;
+    display: flex;
+    flex-direction: column;
+    align-items: left;
+    gap: 5px;
+    text-align: left;
+}
+
+.top_container_card_image {
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+}
+
+.calllogs_icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+}
+
+.calllogs_icon_notanswer {
+    width: 40px;
+    height: 38px;
+    border-radius: 50%;
+}
+
+
+.calllogs_icon_icon {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+}
+
+.callllogs_top_container_card p {
+    margin: 0;
+    font-size: 14px;
+    color: #333;
+}
+
+.callllogs_top_container_card h6 {
+    margin: 0;
+    font-size: 20px;
+    color: #2c1c53;
+    font-weight: bold;
+}
+
+.calllogs_second_main_container {
+    width: 100%;
+    background-color: #ffffff;
+    /* height: auto; */
+
+    margin-top: 20px;
+    /* padding-bottom: 20px;
+    padding-left: 20px;
+    padding-right: 20px; */
+    padding: 20px;
+    box-sizing: border-box;
+    border-radius: 15px;
+}
+
+.calllogs_second_main_container_top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0px 20px;
+}
+
+.calllogs_second_main_container_top_right {
+    display: flex;
+    gap: 15px;
+}
+
+.calllogs_second_main_container_top_right_clrbtn {
+    width: auto;
+    height: auto;
+    padding: 8px 10px;
+    border-radius: 8px;
+    border: none;
+    background-color: transparent;
+    font-size: 14px;
+    transition: all 0.4s ease-in-out;
+}
+
+.calllogs_second_main_container_top_right_clrbtn:hover {
+    background-color: #14004a;
+    color: #ffffff;
+    transform: translateY(-5px);
+}
+
+.calllogs_second_main_container_top_right_applybtn {
+    width: auto;
+    height: auto;
+    padding: 8px 10px;
+    border-radius: 8px;
+    border: none;
+    font-size: 14px;
+    background-color: #14004a;
+    color: #ffffff;
+    border: 1px solid #14004a;
+    transition: all 0.4s ease-in-out;
+}
+
+.calllogs_second_main_container_top_right_applybtn:hover {
+    background-color: #ffffff;
+    color: #14004a;
+    border: 1px solid #14004a;
+    transform: translateY(-5px);
+}
+
+.calllogs_daterange {
+    display: flex;
+    justify-content: baseline;
+    z-index: -1000;
+    width: 370px;
+    background-color: #e2edf7;
+    border-radius: 10px;
+    padding: 3px;
+    font-size: 14px;
+}
+
+.calllogs_second_main_container_top_bottom_first {
+    display: flex;
+    justify-content: space-between;
+}
+
+.calllogs_time_container {
+    display: flex;
+    gap: 20px;
+}
+
+.calllogs_time {
+    width: 170px;
+    height: 40px;
+    background-color: #e2edf7;
+    border-radius: 10px;
+    font-size: 14px;
+    border-radius: 10px;
+    padding: 3px;
+}
+
+.calllogs_type {
+    width: 370px;
+    height: 40px;
+    background-color: #e2edf7;
+    border-radius: 10px;
+    font-size: 14px;
+    padding: 3px;
+    border-radius: 10px;
+}
+
+.calllogs_type select {
+    border: none;
+}
+
+.calllogs_type_select {
+    border: none;
+    background-color: transparent;
+    width: 350px;
+    /* height: 100px; */
+    line-height: 0;
+}
+
+/* .calllogs_type_option {
+    height: 200px;
+} */
+
+.calllogs_filter_second_container {
+    display: flex;
+    justify-content: space-between;
+}
+
+.calllogs_filter_input_callNumber {
+    width: 370px;
+    height: 40px;
+    background-color: #e2edf7;
+    border-radius: 10px;
+    font-size: 14px;
+    padding: 3px;
+    border-radius: 10px;
+    border: none;
+    font-size: 16px;
+}
+
+.calllogs_filter_input_callNumber:focus {
+    border: 1px solid #9cc4fe;
+}
+
+.calllogs_last_container {
+    width: 100%;
+    background-color: #ffffff;
+    height: auto;
+    margin-top: 20px;
+    padding: 20px;
+    box-sizing: border-box;
+    border-radius: 15px;
+}
+
+.calllogs_last_container_top {
+    display: flex;
+    justify-content: space-between;
+}
+
+.calllogs_last_container_table_table {
+    width: 100%;
+}
+
+.calllogs_last_container_table_table th {
+    padding: 8px;
+    /* border-bottom: 1px solid #eee; */
+    color: #777;
+    font-weight: 400;
+    font-size: 16px;
+    text-align: center;
+}
+
+/* .calllogs_last_container_table_table thead{
+    border-bottom: 1px solid #777676;
+} */
+
+
+
+.calllogs_last_container_table_table td {
+    padding: 8px;
+    border-top: 1px solid #eee;
+    color: #666666;
+    font-weight: 400;
+    font-size: 14px;
+    text-align: center;
+}

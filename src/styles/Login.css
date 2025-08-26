@@ -1,0 +1,157 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+body,
+html {
+  font-family: 'Segoe UI', sans-serif;
+  height: 100%;
+}
+
+.login_parent_container {
+  display: flex;
+  background-color: #f7f8ff;
+  height: 100vh;
+}
+
+.login_parent_container_slide {
+  width: 50%;
+}
+
+
+.slider_container {
+  width: 100%;
+  background-color: #f7f8ff;
+  position: relative;
+  overflow: hidden;
+  /* display: none; */
+}
+
+.slider_image {
+  width: 89%;
+  height: 100vh;
+  object-fit: cover;
+  transition: all 1s ease-in-out;
+}
+
+.login_parent_container_right {
+  width: 50%;
+  padding: 220px 170px;
+}
+
+.login_parent_container_right_logo {
+  display: flex;
+  justify-content: center;
+}
+
+.login_parent_container_right_logo_img {
+  width: 130px;
+  height: 50px;
+}
+
+.login_parent_container_right_login_title {
+  text-align: center;
+  color: #333333;
+  font-size: 36px;
+  font-weight: 500;
+  font-family: 'Segoe UI', sans-serif;
+  margin-top: 30px;
+}
+
+.login_parent_container_right_line {
+  color: #6d6d6d;
+  text-align: center;
+  margin-top: 15px;
+  font-size: 15px;
+}
+
+.credential_form {
+  width: 100%;
+  height: auto;
+  padding: 10px 60px;
+  align-items: center;
+  margin-top: 20px;
+}
+
+.email_inputbox,
+.pasword_inputbox {
+  height: 55px;
+  border: 1px solid #ccc;
+  background-color: #fff;
+  border-radius: 10px;
+  width: 500px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 15px;
+  box-sizing: border-box;
+  margin-top: 10px;
+}
+
+.password_title,
+.email_title {
+  font-size: 16px;
+  color: #767678;
+}
+
+.email_input_box,
+.password_input_box {
+  border: none;
+  font-size: 16px;
+  flex: 1;
+  outline: none;
+  background-color: transparent;
+}
+
+.password_container {
+  margin-top: 30px;
+}
+
+.loginemail_icon,
+.password_icon {
+  width: 25px;
+  height: 25px;
+}
+
+.forgate_password {
+  text-align: end;
+  margin-top: 10px;
+  color: #4a3c75;
+}
+
+.loginbtn {
+  height: 50px;
+  border: none;
+  background-color: #140049;
+  font-size: 16px;
+  color: white;
+  border-radius: 10px;
+  width: 500px;
+  text-align: center;
+  padding: 0 10px;
+  box-sizing: border-box;
+  margin-top: 30px;
+}
+
+.loginbtn:hover {
+  border: 1px solid #140049;
+  background-color: #fff;
+  color: #140049;
+  transition: all 0.2s ease-in;
+}
+
+.logineye_icon {
+  width: 22px;
+  height: 22px;
+}
+
+
+
+/* @media (min-width: 768px) {
+  .slider_container {
+    display: block;
+  }
+} */

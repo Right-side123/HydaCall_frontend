@@ -1,0 +1,111 @@
+.donut_chart_container {
+    width: 100%;
+    height: 320px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.callbackchart_top_container {
+    width: 100%;
+    height: 40px;
+    display: flex;
+    justify-content: space-between;
+    padding: 0px 20px;
+    box-sizing: border-box;
+    /* border: 1px solid #ccc; */
+}
+
+.callbackchart_top_container h3 {
+    font-size: 18px;
+    font-weight: 500;
+}
+
+.callbackchart_top_container_refres {
+    width: auto;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    background-color: #f7f8ff;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    gap: 4px;
+    cursor: pointer;
+    font-weight: 500;
+    font-size: 14px;
+    color: #333;
+}
+
+
+.refreshicon_icon {
+    width: 16px;
+    height: 16px;
+}
+
+/* .refreshicon_icon {
+    width: 16px;
+    height: 16px;
+} */
+
+/* .nofound_icon{
+    border: 1px solid red;
+    
+} */
+
+
+
+
+
+
+.callbackchart_top_container_btn {
+    display: flex;
+    gap: 10px;
+    padding: 20px 0px;
+}
+
+.callback_download_btn {
+    width: 40px;
+    height: 30px;
+    align-items: end;
+    margin-bottom: 20px;
+    background-color: #f7f8ff;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}
+
+.callback_download_icon {
+    width: 22px;
+    height: 22px;
+}
+
+.legend_values {
+    display: flex;
+    width: 100%;
+    gap: 50px;
+    justify-content: center;
+    padding: 0px 20px;
+
+}
+
+.legend_values_container {
+    display: flex;
+    gap: 5px;
+    align-items: center;
+    font-size: 14px;
+    margin-bottom: 5px;
+}
+
+.legend_values_container_circle {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+}
+
+.legend_values_container_value {
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.legend_values_container_main {
+    text-align: center;
+}

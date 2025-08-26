@@ -1,0 +1,44 @@
+.download_btn_container,
+.history_btn_container {
+    height: 35px;
+    background-color: #14004a;
+    padding: 0px 10px;
+    border-radius: 10px;
+    border: none;
+}
+
+
+.mainphonemodel {
+    width: 100%;
+    height: auto;
+    padding: 50px 10px;
+}
+
+.phone_model_content {
+    display: flex;
+    padding: 10px;
+    justify-content: space-between;
+}
+
+.mainphonemodel {}
+
+.phone_model_input_container {
+
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    line-height: 1px;
+    gap: 20px;
+    padding: 0px 20px;
+}
+
+.phone_model_input_container input {
+    width: 300px;
+    padding: 10px;
+    border-radius: 10px;
+    margin-top: 0px;
+    font-size: 16px;
+    border: none;
+    background-color: #f7f8ff;
+    border: 1px solid #efeff1;
+}

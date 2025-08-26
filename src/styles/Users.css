@@ -1,0 +1,172 @@
+.users_second_container {
+    width: 100%;
+    height: auto;
+    display: flex;
+    justify-content: space-between;
+}
+
+.users_second_container_card {
+    width: 250px;
+    height: 40px;
+    background-color: #fff;
+    padding: 10px 15px;
+    border-radius: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+}
+
+.users_second_container_card_right {
+    width: 35px;
+    height: 35px;
+    background-image: linear-gradient(to right, #14004a, #2b02c0);
+    border-radius: 50%;
+}
+
+.users_second_container_card {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0px 0px 20px -8px #b999fa;
+}
+
+.users_second_container_card_left {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    line-height: 0;
+}
+
+.users_second_container_card_left span {
+    font-size: 16px;
+    margin-top: 10px;
+    color: #666666;
+}
+
+.users_second_container_card_left p {
+    font-size: 20px;
+    font-weight: 500;
+    margin-top: 30px;
+}
+
+.users_second_container_card_right {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.users_second_container_card_right_icon {
+    width: 20px;
+    height: 20px;
+    object-fit: contain;
+}
+
+/* .department_second_container_top_right{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+} */
+
+.add_dept_btn_container {
+    display: flex;
+    background-color: red;
+}
+
+.user_action_icons {
+    display: flex;
+    align-items: center;
+    justify-content: left;
+    gap: 5px;
+    background-color: #edeffa;
+    width: 120px;
+    /* height: 35px; */
+    border-radius: 25px;
+    padding: 8px 8px;
+}
+
+.user_deleteicon,
+.user_editicon {
+    width: 22px;
+    height: 22px;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+}
+
+.user_copyicon {
+    width: 18px;
+    height: 18px;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+}
+
+.icon:hover {
+    transform: scale(1.1);
+}
+
+.user_divider {
+    width: 1px;
+    height: 20px;
+    background-color: #ccc;
+}
+
+.adduser_model_radio {
+    display: flex;
+
+    align-items: center;
+    justify-content: space-between;
+    gap: 40px;
+
+}
+
+.phone_model_input_container_radio,
+.phone_model_input_container_passexp {
+    width: 50%;
+
+}
+
+
+.adduser_model_radio input {
+    width: 20px;
+    height: 20px;
+    align-items: center;
+}
+
+.adduser_model_radio_inp {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    width: 200px;
+    padding: 5px;
+    border-radius: 10px;
+    margin-top: 0px;
+    font-size: 16px;
+    border: none;
+    background-color: #f7f8ff;
+    border: 1px solid #efeff1;
+}
+
+.phone_model_content_radio {
+    width: 100%;
+    box-sizing: border-box;
+    display: flex;
+    justify-content: space-between;
+    padding: 0px 30px;
+    gap: 30px;
+}
+
+.phone_model_input_container_department {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    width: 300px;
+    padding: 10px;
+    border-radius: 10px;
+    margin-top: 0px;
+    font-size: 16px;
+    border: none;
+    background-color: #f7f8ff;
+    border: 1px solid #efeff1;
+}

@@ -1,0 +1,76 @@
+*:focus {
+    outline: none;
+}
+
+
+.Dashboard_linecharts_container {
+    width: 100%;
+    height: 330px;
+    background-color: #fff;
+    border-radius: 10px;
+    padding: 0px 0px;
+}
+
+.linechartXaxistitle {
+    text-align: center;
+    font-size: 16px;
+    font-weight: 400;
+}
+
+.linechartYaxistitle {
+    text-align: center;
+}
+
+.linecharts_tooltip_date {
+    display: flex;
+    justify-content: space-between;
+    background-color: #f7f8ff;
+    width: 100%;
+    height: 30px;
+    padding: 5px;
+    box-sizing: border-box;
+    border-radius: 4px 4px 0px 0px;
+    margin-bottom: 5px;
+    font-weight: 600;
+}
+
+.linecharts_tooltip_content {
+    padding: 2px 5px;
+    border-bottom: 0.5px solid #ccc;
+    display: flex;
+    justify-content: space-between;
+}
+
+.linecharts_tooltip_total {
+    padding: 3px 5px;
+    display: flex;
+    justify-content: space-between;
+    font-weight: 600;
+}
+
+.tooltiptotal_icon {
+    width: 16px;
+    height: 16px;
+    vertical-align: middle;
+    margin-right: 6px;
+}
+
+.linechart_dwonload_container{
+    display: flex;
+    justify-content: space-between;
+}
+
+.linechart_download_btn{
+    width: 40px;
+    height: 30px;
+    align-items: end;
+    margin-bottom: 20px;
+    background-color: #f7f8ff;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}
+
+.download_icon {
+    width: 22px;
+    height: 22px;
+}
