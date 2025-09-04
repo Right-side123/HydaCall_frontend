@@ -11,7 +11,10 @@ import logo from '../assets/rightsideLogo.png';
 import { useNavigate } from 'react-router-dom';
 // import { FaEye, FaEyeSlash } from 'react-icons/fa';
 
-const Login = ({ setIsAuthenticated }) => {
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
+const Login = () => {
     const images = [slide1, slide2, slide3];
     const [current, setCurrent] = useState(0);
     const [showPassword, setShowPassword] = useState(false);
@@ -22,17 +25,65 @@ const Login = ({ setIsAuthenticated }) => {
 
 
 
+    // const handleSubmit = (e) => {
+    //     e.preventDefault();
+
+
+    //     if (email === "admin@test.com" && password === "1234") {
+    //         localStorage.setItem("auth", "true");
+
+    //         // setIsAuthenticated(true)
+    //         navigate("/dashboard");
+    //     } else {
+    //         alert("Invalid email or password");
+    //     }
+
+    // };
+
     const handleSubmit = (e) => {
         e.preventDefault();
-
-
         if (email === "admin@test.com" && password === "1234") {
             localStorage.setItem("auth", "true");
-
-            setIsAuthenticated(true)
-            navigate("/dashboard");
+            toast.success("Logged in Successfully", {
+                position: "top-right",
+                autoClose: 2400,
+                hideProgressBar: true,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: true,
+                style: {
+                    backgroundColor: "#009c5b",
+                    color: "#fff",
+                    width: "300px",
+                    minHeight: "70px",
+                    fontSize: "16px",
+                    fontWeight: "bold",
+                    borderRadius: "10px",
+                },
+            });
+            setTimeout(() => {
+                navigate('/dashboard');
+            }, 1500);
         } else {
-            alert("Invalid email or password");
+            toast.error("Invalid email or password", {
+                position: "top-right",
+                autoClose: 1500,
+                hideProgressBar: true,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                style: {
+                    backgroundColor: "#f14148",
+                    color: "#fff",
+                    width: "300px",
+                    minHeight: "70px",
+                    fontSize: "16px",
+                    fontWeight: "bold",
+                    borderRadius: "10px",
+                },
+            });
         }
     };
 
@@ -118,6 +169,7 @@ const Login = ({ setIsAuthenticated }) => {
                 </div> */}
 
             </div>
+            <ToastContainer />
         </div>
     );
 };

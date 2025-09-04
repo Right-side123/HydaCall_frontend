@@ -7,6 +7,7 @@ import searchicon from '../assets/searchicon.png';
 import editicon from '../assets/editIcon.png';
 import historyiconblue from '../assets/historyiconblue.png';
 import crossIcon from '../assets/crossIcon.png';
+import Sidebar from '../Components/Sidebar';
 
 const ManagePhone = () => {
     const [editPhone, setEditPhone] = useState(false);
@@ -14,16 +15,18 @@ const ManagePhone = () => {
 
 
     return (
-        <div>
-            <div>
+        <div className='main-layout'>
+            <Sidebar />
+
+            <div className='page-content'>
                 <div className="department_titel_container">
                     <h1 className='department_title'>MANAGE PHONE</h1>
                     <Layout></Layout>
                 </div>
                 <div className='department_second_container'>
-                    <div className='department_second_container_top'>
-                        <h3>Manage Phone</h3>
-                        <div className='department_second_container_top_right'>
+                    <div className='mangephone_second_container_top'>
+                        <h3 className='mangephone_second_container_top_title'>Manage Phone</h3>
+                        <div className='managephone_second_container_top_right'>
                             <div className='search_box_container'> <img src={searchicon} alt='search' className='searchicon' />
                                 <input type='search' placeholder='Search' className='search_box' />
                             </div>

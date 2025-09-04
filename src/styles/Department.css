@@ -151,20 +151,20 @@
     align-items: center;
     gap: 10px;
     background-color: #edeffa;
-    width: 65px;
+    width: 80px;
     /* height: 35px; */
     border-radius: 25px;
     padding: 8px 10px;
 }
 
 .editicon {
-    width: 20px;
+    width: 40px;
     height: 20px;
     cursor: pointer;
 }
 
 .deleteicon {
-    width: 16px;
+    width: 35px;
     height: 16px;
     cursor: pointer;
 }
@@ -232,7 +232,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 0px 15px;
+    padding: 20px 15px;
     font-size: 16px;
     border-top-left-radius: 15px;
     border-top-right-radius: 15px;
@@ -251,7 +251,6 @@
     flex-direction: column;
     /* align-items: center; */
     justify-content: center;
-    line-height: 1px;
     gap: 20px;
     padding: 0px 20px;
 }

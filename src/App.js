@@ -1,42 +1,42 @@
-import React from 'react';
-import './styles/Layout.css';
+// import React from 'react';
+// import './styles/Layout.css';
 
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import Sidebar from './Components/Sidebar';
-import Dashboard from './pages/Dashboard';
-import CallLogs from './pages/CallLogs';
-import Department from './pages/Department';
-import ManagePhone from './pages/ManagePhone';
-import Users from './pages/Users';
-import Reports from './pages/Reports';
-// import Login from './pages/Login';
+// import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+// // import Sidebar from './Components/Sidebar';
+// import Dashboard from './pages/Dashboard';
+// import CallLogs from './pages/CallLogs';
+// import Department from './pages/Department';
+// import ManagePhone from './pages/ManagePhone';
+// import Users from './pages/Users';
+// import Reports from './pages/Reports';
+// // import Login from './pages/Login';
 
 
-function App() {
-  return (
-    <Router>
-      <div className="main-layout">
-        <Sidebar />
-        <div className="page-content">
-          <Routes>
-            {/* <Route path='/' element={<Login />} /> */}
-            <Route path="/dashboard" element={<Dashboard />} />
-            <Route path="/call-logs" element={<CallLogs />} />
-            <Route path='/department' element={<Department />} />
-            <Route path='/manage-phone' element={<ManagePhone />} />
-            <Route path='/user' element={<Users />} />
-            <Route path='/reports' element={<Reports />} />
+// function App() {
+//   return (
+//     <Router>
+//       <div className="main-layout">
+//         {/* <Sidebar /> */}
+//         <div className="page-content">
+//           <Routes>
+//             {/* <Route path='/' element={<Login />} /> */}
+//             <Route path="/dashboard" element={<Dashboard />} />
+//             <Route path="/call-logs" element={<CallLogs />} />
+//             <Route path='/department' element={<Department />} />
+//             <Route path='/manage-phone' element={<ManagePhone />} />
+//             <Route path='/user' element={<Users />} />
+//             <Route path='/reports' element={<Reports />} />
 
-          </Routes>
-        </div>
-      </div>
-    </Router>
+//           </Routes>
+//         </div>
+//       </div>
+//     </Router>
 
-    //  <Login/>
-  );
-}
+//     //  <Login/>
+//   );
+// }
 
-export default App;
+// export default App;
 
 
 // import React, { useState, useEffect } from 'react';
@@ -140,18 +140,18 @@ export default App;
 //             path="*"
 //             element={
 //               <div className="main-layout">
-               
+
 //                 <div className="page-content">
 //                    <Sidebar />
 //                   <Routes>
-                    
+
 //                     <Route path="/dashboard" element={<Dashboard />} />
 //                     <Route path="/call-logs" element={<CallLogs />} />
 //                     <Route path="/department" element={<Department />} />
 //                     <Route path="/manage-phone" element={<ManagePhone />} />
 //                     <Route path="/user" element={<Users />} />
 //                     <Route path="/reports" element={<Reports />} />
- 
+
 //                     {/* <Route path="*" element={<Navigate to="/dashboard" />} /> */}
 //                   </Routes>
 //                 </div>
@@ -167,3 +167,31 @@ export default App;
 // export default App;
 
 
+import React from 'react';
+import './styles/Layout.css';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import Dashboard from './pages/Dashboard';
+import CallLogs from './pages/CallLogs';
+import Department from './pages/Department';
+import ManagePhone from './pages/ManagePhone';
+import Users from './pages/Users';
+import Reports from './pages/Reports';
+import Login from './pages/Login';
+
+function App() {
+  return (
+    <Router>
+      <Routes>
+        <Route path='/' element={<Login />} />
+        <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/call-logs" element={<CallLogs />} />
+        <Route path='/department' element={<Department />} />
+        <Route path='/manage-phone' element={<ManagePhone />} />
+        <Route path='/user' element={<Users />} />
+        <Route path='/reports' element={<Reports />} />
+      </Routes>
+    </Router>
+  );
+}
+
+export default App;

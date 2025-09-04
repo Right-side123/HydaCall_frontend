@@ -44,6 +44,28 @@
     font-weight: 500;
 }
 
+.report_card {
+    transition: 0.3s;
+}
+
+.report_card:hover .report_card_img_icon {
+    filter: invert(1);
+}
+
+.report_card:hover .report_card_img {
+    background: #fff;
+}
+
+
+
+/* .report_card_img_icon {
+    filter: invert(100%);
+}
+
+.report_card_img_icon:hover {
+    filter: invert(100%);
+} */
+
 
 /* *********************************************************** */
 
