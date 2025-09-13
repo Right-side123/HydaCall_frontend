@@ -1,41 +1,70 @@
-import React from "react";
-import Select from "react-select";
+
+import React, { useState, useEffect } from 'react';
+// import Select from "react-select";
 import crossIcon from "../assets/crossIcon.png";
 
+import { MultiSelect } from "primereact/multiselect";
+import "primereact/resources/themes/lara-light-blue/theme.css";
+import "primereact/resources/primereact.min.css";
+import "primeicons/primeicons.css";
+
+import api from '../Components/Api';
+
 const AddUserModal = ({
+  mode,
   createUser,
   setCreateUser,
-  department,
   handleChange,
   handleSubmit,
   setAddUser,
 }) => {
   // ✅ Department options (multi-select)
-  const departmentOptions = department.map((dept) => ({
-    value: dept.id,
-    label: dept.name,
-  }));
+  // const departmentss = departments.map((dept) => ({
+  //   value: dept.id,
+  //   label: dept.name,
+  // }));
 
-  console.log(department);
+  // console.log(departmentss);
 
-  // ✅ Reports options
+  const [departments, setDepartments] = useState([]);
+
+  // const [selectedDepartments, setSelectedDepartments] = useState([]);
+
+  // Reports options
   const reportsOptions = [
     { value: "Report A", label: "Report A" },
     { value: "Report B", label: "Report B" },
     { value: "Report C", label: "Report C" },
   ];
 
-  // ✅ Phone options
+  //  Phone options
   const phoneOptions = [
     { value: "SIM 1", label: "SIM 1" },
     { value: "SIM 2", label: "SIM 2" },
   ];
 
+
+  const fetchDepartments = async () => {
+    try {
+      const res = await api.get("/department");
+      setDepartments(res.data);
+    } catch (err) {
+      console.error("Error fetching department:", err);
+    }
+  }
+
+  useEffect(() => {
+    fetchDepartments();
+  }, []);
+
+
+
   return (
     <div className="user_container_model">
       <div className="user_model_container">
         <div className="user_model_title">
-          <h3>Add User</h3>
+          {/* <h3>Add User</h3> */}
+          <h3>{mode === "edit" ? "Edit User" : "Add User"}</h3>
           <img
             src={crossIcon}
             alt="back"
@@ -98,12 +127,13 @@ const AddUserModal = ({
                 required
               >
                 <option value=""></option>
-                {department.map((dept) => (
+                {departments.map((dept) => (
                   <option key={dept.id} value={dept.id}>
                     {dept.name}
                   </option>
                 ))}
               </select>
+
             </div>
           </div>
 
@@ -116,7 +146,7 @@ const AddUserModal = ({
 
               </p>
 
-              <Select
+              {/* <Select
                 isMulti
                 options={departmentOptions}
                 value={departmentOptions.filter((opt) =>
@@ -139,23 +169,53 @@ const AddUserModal = ({
                 styles={{
                   menuPortal: (base) => ({ ...base, zIndex: 9999 })
                 }}
+              /> */}
+
+              <MultiSelect
+                value={Array.isArray(createUser.allowed_departments) ? createUser.allowed_departments : []}
+                onChange={(e) =>
+                  setCreateUser({ ...createUser, allowed_departments: e.value })
+                }
+                options={departments}
+                optionLabel="name"
+                optionValue="name"
+                placeholder={
+                  createUser.allowed_departments?.length > 0
+                    ? `${createUser.allowed_departments.length} items selected`
+                    : " "
+                }
+                filter
+                display="chip"
+                className="w-full md:w-20rem multiselect_option"
               />
+
+
 
             </div>
             <div className="user_name_email_model">
               <p>
                 Phone Numbers <span style={{ color: "red" }}>*</span>
               </p>
-              <Select
-                options={phoneOptions}
-                value={phoneOptions.find(
-                  (opt) => opt.value === createUser.phone_number
-                )}
-                onChange={(selected) =>
-                  setCreateUser({ ...createUser, phone_number: selected.value })
+              <MultiSelect
+                value={Array.isArray(createUser.phone_number) ? createUser.phone_number : []}
+                onChange={(e) =>
+                  setCreateUser({ ...createUser, phone_number: e.value })
                 }
-                placeholder="Select Phone"
+                options={phoneOptions}
+                optionLabel="label"
+                optionValue="value"
+                filter
+                display="chip"
+                placeholder={
+                  createUser.phone_number?.length > 0
+                    ? `${createUser.phone_number.length} items selected`
+                    : ''
+                }
+                className="w-full md:w-20rem multiselect_option"
               />
+
+
+
             </div>
           </div>
 
@@ -235,24 +295,20 @@ const AddUserModal = ({
               <label>
                 Allowed Reports<span style={{ color: "red" }}>*</span>
               </label>
-              <Select
-                isMulti
+              <MultiSelect
+                value={Array.isArray(createUser.allowed_reports) ? createUser.allowed_reports : []}
+                onChange={(e) =>
+                  setCreateUser({ ...createUser, allowed_reports: e.value })
+                }
                 options={reportsOptions}
-                value={reportsOptions.filter((opt) =>
-                  createUser.allowed_reports.includes(opt.value)
-                )}
-                onChange={(selected) =>
-                  setCreateUser({
-                    ...createUser,
-                    allowed_reports: selected.map((s) => s.value),
-                  })
-                }
-                placeholder={
-                  createUser.allowed_reports.length > 0
-                    ? `${createUser.allowed_reports.length} items selected`
-                    : "Select Reports"
-                }
+                optionLabel="label"
+                optionValue="value"
+                filter
+                display="chip"
+                className="w-full md:w-20rem multiselect_option"
               />
+
+
             </div>
           </div>
         </div>
@@ -263,7 +319,7 @@ const AddUserModal = ({
             Cancel
           </button>
           <button className="model_btn_sub" onClick={handleSubmit}>
-            Add User
+            {mode === "edit" ? "Update User" : "Add User"}
           </button>
         </div>
       </div>

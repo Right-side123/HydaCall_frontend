@@ -1,0 +1,17 @@
+.copy_model_button_container {
+    display: flex;
+    justify-content: space-between;
+    padding: 20px;
+    box-shadow: 0px -2px 20px -5px #adacac;
+    gap: 50%;
+    margin-top: 40px;
+}
+
+.user_name_email_model_container_copy_model {
+    padding: 8px 30px;
+
+}
+
+.copy_model_form{
+    padding: 10px 30px;
+}

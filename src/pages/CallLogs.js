@@ -95,7 +95,7 @@ const CallLogs = () => {
               <div className='callogs_daterange_contaier'>
                 <p>Date Range</p>
                 <div className='calllogs_daterange'>
-                  <DateRange></DateRange>
+                  <DateRange align='left'></DateRange>
                 </div>
               </div>
               <div className='callogs_daterange_contaier'>

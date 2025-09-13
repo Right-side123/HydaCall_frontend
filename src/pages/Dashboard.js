@@ -75,7 +75,8 @@ const Dashboard = () => {
             </div>
           </div>
           <div className='dashboard_top_container_card'>
-            <DateRange></DateRange>
+            <DateRange align="right" />
+
           </div>
         </div>
 

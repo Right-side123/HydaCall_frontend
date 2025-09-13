@@ -13,13 +13,13 @@
 
 
 .date_picker_wrapper {
-    /* width: auto; */
-    /* height: auto; */
-    /* min-width: 300px; */
-    /* max-width: 100vw; */
-    position: absolute;
-    top: 110%;
-    right: 0;
+    width: 400px;
+    height: auto;
+    min-width: 300px;
+    max-width: 100vw;
+    position: fixed;
+    top: 120px;
+    right: 50px;
     z-index: 9999;
     background: #fff;
     border: 1px solid #ccc;
@@ -28,6 +28,14 @@
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
     padding: 3px 8px;
 }
+
+/* .date_picker_wrapper {
+  position: fixed !important;
+  top: 120px !important; 
+  right: 50px !important;
+  z-index: 99999 !important;
+} */
+
 
 
 

@@ -320,3 +320,13 @@
 } */
 
 
+.multiselect_option{
+      width: 320px;
+    padding: 10px;
+    border-radius: 10px;
+    margin-top: 0px;
+    font-size: 16px;
+    border: none;
+    background-color: #f7f8ff;
+    border: 1px solid #efeff1;
+}

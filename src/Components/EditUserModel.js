@@ -8,14 +8,15 @@ import "primereact/resources/themes/lara-light-blue/theme.css";
 import "primereact/resources/primereact.min.css";
 import "primeicons/primeicons.css";
 
-import api from '../Components/Api';
+import api from './Api';
 
-const AddUserModal = ({
-    createUser,
-    setCreateUser,
-    setAddUser,
+const EditUserModal = ({
+    error,
+    selectedUser,
+    setSelectedUser,
+    setEditUser,
     handleChange,
-    handleCreateUser,
+    handleUpdateUser,
 }) => {
     // ✅ Department options (multi-select)
     // const departmentss = departments.map((dept) => ({
@@ -26,6 +27,10 @@ const AddUserModal = ({
     // console.log(departmentss);
 
     const [departments, setDepartments] = useState([]);
+    // const [editUser, setEditUser] = useState(false);
+
+    // const [selectedUser, setSelectedUser] = useState(null);
+    // const [error, setError] = useState("");
 
     // const [selectedDepartments, setSelectedDepartments] = useState([]);
 
@@ -51,15 +56,40 @@ const AddUserModal = ({
     const fetchDepartments = async () => {
         try {
             const res = await api.get("/department");
+            // console.log(res);
+
             setDepartments(res.data);
+            // console.log(res);
+
         } catch (err) {
-            console.error("Error fetching department:", err);
+            console.error("Error fetching users:", err);
         }
     }
 
+
+
     useEffect(() => {
         fetchDepartments();
+
     }, []);
+
+
+    // const handleUpdateUser = async () => {
+    //     if (!createUser.name || createUser.name.trim() === "") {
+    //         setError("User name is required");
+    //         return;
+    //     }
+
+    //     try {
+    //         await api.put(`/user/${createUser.id}`, createUser);
+    //         fetchUsers();
+    //         setEditUser(false);
+    //         setError("");
+    //     } catch (err) {
+    //         console.error("Error updating user", err);
+    //     }
+    // };
+
 
 
 
@@ -67,13 +97,12 @@ const AddUserModal = ({
         <div className="user_container_model">
             <div className="user_model_container">
                 <div className="user_model_title">
-                    <h3>Add User</h3>
-                    {/* <h3>{mode === "edit" ? "Edit User" : "Add User"}</h3> */}
+                    <h3>Edit User</h3>
                     <img
                         src={crossIcon}
                         alt="back"
                         className="model_cross_icon"
-                        onClick={() => setAddUser(false)}
+                        onClick={() => setEditUser(false)}
                     />
                 </div>
 
@@ -87,10 +116,11 @@ const AddUserModal = ({
                             <input
                                 type="text"
                                 name="name"
-                                value={createUser.name}
-                                onChange={handleChange}
+                                value={selectedUser.name}
+                                onChange={(e) => setSelectedUser({ ...selectedUser, name: e.target.value })}
                                 required
                             />
+                            {error && <p style={{ color: 'red', fontSize: '12px' }}>{error}</p>}
                         </div>
                         <div className="user_name_email_model">
                             <label>
@@ -99,8 +129,8 @@ const AddUserModal = ({
                             <input
                                 type="email"
                                 name="email"
-                                value={createUser.email}
-                                onChange={handleChange}
+                                value={selectedUser.email}
+                                onChange={(e) => setSelectedUser({ ...selectedUser, email: e.target.value })}
                                 required
                             />
                         </div>
@@ -115,8 +145,8 @@ const AddUserModal = ({
                             <input
                                 type="password"
                                 name="password"
-                                value={createUser.password}
-                                onChange={handleChange}
+                                value={selectedUser.password}
+                                onChange={(e) => setSelectedUser({ ...selectedUser, password: e.target.value })}
                                 required
                             />
                         </div>
@@ -126,8 +156,8 @@ const AddUserModal = ({
                             </p>
                             <select
                                 name="department_id"
-                                value={createUser.department_id}
-                                onChange={handleChange}
+                                value={selectedUser.department_id}
+                                onChange={(e) => setSelectedUser({ ...selectedUser, department_id: e.target.value })}
                                 required
                             >
                                 <option value=""></option>
@@ -150,42 +180,17 @@ const AddUserModal = ({
 
                             </p>
 
-                            {/* <Select
-                isMulti
-                options={departmentOptions}
-                value={departmentOptions.filter((opt) =>
-                  createUser.allowed_departments.includes(opt.value)
-                )}
-                onChange={(selected) =>
-                  setCreateUser({
-                    ...createUser,
-                    allowed_departments: selected.map((s) => s.value),
-                  })
-                }
-                placeholder={
-                  createUser.allowed_departments.length > 0
-                    ? `${createUser.allowed_departments.length} items selected`
-                    : "Select Departments"
-                }
-                isSearchable={false}
-                menuPlacement="auto"
-                menuPortalTarget={document.body}
-                styles={{
-                  menuPortal: (base) => ({ ...base, zIndex: 9999 })
-                }}
-              /> */}
-
                             <MultiSelect
-                                value={Array.isArray(createUser.allowed_departments) ? createUser.allowed_departments : []}
+                                value={Array.isArray(selectedUser.allowed_departments) ? selectedUser.allowed_departments : []}
                                 onChange={(e) =>
-                                    setCreateUser({ ...createUser, allowed_departments: e.value })
+                                    setSelectedUser({ ...selectedUser, allowed_departments: e.value })
                                 }
                                 options={departments}
                                 optionLabel="name"
                                 optionValue="name"
                                 placeholder={
-                                    createUser.allowed_departments?.length > 0
-                                        ? `${createUser.allowed_departments.length} items selected`
+                                    selectedUser.allowed_departments?.length > 0
+                                        ? `${selectedUser.allowed_departments.length} items selected`
                                         : " "
                                 }
                                 filter
@@ -201,9 +206,9 @@ const AddUserModal = ({
                                 Phone Numbers <span style={{ color: "red" }}>*</span>
                             </p>
                             <MultiSelect
-                                value={Array.isArray(createUser.phone_number) ? createUser.phone_number : []}
+                                value={Array.isArray(selectedUser.phone_number) ? selectedUser.phone_number : []}
                                 onChange={(e) =>
-                                    setCreateUser({ ...createUser, phone_number: e.value })
+                                    setSelectedUser({ ...selectedUser, phone_number: e.value })
                                 }
                                 options={phoneOptions}
                                 optionLabel="label"
@@ -211,8 +216,8 @@ const AddUserModal = ({
                                 filter
                                 display="chip"
                                 placeholder={
-                                    createUser.phone_number?.length > 0
-                                        ? `${createUser.phone_number.length} items selected`
+                                    selectedUser.phone_number?.length > 0
+                                        ? `${selectedUser.phone_number.length} items selected`
                                         : ''
                                 }
                                 className="w-full md:w-20rem multiselect_option"
@@ -235,9 +240,9 @@ const AddUserModal = ({
                                         type="radio"
                                         name="status"
                                         value="Inactive"
-                                        checked={createUser.status === "Inactive"}
+                                        checked={selectedUser.status === "Inactive"}
                                         onChange={(e) =>
-                                            setCreateUser({ ...createUser, status: e.target.value })
+                                            setSelectedUser({ ...selectedUser, status: e.target.value })
                                         }
                                     />{" "}
                                     Inactive
@@ -247,9 +252,9 @@ const AddUserModal = ({
                                         type="radio"
                                         name="status"
                                         value="Active"
-                                        checked={createUser.status === "Active"}
+                                        checked={selectedUser.status === "Active"}
                                         onChange={(e) =>
-                                            setCreateUser({ ...createUser, status: e.target.value })
+                                            setSelectedUser({ ...selectedUser, status: e.target.value })
                                         }
                                     />{" "}
                                     Active
@@ -264,10 +269,10 @@ const AddUserModal = ({
                             <input
                                 type="number"
                                 name="password_expire_days"
-                                value={createUser.password_expire_days}
+                                value={selectedUser.password_expire_days}
                                 onChange={(e) =>
-                                    setCreateUser({
-                                        ...createUser,
+                                    setSelectedUser({
+                                        ...selectedUser,
                                         password_expire_days: e.target.value,
                                     })
                                 }
@@ -284,9 +289,9 @@ const AddUserModal = ({
                             </label>
                             <select
                                 name="date_format"
-                                value={createUser.date_format}
+                                value={selectedUser.date_format}
                                 onChange={(e) =>
-                                    setCreateUser({ ...createUser, date_format: e.target.value })
+                                    setSelectedUser({ ...selectedUser, date_format: e.target.value })
                                 }
                             >
                                 <option value=""></option>
@@ -300,9 +305,9 @@ const AddUserModal = ({
                                 Allowed Reports<span style={{ color: "red" }}>*</span>
                             </label>
                             <MultiSelect
-                                value={Array.isArray(createUser.allowed_reports) ? createUser.allowed_reports : []}
+                                value={Array.isArray(selectedUser.allowed_reports) ? selectedUser.allowed_reports : []}
                                 onChange={(e) =>
-                                    setCreateUser({ ...createUser, allowed_reports: e.value })
+                                    setSelectedUser({ ...selectedUser, allowed_reports: e.value })
                                 }
                                 options={reportsOptions}
                                 optionLabel="label"
@@ -319,11 +324,11 @@ const AddUserModal = ({
 
                 {/* Buttons */}
                 <div className="model_btn_container">
-                    <button className="model_btn_can" onClick={() => setAddUser(false)}>
+                    <button className="model_btn_can" onClick={() => setEditUser(false)}>
                         Cancel
                     </button>
-                    <button className="model_btn_sub" onClick={handleCreateUser}>
-                        Add User
+                    <button className="model_btn_sub" onClick={handleUpdateUser}>
+                        Update User
                     </button>
                 </div>
             </div>
@@ -331,4 +336,4 @@ const AddUserModal = ({
     );
 };
 
-export default AddUserModal;
+export default EditUserModal;
