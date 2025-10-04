@@ -42,7 +42,9 @@
 .report_card_title {
     font-size: 20px;
     font-weight: 500;
+    color: #000;
 }
+
 
 .report_card {
     transition: 0.3s;
@@ -54,6 +56,11 @@
 
 .report_card:hover .report_card_img {
     background: #fff;
+
+}
+
+.report_card:hover .report_card_title {
+    color: #fff;
 }
 
 
@@ -79,4 +86,264 @@
     .report_main_container {
         grid-template-columns: 1fr;
     }
+}
+
+
+
+/* *******************************     CALL SUMMARY REPORT CSS   ****************************************** */
+
+.call_summary_top_container {
+    background-color: #fff;
+    height: auto;
+    width: 100%;
+    padding: 25px 30px;
+    margin-top: 5px;
+    border-radius: 10px;
+}
+
+.call_summary_top_container_title {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px;
+    box-sizing: border-box;
+
+}
+
+.call_summary_top_container_title h3 {
+    font-size: 22px;
+    font-weight: 500;
+    letter-spacing: 2px;
+}
+
+.call_summary_top_container_btn {
+    display: flex;
+    gap: 20px;
+    padding: 10px;
+    box-sizing: border-box;
+
+}
+
+.call_summary_top_container_btn button {
+    width: 100px;
+    font-size: 14px;
+    padding: 10px;
+    font-size: 14px;
+}
+
+.call_summary_top_container_btn_apply {
+    color: #fff;
+    background-color: #14004a;
+    border: 1px solid #14004a;
+    border-radius: 8px;
+    transition: all 0.4s ease-in-out;
+}
+
+.call_summary_top_container_btn_apply:hover {
+    color: #14004a;
+    background-color: #fff;
+    border: 1px solid #14004a;
+    border-radius: 8px;
+    transform: translateY(-5px);
+}
+
+.call_summary_top_container_btn_clearall {
+    color: #14004a;
+    background-color: #fff;
+    border: none;
+    border-radius: 8px;
+    transition: all 0.4s ease-in-out;
+}
+
+.call_summary_top_container_btn_clearall:hover {
+    color: #fff;
+    background-color: #14004a;
+    /* border: 1px solid #14004a; */
+    border-radius: 8px;
+    transform: translateY(-5px);
+}
+
+.call_summary_top_container_filter {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 0px;
+}
+
+.call_summary_top_container_filter_content p {
+    margin-bottom: 10px;
+}
+
+
+.call_summary_top_container_filter_content_daterange {
+    display: flex;
+    justify-content: space-between;
+    z-index: -1000;
+    width: 360px;
+    background-color: #f7f8ff;
+    border-radius: 10px;
+    padding: 3px 5px;
+    font-size: 18px;
+    align-items: center;
+}
+
+.call_summary_top_container_filter_content select {
+    width: 360px;
+    padding: 12px;
+    border-radius: 10px;
+    margin-top: 0px;
+    font-size: 16px;
+    border: none;
+    background-color: #f7f8ff;
+    border: 1px solid #efeff1;
+}
+
+.call_summary_top_container_search_archive {
+    margin-top: 50px;
+    display: flex;
+    gap: 10px;
+    font-size: 16px;
+    align-items: center;
+}
+
+.call_summary_top_container_search_archive input {
+    width: 20px;
+    height: 20px;
+}
+
+.call_summary_top_container p {
+    color: #888;
+
+}
+
+
+
+.call_summary_middel_container {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 30px;
+}
+
+.call_summary_middel_container_card {
+    width: 510px;
+    height: 350px;
+    background-color: #fff;
+    border-radius: 10px;
+    padding: 25px 30px;
+}
+
+.call_summary_middel_container_card_title h3 {
+    font-size: 22px;
+    font-weight: 500;
+}
+
+
+.call_summary_middel_container_card_table table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 400px;
+    /* Ensure enough width to prevent tight columns */
+    background-color: #fff;
+    border-radius: 8px;
+    margin-top: 25px;
+    /* box-shadow: 0 0 10px rgba(0, 0, 0, 0.05); */
+}
+
+.call_summary_middel_container_card_table th {
+    padding: 8px;
+    /* border-bottom: 1px solid #eee; */
+    color: #777;
+    font-weight: 400;
+    font-size: 16px;
+    text-align: left;
+}
+
+.call_summary_middel_container_card_table td {
+    padding: 10px;
+    border-top: 1px solid #eee;
+    color: #000;
+    font-weight: 400;
+    font-size: 14px;
+}
+
+.call_summary_middel_container_card_table_total_row td {
+    background-color: #f7f8ff;
+    padding: 12px;
+    font-weight: 600;
+    border-top: none;
+}
+
+
+.call_summary_middel_container_card_callinsight_content {
+    margin-top: 35px;
+}
+
+
+.call_summary_middel_container_card_callinsight_content_neverAttend {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px;
+
+}
+
+.call_summary_middel_container_card_callinsight_content_connected_call {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px;
+    border-top: 1px solid #eee;
+}
+
+
+.call_summary_middel_container_card_callinsight_content_neverAttend_count {
+    background-color: #f7f8ff;
+    text-align: center;
+    padding: 2px 8px;
+}
+
+
+
+
+
+.call_summary_bottom_container {
+    width: 100%;
+    height: 150px;
+    background-color: #fff;
+    margin-top: 30px;
+    border-radius: 10px;
+    padding: 25px 30px;
+}
+
+.call_summary_bottom_container_card_title_container {
+    display: flex;
+    justify-content: space-between;
+}
+
+.call_summary_bottom_container_card_title h3 {
+    display: flex;
+    justify-content: space-between;
+    font-size: 22px;
+    font-weight: 500;
+}
+
+.call_summary_bottom_container_card_downloadbtn_container {
+    display: flex;
+    gap: 20px;
+    align-items: center;
+    padding: 8px;
+}
+
+.call_summary_bottom_container_card_downloadbtn_container button {
+    padding: 10px;
+    border-radius: 8px;
+    border: 1px solid #14004a;
+    background-color: #14004a;
+    color: #fff;
+    transition: all 0.4s ease-in-out;
+}
+
+.call_summary_bottom_container_card_downloadbtn_container:hover button {
+    padding: 10px;
+    border-radius: 8px;
+    border: 1px solid #14004a;
+    background-color: #fff;
+    color: #14004a;
+    transform: translateY(-5px);
 }

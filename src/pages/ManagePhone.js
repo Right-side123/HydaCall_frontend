@@ -103,8 +103,8 @@ const ManagePhone = () => {
                 </div>
                 {editPhone && (
                     <div className='main_container_model'>
-                        <div className='department_model_container'>
-                            <div className='department_model_title'>
+                        <div className='manage_phone_model_container'>
+                            <div className='manage_phone_model_title'>
                                 <h3>Edit Phone</h3>
                                 <img src={crossIcon} alt='back' className='model_cross_icon' onClick={() => setEditPhone(false)} />
                             </div>

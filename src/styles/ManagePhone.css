@@ -44,10 +44,36 @@
 
 }
 
+/* **********************************************************************  Model */
+
+.manage_phone_model_container {
+    width: 750px;
+    height: auto;
+    /* padding-bottom: 15px; */
+    background-color: #fff;
+    border-radius: 10px;
+    border-top-left-radius: 15px;
+    border-top-right-radius: 15px;
+}
+
+.manage_phone_model_title {
+    background-image: linear-gradient(to right, #2b02c0, #14004a);
+    width: 100%;
+    color: #fff;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 15px;
+    font-size: 16px;
+    border-top-left-radius: 15px;
+    border-top-right-radius: 15px;
+    box-sizing: border-box;
+}
+
 .mainphonemodel {
     width: 100%;
     height: auto;
-    padding: 50px 10px;
+    padding: 30px 10px;
 }
 
 .phone_model_content {
@@ -58,12 +84,11 @@
 
 
 .phone_model_input_container {
-
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    line-height: 1px;
-    gap: 20px;
+    /* line-height: 1px; */
+    gap: 10px;
     padding: 0px 20px;
 }
 

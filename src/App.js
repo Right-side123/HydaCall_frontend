@@ -177,6 +177,7 @@ import ManagePhone from './pages/ManagePhone';
 import Users from './pages/Users';
 import Reports from './pages/Reports';
 import Login from './pages/Login';
+import CallSummaryReport from './pages/CallSummaryReport';
 
 function App() {
   return (
@@ -189,6 +190,8 @@ function App() {
         <Route path='/manage-phone' element={<ManagePhone />} />
         <Route path='/user' element={<Users />} />
         <Route path='/reports' element={<Reports />} />
+
+        <Route path='/report/call-summary' element={<CallSummaryReport/>} />
       </Routes>
     </Router>
   );

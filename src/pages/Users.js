@@ -186,18 +186,15 @@ const Users = () => {
         try {
             await api.post("/user", createUser);
 
-
             setAddUser(false);
             setEditUser(false);
             setCopyUser(false);
-
-
             setCreateUser(InitialState);
             setSelectedUser(null);
-
             fetchUsers();
             fetchSummery();
             setError("");
+
         } catch (error) {
             console.error("Error creating user:", error);
             setError("Failed to create user");
@@ -248,7 +245,6 @@ const Users = () => {
         try {
             if (typeof data === "string" && data.startsWith("[") && data.endsWith("]")) {
                 return JSON.parse(data);
-
             }
             return Array.isArray(data) ? data : [];
         } catch {
@@ -276,11 +272,11 @@ const Users = () => {
                 allowed_reports: safeParse(selectedUser.allowed_reports)
             });
 
-
             setEditUser(false);
             fetchUsers();
             fetchSummery();
             setError("");
+
         } catch (err) {
             console.error("Error updating user", err);
         }
@@ -312,8 +308,6 @@ const Users = () => {
             setTotalSummery(res.data);
         } catch (err) {
             console.error("Error fetching total summery:", err);
-
-
         }
     }
 
@@ -349,7 +343,6 @@ const Users = () => {
         }
         catch (err) {
             console.error("Error deleteing user", err);
-
         }
     };
 
@@ -394,7 +387,6 @@ const Users = () => {
     return (
         <div className='main-layout'>
             <Sidebar />
-
             <div className='page-content'>
                 <div className="department_titel_container">
                     <h1 className='department_title'>USERS</h1>
@@ -511,7 +503,6 @@ const Users = () => {
                                                 }}>
                                                     {user.status}
                                                 </div>
-
                                             </td>
 
                                             <td >
@@ -531,9 +522,7 @@ const Users = () => {
                                                         }}
                                                     />
                                                 </div>
-
                                             </td>
-
                                         </tr>
                                     ))) : (
                                     <tr>
@@ -542,14 +531,11 @@ const Users = () => {
                                         </td>
                                     </tr>
                                 )}
-
                             </tbody>
-
                         </table>
                     </div>
-
-
                 </div>
+
                 <div className="pagination_container">
                     <button
                         disabled={currentPage === 1}
@@ -575,6 +561,7 @@ const Users = () => {
                         Next
                     </button>
                 </div>
+
                 {/* {addUser && (
                     <div className='user_container_model'>
                         <div className='user_model_container'>
@@ -766,13 +753,11 @@ const Users = () => {
 
                 {addUser && (
                     <AddUserModal
-
                         createUser={createUser}
                         setCreateUser={setCreateUser}
                         setAddUser={handleCloseModal}
                         handleChange={handleChange}
                         handleCreateUser={handleCreateUser}
-
                     />
                 )}
 

@@ -8,6 +8,7 @@ import dayAnalysisIcon from '../assets/dayreport.png';
 import nevericon from '../assets/neverattend.png';
 import notPickupIcon from '../assets/reportclient.png';
 import Sidebar from '../Components/Sidebar';
+import { NavLink } from 'react-router-dom';
 
 const Reports = () => {
 
@@ -22,12 +23,14 @@ const Reports = () => {
                     <Layout></Layout>
                 </div>
                 <div className='report_main_container'>
-                    <div className='report_card'>
-                        <div className='report_card_img'>
-                            <img src={reportCallIcon} alt='Call summary' className='report_card_img_icon' style={{ width: '30px', height: '30px' }} />
+                    <NavLink to="/report/call-summary" style={{textDecoration: 'none'}}>
+                        <div className='report_card'>
+                            <div className='report_card_img'>
+                                <img src={reportCallIcon} alt='Call summary' className='report_card_img_icon' style={{ width: '30px', height: '30px' }} />
+                            </div>
+                            <div className='report_card_title'>Call Summary</div>
                         </div>
-                        <div className='report_card_title'>Call Summary</div>
-                    </div>
+                    </NavLink>
                     <div className='report_card'>
                         <div className='report_card_img'>
                             <img src={analysisIcon} alt='Analysis' className='report_card_img_icon' style={{ width: '25px', height: '25px' }} />
