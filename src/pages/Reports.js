@@ -23,7 +23,7 @@ const Reports = () => {
                     <Layout></Layout>
                 </div>
                 <div className='report_main_container'>
-                    <NavLink to="/report/call-summary" style={{textDecoration: 'none'}}>
+                    <NavLink to="/report/call-summary" style={{ textDecoration: 'none' }}>
                         <div className='report_card'>
                             <div className='report_card_img'>
                                 <img src={reportCallIcon} alt='Call summary' className='report_card_img_icon' style={{ width: '30px', height: '30px' }} />
@@ -31,42 +31,54 @@ const Reports = () => {
                             <div className='report_card_title'>Call Summary</div>
                         </div>
                     </NavLink>
-                    <div className='report_card'>
-                        <div className='report_card_img'>
-                            <img src={analysisIcon} alt='Analysis' className='report_card_img_icon' style={{ width: '25px', height: '25px' }} />
+                    <NavLink to="/report/analysis" style={{ textDecoration: 'none' }}>
+                        <div className='report_card'>
+                            <div className='report_card_img'>
+                                <img src={analysisIcon} alt='Analysis' className='report_card_img_icon' style={{ width: '25px', height: '25px' }} />
+                            </div>
+                            <div className='report_card_title'>Analysis</div>
                         </div>
-                        <div className='report_card_title'>Analysis</div>
-                    </div>
-                    <div className='report_card'>
-                        <div className='report_card_img'>
-                            <img src={hourlyIcon} alt='Hourly Analysis' className='report_card_img_icon' style={{ width: '30px', height: '30px' }} />
+                    </NavLink>
+                    <NavLink to="/report/hourly-analysis" style={{ textDecoration: 'none' }}>
+                        <div className='report_card'>
+                            <div className='report_card_img'>
+                                <img src={hourlyIcon} alt='Hourly Analysis' className='report_card_img_icon' style={{ width: '30px', height: '30px' }} />
+                            </div>
+                            <div className='report_card_title'>Hourly Analysis</div>
                         </div>
-                        <div className='report_card_title'>Hourly Analysis</div>
-                    </div>
-                    <div className='report_card'>
-                        <div className='report_card_img'>
-                            <img src={dayAnalysisIcon} alt='Day wise analysis' className='report_card_img_icon' style={{ width: '25px', height: '25px' }} />
+                    </NavLink>
+                    <NavLink to="/report/day-wise-analysis" style={{ textDecoration: 'none' }}>
+                        <div className='report_card'>
+                            <div className='report_card_img'>
+                                <img src={dayAnalysisIcon} alt='Day wise analysis' className='report_card_img_icon' style={{ width: '25px', height: '25px' }} />
+                            </div>
+                            <div className='report_card_title'>Day Wise Analysis</div>
                         </div>
-                        <div className='report_card_title'>Day Wise Analysis</div>
-                    </div>
-                    <div className='report_card'>
-                        <div className='report_card_img'>
-                            <img src={nevericon} alt='Never attended' className='report_card_img_icon' style={{ width: '25px', height: '25px' }} />
+                    </NavLink>
+                    <NavLink to="/report/never-attended" style={{ textDecoration: 'none' }}>
+                        <div className='report_card'>
+                            <div className='report_card_img'>
+                                <img src={nevericon} alt='Never attended' className='report_card_img_icon' style={{ width: '25px', height: '25px' }} />
+                            </div>
+                            <div className='report_card_title'>Never Attended</div>
                         </div>
-                        <div className='report_card_title'>Never Attended</div>
-                    </div>
-                    <div className='report_card'>
-                        <div className='report_card_img'>
-                            <img src={notPickupIcon} alt='not pickup' className='report_card_img_icon' style={{ width: '20px', height: '20px' }} />
+                    </NavLink>
+                    <NavLink to="/report/not-pickup-by-client" style={{ textDecoration: 'none' }}>
+                        <div className='report_card'>
+                            <div className='report_card_img'>
+                                <img src={notPickupIcon} alt='not pickup' className='report_card_img_icon' style={{ width: '20px', height: '20px' }} />
+                            </div>
+                            <div className='report_card_title'>Not Pickup by Client</div>
                         </div>
-                        <div className='report_card_title'>Not Pickup by Client</div>
-                    </div>
-                    <div className='report_card'>
-                        <div className='report_card_img'>
-                            <img src={notPickupIcon} alt='Unique Clients' className='report_card_img_icon' style={{ width: '20px', height: '20px' }} />
+                    </NavLink>
+                    <NavLink to="/report/unique-clients" style={{ textDecoration: 'none' }}>
+                        <div className='report_card'>
+                            <div className='report_card_img'>
+                                <img src={notPickupIcon} alt='Unique Clients' className='report_card_img_icon' style={{ width: '20px', height: '20px' }} />
+                            </div>
+                            <div className='report_card_title'>Unique Clients</div>
                         </div>
-                        <div className='report_card_title'>Unique Clients</div>
-                    </div>
+                    </NavLink>
                 </div>
             </div>
         </div>

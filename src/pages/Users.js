@@ -409,7 +409,7 @@ const Users = () => {
                             <div className='users_second_container_card'>
                                 <div className='users_second_container_card_lefts'>
                                     <span>SIM Numbers</span>
-                                    <p>{summrey.active_users}</p>
+                                    <p>{summrey.simnumbers}</p>
                                 </div>
 
                                 <div className='users_second_container_card_right'>

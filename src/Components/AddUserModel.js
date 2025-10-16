@@ -27,6 +27,8 @@ const AddUserModal = ({
 
     const [departments, setDepartments] = useState([]);
 
+    const [simNumbers, setSimNumbers] = useState([]);
+
     // const [selectedDepartments, setSelectedDepartments] = useState([]);
 
     // Reports options
@@ -40,12 +42,12 @@ const AddUserModal = ({
     ];
 
     //  Phone options
-    const phoneOptions = [
-        { value: "9999999999", label: "9999999999" },
-        { value: "8888888888", label: "8888888888" },
-        { value: "7777777777", label: "7777777777" },
-        { value: "6666666666", label: "6666666666" },
-    ];
+    // const phoneOptions = [
+    //     { value: "9999999999", label: "9999999999" },
+    //     { value: "8888888888", label: "8888888888" },
+    //     { value: "7777777777", label: "7777777777" },
+    //     { value: "6666666666", label: "6666666666" },
+    // ];
 
 
     const fetchDepartments = async () => {
@@ -57,8 +59,26 @@ const AddUserModal = ({
         }
     }
 
+    const fetchSimNumbers = async () => {
+        try {
+            const res = await api.get('/simnumber');
+            // Assuming your API returns something like:
+            // [{ id: 1, sim_number: "9876543210" }, ...]
+            const options = res.data.map((item) => ({
+                label: item.SIM_Number,
+                value: item.SIM_Number,
+            }));
+            setSimNumbers(options);
+            // console.log(options);
+
+        } catch (err) {
+            console.error('Error fetching SIM numbers', err);
+        }
+    };
+
     useEffect(() => {
         fetchDepartments();
+        fetchSimNumbers();
     }, []);
 
 
@@ -205,7 +225,7 @@ const AddUserModal = ({
                                 onChange={(e) =>
                                     setCreateUser({ ...createUser, phone_number: e.value })
                                 }
-                                options={phoneOptions}
+                                options={simNumbers}
                                 optionLabel="label"
                                 optionValue="value"
                                 filter
