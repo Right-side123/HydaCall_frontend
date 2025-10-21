@@ -12,30 +12,23 @@ import eyeUserIcon from '../assets/eyeuser.png';
 import editIcon from '../assets/editIcon.png';
 import deleteIcon from '../assets/deleteIcon.png';
 import copyUserIcon from '../assets/copyuser.png';
-// import crossIcon from '../assets/crossIcon.png';
 import Sidebar from '../Components/Sidebar';
 import AddUserModal from '../Components/AddUserModel';
 import EditUserModal from '../Components/EditUserModel';
-
 import api from '../Components/Api';
 import CopyUserModal from '../Components/CopyUserModel';
-
+import AssignedUserNumberModal from '../Components/AssignedUserNumber';
 
 
 const Users = () => {
     const [addUser, setAddUser] = useState(false);
     const [editUser, setEditUser] = useState(false);
     const [copyUser, setCopyUser] = useState(false);
+    const [assignedNumber, setAssignedNumber] = useState(false)
     const [totalSummery, setTotalSummery] = useState([])
     const [users, setUsers] = useState([]);
-
     const [error, setError] = useState("");
-    // const [department, setDepartment] = useState([]);
-    // const [selectAll, setSelectAll] = useState(false);
     const [search, setSearch] = useState('');
-
-    // const [mode, setMode] = useState("add");
-
     const [selectedUser, setSelectedUser] = useState(null);
 
     const InitialState = {
@@ -71,19 +64,15 @@ const Users = () => {
         dept.name.toLowerCase().includes(search.toLowerCase())
     );
 
-
-    // Pagination states
     const [currentPage, setCurrentPage] = useState(1);
     const itemsPerPage = 5;
 
-    // Calculate indexes
+
     const indexOfLastItem = currentPage * itemsPerPage;
     const indexOfFirstItem = indexOfLastItem - itemsPerPage;
 
-    // Apply search + pagination together
     const currentUsers = filteredUsers.slice(indexOfFirstItem, indexOfLastItem);
 
-    // Total pages
     const totalPages = Math.ceil(filteredUsers.length / itemsPerPage);
 
 
@@ -108,8 +97,6 @@ const Users = () => {
             });
         }
     }, [selectedUser]);
-
-
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -176,16 +163,12 @@ const Users = () => {
 
     const handleCreateUser = async (e) => {
         e.preventDefault();
-
-        // The condition should check for the specific fields you want
         if (!createUser.name || !createUser.email || !createUser.password) {
             setError("Name, email, and password are required!");
             return;
         }
-
         try {
             await api.post("/user", createUser);
-
             setAddUser(false);
             setEditUser(false);
             setCopyUser(false);
@@ -194,13 +177,11 @@ const Users = () => {
             fetchUsers();
             fetchSummery();
             setError("");
-
         } catch (error) {
             console.error("Error creating user:", error);
             setError("Failed to create user");
         }
     };
-
 
     //    ***********************     Edit   Handle   
 
@@ -239,7 +220,6 @@ const Users = () => {
 
 
     // ************************************     single 
-
 
     const safeParse = (data) => {
         try {
@@ -282,9 +262,6 @@ const Users = () => {
         }
     };
 
-
-
-
     // *************************   department fetch for showing list in model
 
     // const fetchDepartments = async () => {
@@ -310,7 +287,6 @@ const Users = () => {
             console.error("Error fetching total summery:", err);
         }
     }
-
     useEffect(() => {
         fetchSummery()
     }, []);
@@ -331,8 +307,6 @@ const Users = () => {
         fetchUsers();
     }, []);
 
-
-
     // ****************************************************    Delete   User   Function
 
     const handleDeleteUser = async (id) => {
@@ -346,11 +320,9 @@ const Users = () => {
         }
     };
 
-    // New function to handle closing the modal and resetting state
     const handleCloseModal = () => {
         setAddUser(false);
         setCreateUser(InitialState);
-        // setMode("add");
         setEditUser(false);
         setCopyUser(false);
     };
@@ -382,8 +354,6 @@ const Users = () => {
     // };
 
 
-
-
     return (
         <div className='main-layout'>
             <Sidebar />
@@ -392,7 +362,6 @@ const Users = () => {
                     <h1 className='department_title'>USERS</h1>
                     <Layout></Layout>
                 </div>
-
                 <div className='users_second_container'>
                     {[totalSummery].map((summrey, index) => (
                         <React.Fragment key={index}>
@@ -448,9 +417,7 @@ const Users = () => {
                             </div>
                         </React.Fragment>
                     ))}
-
                 </div>
-
                 <div className='department_second_container'>
                     <div className='department_second_container_top'>
                         <h3>User Details</h3>
@@ -463,10 +430,6 @@ const Users = () => {
                                     value={search}
                                     onChange={(e) => setSearch(e.target.value)} />
                             </div>
-
-
-                            {/* <button className='add_dept_btn' onClick={() => setAddUser(true)}> <img src={addUserIcon} alt='department' className='dept_icon' />Add User</button> */}
-
                             <button className='add_dept_btn' onClick={() => setAddUser(true)}> <img src={addUserIcon} alt='department' className='dept_icon' />Add User</button>
                         </div>
                     </div>
@@ -507,7 +470,8 @@ const Users = () => {
 
                                             <td >
                                                 <div className='user_action_icons'>
-                                                    <img src={eyeUserIcon} alt='View Phone Numbers' className='user_deleteicon' />
+                                                    <img src={eyeUserIcon} alt='View Phone Numbers' className='user_deleteicon'
+                                                        onClick={() => { setAssignedNumber(true); setSelectedUser(user); }} />
                                                     <span className='user_divider'></span>
                                                     <img src={editIcon} alt='edit' className='user_editicon'
                                                         onClick={() => { setEditUser(true); setSelectedUser(user); }}
@@ -562,195 +526,6 @@ const Users = () => {
                     </button>
                 </div>
 
-                {/* {addUser && (
-                    <div className='user_container_model'>
-                        <div className='user_model_container'>
-                            <div className='user_model_title'>
-                                <h3>Add User</h3>
-                                <img src={crossIcon} alt='back' className='model_cross_icon' onClick={() => setAddUser(false)} />
-                            </div>
-                            <div className='user_content_container_model'>
-                                <div className=' user_name_email_model_container'>
-                                    <div className='user_name_email_model'>
-                                        <label>Name <span style={{ color: 'red' }}>*</span></label>
-                                        <input
-                                            type='text'
-                                            name='name'
-                                            value={createUser.name}
-                                            onChange={handleChange}
-                                            required />
-                                    </div>
-                                    <div className='user_name_email_model'>
-                                        <label>Email <span style={{ color: 'red' }}>*</span></label>
-                                        <input
-                                            type='email'
-                                            name='email'
-                                            value={createUser.email}
-                                            onChange={handleChange}
-                                            required />
-                                    </div>
-                                </div>
-                                <div className='user_name_email_model_container'>
-                                    <div className='user_name_email_model'>
-                                        <label>Password <span style={{ color: 'red' }}>*</span></label>
-                                        <input
-                                            type='password'
-                                            name='password'
-                                            value={createUser.password}
-                                            onChange={handleChange}
-                                            required />
-                                    </div>
-                                    <div className='user_name_email_model'>
-                                        <p>Department <span style={{ color: 'red' }}>*</span></p>
-                                        <select
-                                            name='department_id'
-                                            value={createUser.department_id}
-                                            onChange={handleChange}
-                                            required
-                                            className=''>
-                                            <option value=""></option>
-                                            {department.map((dept) => (
-                                                <option key={dept.id} value={dept.id}>
-                                                    {dept.name}
-                                                </option>
-                                            ))}
-                                        </select>
-                                    </div>
-                                </div>
-                                <div className='user_name_email_model_container'>
-                                   
-
-
-                                    <div className='user_name_email_model'>
-                                        <p>Allowed Department <span style={{ color: 'red' }}>*</span></p>
-                                        <div className='custom-multi-select'>
-                                            <div>
-                                                <label>
-                                                    <input type="checkbox" checked={selectAll} onChange={handleSelectAll} />
-                                                    Select All
-                                                </label>
-                                            </div>
-                                            {department.map((dept) => (
-                                                <div key={dept.id}>
-                                                    <label>
-                                                        <input
-                                                            type="checkbox"
-                                                            value={dept.name}
-                                                            checked={createUser.allowed_departments.includes(dept.name)}
-                                                            onChange={() => handleCheckboxChange(dept.name)}
-                                                        />
-                                                        {dept.name}
-                                                    </label>
-                                                </div>
-                                            ))}
-                                        </div>
-                                    </div>
-
-                                
-                                    <div className='user_name_email_model'>
-                                        <p>Phone Numbers<span style={{ color: 'red' }}>*</span></p>
-                                        <select
-                                            name='phone_number'
-                                            value={createUser.phone_number}
-                                            onChange={(e) => setCreateUser({ ...createUser, phone_number: e.target.value })}
-                                            className=''
-                                        >
-                                            <option value=" "></option>
-                                            <option value="SIM 1">SIM 1</option>
-                                            <option value="SIM 2">SIM 2</option>
-
-                                        </select>
-                                    </div>
-                                </div>
-                                <div className='user_name_email_model_container'>
-                                    <div className=''>
-                                        <label>Status <span style={{ color: 'red' }}>*</span></label>
-                                        <div className='user_model_active_inactive'>
-
-                                            <div className='user_model_active_inactive_radio'>
-                                                <input
-                                                    type="radio"
-                                                    name="status"
-                                                    value="Inactive"
-                                                    checked={createUser.status === 'Inactive'}
-                                                    onChange={(e) => setCreateUser({ ...createUser, status: e.target.value })}
-                                                /> Inactive
-                                            </div>
-                                            <div className='user_model_active_inactive_radio'>
-                                                <input
-                                                    type="radio"
-                                                    name="status"
-                                                    value="Active"
-                                                    checked={createUser.status === 'Active'}
-                                                    onChange={(e) => setCreateUser({ ...createUser, status: e.target.value })}
-
-                                                /> Active
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div className='user_name_email_model'>
-                                        <label>Password Expire In (Days)<span style={{ color: 'red' }}>*</span></label>
-                                        <input
-                                            type='number'
-                                            name='password_expire_days'
-                                            value={createUser.password_expire_days}
-                                            onChange={(e) => setCreateUser({ ...createUser, password_expire_days: e.target.value })}
-                                            required
-                                            className='' />
-                                    </div>
-                                </div>
-                                <div className='user_name_email_model_container'>
-                                    <div className='user_name_email_model'>
-                                        <label>Preferred Date Format<span style={{ color: 'red' }}>*</span></label>
-                                        <select
-                                            name="date_format"
-                                            value={createUser.date_format}
-                                            onChange={(e) => setCreateUser({ ...createUser, date_format: e.target.value })}
-                                        >
-                                            <option value=""></option>
-                                            <option value="YYYY/MM/DD">YYYY/MM/DD - 2025/08/25</option>
-                                            <option value="DD/MM/YYYY">DD/MM/YYYY - 25/08/2025</option>
-                                            <option value="MM/DD/YYYY">MM/DD/YYYY - 08/25/2025</option>
-                                        </select>
-
-                                    </div>
-                                    <div className='user_name_email_model'>
-                                        <label>Allowed Reports<span style={{ color: 'red' }}>*</span></label>
-                                        <div className="reports-list">
-                                            {["Report A", "Report B", "Report C"].map((report) => (
-                                                <div key={report}>
-                                                    <input
-                                                        type="checkbox"
-                                                        checked={createUser.allowed_reports.includes(report)}
-                                                        onChange={() => {
-                                                            setCreateUser((prev) => ({
-                                                                ...prev,
-                                                                allowed_reports: prev.allowed_reports.includes(report)
-                                                                    ? prev.allowed_reports.filter(r => r !== report)
-                                                                    : [...prev.allowed_reports, report]
-                                                            }));
-                                                        }}
-                                                    />
-                                                    {report}
-                                                </div>
-                                            ))}
-
-
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div className='model_btn_container'>
-
-                                <button className='model_btn_can' onClick={() => setAddUser(false)}>Cancel</button>
-                                <button className='model_btn_sub' onClick={handleSubmit}>Add User</button>
-                            </div>
-                        </div>
-
-                    </div>
-                )} */}
-
-
                 {addUser && (
                     <AddUserModal
                         createUser={createUser}
@@ -780,6 +555,14 @@ const Users = () => {
                         handleChange={handleChange}
                         setCopyUser={handleCloseModal}
                         handleCreateUser={handleCreateUser}
+                    />
+                )}
+
+                {assignedNumber && (
+                    <AssignedUserNumberModal
+                        setAssignedNumber={setAssignedNumber}
+                        selectedUser={selectedUser}
+                        setSelectedUser={setSelectedUser}
                     />
                 )}
 

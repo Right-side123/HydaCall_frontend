@@ -298,15 +298,15 @@
 }
 
 .user_model_active_inactive_radio input[type="radio"] {
-  accent-color: yellow; 
-  width: 20px;
-  height: 20px;
+    accent-color: yellow;
+    width: 20px;
+    height: 20px;
 }
 
 .user_model_active_inactive_radio.selected {
-  background-color: #fff;
-  border-radius: 5px;
-  padding: 2px 6px;
+    background-color: #fff;
+    border-radius: 5px;
+    padding: 2px 6px;
 }
 
 /* .status-active {
@@ -320,8 +320,8 @@
 } */
 
 
-.multiselect_option{
-      width: 320px;
+.multiselect_option {
+    width: 320px;
     padding: 10px;
     border-radius: 10px;
     margin-top: 0px;
@@ -329,4 +329,67 @@
     border: none;
     background-color: #f7f8ff;
     border: 1px solid #efeff1;
+}
+
+
+
+/* *****************************   Assigned  Phone Number CSS  ****************** */
+
+
+.assined_phone_number_search_box_container {
+    width: 300px;
+    display: flex;
+    background-color: #f4f8fc;
+    margin: 20px;
+    border: 1px solid #ccc;
+    padding: 4px 10px;
+    align-items: center;
+    gap: 6px;
+    border-radius: 10px;
+}
+
+.assined_phone_number_search_box_container input {
+    width: 100%;
+    background-color: #f4f8fc;
+    border: none;
+    font-size: 16px;
+}
+
+.assined_phone_number_table_container {
+    width: 100%;
+    overflow-x: auto;
+    padding: 1rem;
+    box-sizing: border-box;
+    /* padding: 0px 0px; */
+}
+
+.assined_phone_number_table_container table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 400px;
+    /* Ensure enough width to prevent tight columns */
+    background-color: #fff;
+    border-radius: 8px;
+    /* box-shadow: 0 0 10px rgba(0, 0, 0, 0.05); */
+}
+
+.assined_phone_number_table_container th {
+    padding: 8px;
+    /* border-bottom: 1px solid #eee; */
+    color: #777;
+    font-weight: 400;
+    font-size: 16px;
+    text-align: left;
+}
+
+.assined_phone_number_table_container td {
+    padding: 8px;
+    border-top: 1px solid #eee;
+    color: #000;
+    font-weight: 400;
+    font-size: 14px;
+}
+
+.assined_phone_number_content_container{
+    padding: 20px 10px;
 }

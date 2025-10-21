@@ -68,6 +68,23 @@ const ManagePhone = () => {
         sim.Name.toLowerCase().includes(searchTerm.toLowerCase())
     );
 
+
+     const [currentPage, setCurrentPage] = useState(1);
+    const itemsPerPage = 1;
+
+    // Calculate indexes
+    const indexOfLastItem = currentPage * itemsPerPage;
+    const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+
+    // Apply search + pagination together
+    const currentMangePhone = filteredSimNumbers.slice(indexOfFirstItem, indexOfLastItem);
+
+    // Total pages
+    const totalPages = Math.ceil(filteredSimNumbers.length / itemsPerPage);
+    useEffect(() => {
+        setCurrentPage(1);
+    }, [searchTerm]);
+
     const handleEditClick = (sim) => {
         setSelectedSim(sim);
         setEditPhone(true);
@@ -175,12 +192,12 @@ const ManagePhone = () => {
                                 </tr>
                             </thead>
                             <tbody className='table_body'>
-                                {filteredSimNumbers.length === 0 ? (
+                                {currentMangePhone.length === 0 ? (
                                     <tr>
                                         <td colSpan="5" style={{ textAlign: 'center' }}>No Records Found!!</td>
                                     </tr>
                                 ) : (
-                                    filteredSimNumbers.map((sim, index) => (
+                                    currentMangePhone.map((sim, index) => (
                                         <tr key={sim.id}>
                                             <td>{index + 1}</td>
                                             <td>{sim.SIM_Number}</td>
@@ -191,11 +208,11 @@ const ManagePhone = () => {
                                             <img src={editicon} alt='edit' className='editicon' onClick={() => handleEditClick(sim)} />
                                             <span className='divider'></span>
                                             <img 
-  src={historyiconblue} 
-  alt='history' 
-  className='deleteicon' 
-  onClick={() => navigate(`/updated-phone-history/${sim.SIM_Number}`)}
-/>
+                                            src={historyiconblue} 
+                                            alt='history' 
+                                            className='deleteicon' 
+                                            onClick={() => navigate(`/updated-phone-history/${sim.SIM_Number}`)}
+                                            />
                                         </div>
                                             </td>
                                         </tr>
@@ -207,10 +224,31 @@ const ManagePhone = () => {
 
                 </div>
                 <div className="pagination_container">
-                    <button>Previous</button>
-                    <button className="active_page">1</button>
-                    <button>Next</button>
-                </div>
+                        <button
+                            disabled={currentPage === 1}
+                            onClick={() => setCurrentPage(currentPage - 1)}
+                        >
+                            Previous
+                        </button>
+
+                        {[...Array(totalPages)].map((_, index) => (
+                            <button
+                                key={index}
+                                className={currentPage === index + 1 ? "active_page" : ""}
+                                onClick={() => setCurrentPage(index + 1)}
+                            >
+                                {index + 1}
+                            </button>
+                        ))}
+
+                        <button
+                            disabled={currentPage === totalPages || totalPages === 0}
+                            onClick={() => setCurrentPage(currentPage + 1)}
+                        >
+                            Next
+                        </button>
+
+                    </div>
                 {editPhone && (
                     <div className='main_container_model'>
                         <div className='manage_phone_model_container'>

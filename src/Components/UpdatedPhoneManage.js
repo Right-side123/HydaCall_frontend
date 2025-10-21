@@ -54,6 +54,22 @@ const UpdatedManagePhone = () => {
         sim.sim_number.toString().includes(searchTerm)
     );
 
+
+    const [currentPage, setCurrentPage] = useState(1);
+    const itemsPerPage = 2;
+
+    // Calculate indexes
+    const indexOfLastItem = currentPage * itemsPerPage;
+    const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+
+    // Apply search + pagination together
+    const currentHistoryPage = filteredSimNumbers.slice(indexOfFirstItem, indexOfLastItem);
+
+    // Total pages
+    const totalPages = Math.ceil(filteredSimNumbers.length / itemsPerPage);
+    useEffect(() => {
+        setCurrentPage(1);
+    }, [searchTerm]);
     const handleEditClick = (sim) => {
         setSelectedSim(sim);
         setHistoryPhone(true);
@@ -141,12 +157,12 @@ const UpdatedManagePhone = () => {
                                 </tr>
                             </thead>
                             <tbody className='table_body'>
-                                {filteredSimNumbers.length === 0 ? (
+                                {currentHistoryPage.length === 0 ? (
                                     <tr>
                                         <td colSpan="5" style={{ textAlign: 'center' }}>No Records Found!!</td>
                                     </tr>
                                 ) : (
-                                    filteredSimNumbers.map((sim, index) => (
+                                    currentHistoryPage.map((sim, index) => (
                                         <tr key={sim.id}>
                                             <td>{index + 1}</td>
                                             <td> {new Date(sim.updated_at).toLocaleString('en-GB', {
@@ -178,9 +194,30 @@ const UpdatedManagePhone = () => {
 
                 </div>
                 <div className="pagination_container">
-                    <button>Previous</button>
-                    <button className="active_page">1</button>
-                    <button>Next</button>
+                    <button
+                        disabled={currentPage === 1}
+                        onClick={() => setCurrentPage(currentPage - 1)}
+                    >
+                        Previous
+                    </button>
+
+                    {[...Array(totalPages)].map((_, index) => (
+                        <button
+                            key={index}
+                            className={currentPage === index + 1 ? "active_page" : ""}
+                            onClick={() => setCurrentPage(index + 1)}
+                        >
+                            {index + 1}
+                        </button>
+                    ))}
+
+                    <button
+                        disabled={currentPage === totalPages || totalPages === 0}
+                        onClick={() => setCurrentPage(currentPage + 1)}
+                    >
+                        Next
+                    </button>
+
                 </div>
                 {historyPhone && (
                     <div className='main_container_model'>
