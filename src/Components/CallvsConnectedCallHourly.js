@@ -16,22 +16,24 @@ import {
 import { BarChart3, LineChart as LineChartIcon, Download } from "lucide-react";
 import '../styles/Reports.css';
 
-const CallVsConnectedChartHourlyReport = () => {
+const CallVsConnectedChartHourlyReport = ({ data }) => {
 
-    const data = [
-        { time: "Before 10:00", totalCalls: 0, connectedCalls: 0 },
-        { time: "10:00 - 10:59", totalCalls: 0, connectedCalls: 0 },
-        { time: "11:00 - 11:59", totalCalls: 2, connectedCalls: 0 },
-        { time: "12:00 - 12:59", totalCalls: 0, connectedCalls: 0 },
-        { time: "13:00 - 13:59", totalCalls: 0, connectedCalls: 0 },
-        { time: "14:00 - 14:59", totalCalls: 20, connectedCalls: 10 },
-        { time: "15:00 - 15:59", totalCalls: 0, connectedCalls: 0 },
-        { time: "16:00 - 16:59", totalCalls: 0, connectedCalls: 0 },
-        { time: "17:00 - 17:59", totalCalls: 0, connectedCalls: 0 },
-        { time: "After 19:00", totalCalls: 0, connectedCalls: 0 },
-    ];
+    // const data = [
+    //     { time: "Before 10:00", totalCalls: 0, connectedCalls: 0 },
+    //     { time: "10:00 - 10:59", totalCalls: 0, connectedCalls: 0 },
+    //     { time: "11:00 - 11:59", totalCalls: 2, connectedCalls: 0 },
+    //     { time: "12:00 - 12:59", totalCalls: 0, connectedCalls: 0 },
+    //     { time: "13:00 - 13:59", totalCalls: 0, connectedCalls: 0 },
+    //     { time: "14:00 - 14:59", totalCalls: 20, connectedCalls: 10 },
+    //     { time: "15:00 - 15:59", totalCalls: 0, connectedCalls: 0 },
+    //     { time: "16:00 - 16:59", totalCalls: 0, connectedCalls: 0 },
+    //     { time: "17:00 - 17:59", totalCalls: 0, connectedCalls: 0 },
+    //     { time: "After 19:00", totalCalls: 0, connectedCalls: 0 },
+    // ];
 
     // const [isLineChart, setIsLineChart] = useState(true);
+    // console.log(data);
+
 
     const [isBarChart, setIsBarChart] = useState(true);
 
@@ -59,7 +61,7 @@ const CallVsConnectedChartHourlyReport = () => {
                     {isBarChart ? (
                         <BarChart data={data} margin={{ top: 10, right: 30, left: 0, bottom: 0 }}>
                             <CartesianGrid strokeDasharray="3 3" vertical={false} />
-                            <XAxis dataKey="time" />
+                            <XAxis dataKey="timeSlot" />
                             <YAxis>
                                 <Label
                                     value="Number of Calls"
@@ -109,7 +111,7 @@ const CallVsConnectedChartHourlyReport = () => {
                     ) : (
                         <LineChart data={data} margin={{ top: 10, right: 30, left: 0, bottom: 0 }}>
                             <CartesianGrid strokeDasharray="3 3" vertical={false} />
-                            <XAxis dataKey="time" />
+                            <XAxis dataKey="timeSlot" />
                             <YAxis>
                                 <Label
                                     value="Number of Calls"

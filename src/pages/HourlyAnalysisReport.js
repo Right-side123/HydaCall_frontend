@@ -9,9 +9,35 @@ import CallVsConnectedChartHourlyReport from '../Components/CallvsConnectedCallH
 
 const HourlyAnalysisReport = () => {
     const [departments, setDepartments] = useState([]);
+    const [numbers, setNumbers] = useState([]);
+    const [users, setUsers] = useState([]);
     const [startTime, setStartTime] = useState("00:00");
     const [endTime, setEndTime] = useState("23:59");
+    const [tableData, setTableData] = useState([]);
+    const [summaryData, setSummaryData] = useState([]);
 
+    const [clearDate, setClearDate] = useState(false);
+
+    const [filters, setFilters] = useState({
+        startDate: "",
+        endDate: "",
+        startTime: "",
+        endTime: "",
+        callType: "",
+        department: "",
+        simNumber: "",
+        userId: "",
+    });
+
+
+
+    const handleChange = (e) => {
+        setFilters({ ...filters, [e.target.name]: e.target.value });
+    };
+
+    const handleDateChange = (start, end) => {
+        setFilters({ ...filters, startDate: start, endDate: end });
+    };
 
     const fetchDepartments = async () => {
         try {
@@ -22,22 +48,140 @@ const HourlyAnalysisReport = () => {
         }
     }
 
+    const fetchUsers = async () => {
+        try {
+            const res = await api.get("/user");
+            setUsers(res.data);
+        } catch (err) {
+            console.error("Error fetching user:", err)
+        }
+    }
+
+    const fetchSimNumbers = async () => {
+        try {
+            const res = await api.get("/simnumber");
+            setNumbers(res.data);
+        } catch (err) {
+            console.error("Error fetching SIM Number:", err);
+        }
+    }
+
+
+
     useEffect(() => {
         fetchDepartments();
+        fetchSimNumbers();
+        fetchUsers();
     }, []);
 
+    // const fetchHourlyTablereport = async () => {
+    //     try {
+    //         const { startDate, endDate, department, simNumber, userId } = filters;
+
+    //         if (!startDate || !endDate) {
+    //             alert("Please select start and end date");
+    //             return;
+    //         }
+
+    //         const res = await api.get(`/hourlyreport?startDate=${startDate}&endDate=${endDate}&department=${department}&simNumber=${simNumber}&userId=${userId}`);
+
+    //         setTableData(res.data);
+    //         console.log("Report Data:", res.data);
+    //     } catch (err) {
+    //         console.error("Error fetching report:", err);
+    //         alert("Error fetching report");
+    //     }
+    // };
+
+
     // ***********************    manual data for employee summary table  ********************
-    const employeesummarydata = [
-        // {
-        //     phone: '9876543210',
-        //     totalCalls: 50,
-        //     connectedCalls: 45,
-        //     totalDuration: '2h 15m',
-        //     avgCalls: 10,
-        //     avgConnected: 9,
-        //     avgDuration: '27m',
-        // },
-    ]
+    // const employeesummarydata = [
+    // {
+    //     phone: '9876543210',
+    //     totalCalls: 50,
+    //     connectedCalls: 45,
+    //     totalDuration: '2h 15m',
+    //     avgCalls: 10,
+    //     avgConnected: 9,
+    //     avgDuration: '27m',
+    // },
+    // ]
+
+
+    const fetchHourlyTablereport = async () => {
+        try {
+            const { startDate, endDate, department, simNumber, userId } = filters;
+
+            if (!startDate || !endDate) {
+                alert("Please select start and end date");
+                return;
+            }
+
+            const res = await api.get(`/hourlyreport`, {
+                params: {
+                    startDate,
+                    endDate,
+                    startTime,
+                    endTime,
+                    department_id: department,
+                    callType: filters.callType,
+                    simNumber,
+                    userId
+                }
+            });
+
+            const formattedData = res.data.reduce((acc, item) => {
+                const hour = parseInt(item.hourSlot); // e.g. "07" or "18" → 7, 18
+
+                let slot = "";
+                if (hour < 10) slot = "Before 10:00";
+                else if (hour >= 19) slot = "After 19:00";
+                else slot = `${hour.toString().padStart(2, '0')}:00 - ${hour.toString().padStart(2, '0')}:59`;
+
+                if (!acc[slot]) {
+                    acc[slot] = { totalCalls: 0, connectedCalls: 0, duration: 0 };
+                }
+
+                acc[slot].totalCalls += item.totalCalls;
+                acc[slot].connectedCalls += item.connectedCalls;
+                acc[slot].duration += item.durationSec;
+
+                return acc;
+            }, {});
+
+
+            setTableData(formattedData);
+
+            // setTableData(res.data);
+            // console.log("Hourly Report Data:", formattedData);
+
+        } catch (err) {
+            console.error("Error fetching report:", err);
+            alert("Error fetching report");
+        }
+    };
+
+
+
+    const fetchEmployeeSummary = async () => {
+        try {
+            const { startDate, endDate, department, simNumber, userId, callType } = filters;
+
+            if (!startDate || !endDate) {
+                alert("Please select start and end date");
+                return;
+            }
+
+            const res = await api.get("/hourlyreport", {
+                params: { startDate, endDate, department_id: department, simNumber, userId, callType, startTime, endTime }
+            });
+
+            console.log("Employee Summary Data:", res.data);
+            setSummaryData(res.data);
+        } catch (err) {
+            console.error("Error fetching Employee Summary:", err);
+        }
+    };
 
 
     const timeSlots = [
@@ -54,17 +198,17 @@ const HourlyAnalysisReport = () => {
         "After 19:00",
     ];
 
-    const TimeSlotData = {
-        "10:00 - 10:59": { totalCalls: 0, connectedCalls: 0, duration: 0 },
-        "15:00 - 15:59": { totalCalls: 2, connectedCalls: 1, duration: 0 },
-        "16:00 - 16:59": { totalCalls: 0, connectedCalls: 0, duration: 0 },
-        "17:00 - 17:59": { totalCalls: 1, connectedCalls: 1, duration: 0 },
-    };
+    // const TimeSlotData = {
+    //     "10:00 - 10:59": { totalCalls: 0, connectedCalls: 0, duration: 0 },
+    //     "15:00 - 15:59": { totalCalls: 2, connectedCalls: 1, duration: 0 },
+    //     "16:00 - 16:59": { totalCalls: 0, connectedCalls: 0, duration: 0 },
+    //     "17:00 - 17:59": { totalCalls: 1, connectedCalls: 1, duration: 0 },
+    // };
 
 
-    const totalCallsSum = Object.values(TimeSlotData).reduce((sum, d) => sum + d.totalCalls, 0);
-    const totalConnectedSum = Object.values(TimeSlotData).reduce((sum, d) => sum + d.connectedCalls, 0);
-    const totalDurationSum = Object.values(TimeSlotData).reduce((sum, d) => sum + d.duration, 0);
+    const totalCallsSum = Object.values(tableData).reduce((sum, d) => sum + d.totalCalls, 0);
+    const totalConnectedSum = Object.values(tableData).reduce((sum, d) => sum + d.connectedCalls, 0);
+    const totalDurationSum = Object.values(tableData).reduce((sum, d) => sum + d.duration, 0);
 
     //  Format seconds → h m s
     const formatDuration = (seconds) => {
@@ -81,11 +225,13 @@ const HourlyAnalysisReport = () => {
     // }));
 
     const tableTimeSlotData = timeSlots.map((slot) => {
-        const { totalCalls, connectedCalls, duration } = TimeSlotData[slot] || {
+        const slotData = tableData[slot] || {
             totalCalls: 0,
             connectedCalls: 0,
             duration: 0,
         };
+
+        const { totalCalls, connectedCalls, duration } = slotData;
 
         return {
             timeSlot: slot,
@@ -99,10 +245,11 @@ const HourlyAnalysisReport = () => {
                 ? ((connectedCalls / totalConnectedSum) * 100).toFixed(1)
                 : 0,
             durationPercent: totalDurationSum
-                ? ((TimeSlotData[slot].duration / totalDurationSum) * 100).toFixed(1)
+                ? ((duration / totalDurationSum) * 100).toFixed(1)
                 : 0,
         };
     });
+
 
 
     const totalRow = {
@@ -121,6 +268,35 @@ const HourlyAnalysisReport = () => {
     };
 
 
+    const clearFilters = () => {
+        setFilters({
+            startDate: "",
+            endDate: "",
+            department: "",
+            simNumber: "",
+            userId: "",
+        });
+        setTableData({
+            total_calls: 0,
+            answered_calls: 0,
+            missed_calls: 0,
+            outbound_total_calls: 0,
+            outbound_answered_calls: 0,
+            busy_calls: 0,
+            noanswer_calls: 0,
+            notreachable_calls: 0,
+            outbound_call_duration: 0,
+        });
+        setClearDate(true);
+    };
+
+
+    const handlesubmit = () => {
+        fetchHourlyTablereport();
+        fetchEmployeeSummary();
+    }
+
+
     return (
         <div className='main-layout'>
             <Sidebar />
@@ -135,15 +311,15 @@ const HourlyAnalysisReport = () => {
                     <div className='call_summary_top_container_title'>
                         <h3>Filter</h3>
                         <div className='call_summary_top_container_btn'>
-                            <button className='call_summary_top_container_btn_clearall'>Clear All</button>
-                            <button className='call_summary_top_container_btn_apply'>Apply Filter</button>
+                            <button className='call_summary_top_container_btn_clearall' onClick={clearFilters}>Clear All</button>
+                            <button className='call_summary_top_container_btn_apply' onClick={handlesubmit}>Apply Filter</button>
                         </div>
                     </div>
                     <div className='call_summary_top_container_filter'>
                         <div className='call_summary_top_container_filter_content'>
                             <p>Date Range</p>
                             <div className='call_summary_top_container_filter_content_daterange'>
-                                <DateRange align='left'></DateRange>
+                                <DateRange align='left' onDateChange={handleDateChange} clearSignal={clearDate} />
                                 X
                             </div>
                         </div>
@@ -180,10 +356,9 @@ const HourlyAnalysisReport = () => {
                         <div className='call_summary_top_container_filter_content'>
                             <p>Department</p>
                             <select
-                                name="department_id"
-                                // value={department_id}
-                                // onChange={handleChange}
-                                required
+                                name="department"
+                                value={filters.department}
+                                onChange={handleChange}
                             >
                                 <option value=""></option>
                                 {departments.map((dept) => (
@@ -200,13 +375,12 @@ const HourlyAnalysisReport = () => {
                         <div className='call_summary_top_container_filter_content'>
                             <p>User</p>
                             <select
-                                name="department_id"
-                                // value={department_id}
-                                // onChange={handleChange}
-                                required
+                                name="userId"
+                                value={filters.userId}
+                                onChange={handleChange}
                             >
                                 <option value=""></option>
-                                {departments.map((dept) => (
+                                {users.map((dept) => (
                                     <option key={dept.id} value={dept.id}>
                                         {dept.name}
                                     </option>
@@ -216,16 +390,16 @@ const HourlyAnalysisReport = () => {
                         <div className='call_summary_top_container_filter_content'>
                             <p>SIM Number</p>
                             <select
-                                name="department_id"
-                                // value={department_id}
-                                // onChange={handleChange}
-                                required
+                                name="simNumber"
+                                value={filters.simNumber}
+                                onChange={handleChange}
                             >
                                 <option value=""></option>
-                                {departments.map((dept) => (
-                                    <option key={dept.id} value={dept.id}>
-                                        {dept.name}
+                                {numbers.map((num) => (
+                                    <option key={num.SIM_Number} value={num.SIM_Number}>
+                                        {num.SIM_Number} - {num.Name}
                                     </option>
+
                                 ))}
                             </select>
                         </div>
@@ -241,7 +415,7 @@ const HourlyAnalysisReport = () => {
                 {/* ********************    Chart *********************** */}
 
                 <div className='call_summary_bottom_container'>
-                    <CallVsConnectedChartHourlyReport />
+                    <CallVsConnectedChartHourlyReport data={tableTimeSlotData} />
                 </div>
 
                 <div className='call_summary_bottom_container'>
@@ -302,13 +476,24 @@ const HourlyAnalysisReport = () => {
                     <div className='call_summary_bottom_container_card_title'>
                         <h3>Employee Summary</h3>
                     </div>
-                    <div className='hourly_analysis_report_timeslot_container_table'>
+                    {/* <div className='hourly_analysis_report_timeslot_container_table'>
                         <table>
                             <thead className='hourly_analysis_report_timeslot_container_table_th'>
                                 <tr>
                                     <th rowSpan="2">Phone Number</th>
                                     <th colSpan="3">Total</th>
                                     <th colSpan="3">Daily Average</th>
+                                    <th>Before 10:00</th>
+                                    <th>10:00 - 10:59</th>
+                                    <th>11:00 - 11:59</th>
+                                    <th>12:00 - 12:59</th>
+                                    <th>13:00 - 13:59</th>
+                                    <th>14:00 - 14:59</th>
+                                    <th>15:00 - 15:59</th>
+                                    <th>16:00 - 16:59</th>
+                                    <th>17:00 - 17:59</th>
+                                    <th>18:00 - 18:59</th>
+                                    <th>After 19:00</th>
                                 </tr>
                                 <tr>
                                     <th>Total Calls</th>
@@ -317,6 +502,27 @@ const HourlyAnalysisReport = () => {
                                     <th>Avg Calls</th>
                                     <th>Avg Connected Calls</th>
                                     <th>Avg Duration</th>
+                                    <th>Total Calls</th>
+                                    <th>Total Connected Calls</th>
+                                    <th>Total Duration</th>
+                                    <th>Avg Calls</th>
+                                    <th>Avg Connected Calls</th>
+                                    <th>Avg Duration</th>
+                                    <th>No Of Days With No Calls In Time Slot</th>
+                                    <th>Total Calls</th>
+                                    <th>Total Connected Calls</th>
+                                    <th>Total Duration</th>
+                                    <th>Avg Calls</th>
+                                    <th>Avg Connected Calls</th>
+                                    <th>Avg Duration</th>
+                                    <th>No Of Days With No Calls In Time Slot</th>
+                                    <th>Total Calls</th>
+                                    <th>Total Connected Calls</th>
+                                    <th>Total Duration</th>
+                                    <th>Avg Calls</th>
+                                    <th>Avg Connected Calls</th>
+                                    <th>Avg Duration</th>
+                                    <th>No Of Days With No Calls In Time Slot</th>  
                                 </tr>
                             </thead>
                             <tbody>
@@ -339,6 +545,111 @@ const HourlyAnalysisReport = () => {
                                         </td>
                                     </tr>
                                 )}
+                            </tbody>
+                        </table>
+                    </div> */}
+                    <div
+                        className='hourly_analysis_report_timeslot_container_table'
+                        style={{
+                            overflowX: "auto",
+                            whiteSpace: "nowrap",
+                            maxWidth: "100%",
+                            border: "1px solid #ddd",
+                        }}
+                    >
+                        <table>
+                            <thead>
+                                <tr style={{
+                                    fontSize: "14px",
+                                    fontWeight: "400",
+                                    color: "#696868",
+                                    backgroundColor: "#f4f8fc"
+                                }}>
+                                    <th rowSpan="2" style={{ padding: "8px", border: "1px solid #ccc" }}>Phone Number</th>
+                                    <th colSpan="3">Total</th>
+                                    <th colSpan="3">Daily Average</th>
+                                    <th colSpan="7">Before 10:00</th>
+                                    <th colSpan="7">10:00 - 10:59</th>
+                                    <th colSpan="7">11:00 - 11:59</th>
+                                    <th colSpan="7">12:00 - 12:59</th>
+                                    <th colSpan="7">13:00 - 13:59</th>
+                                    <th colSpan="7">14:00 - 14:59</th>
+                                    <th colSpan="7">15:00 - 15:59</th>
+                                    <th colSpan="7">16:00 - 16:59</th>
+                                    <th colSpan="7">17:00 - 17:59</th>
+                                    <th colSpan="7">18:00 - 18:59</th>
+                                    <th colSpan="7">After 19:00</th>
+                                </tr>
+                                <tr style={{
+                                    fontSize: "14px",
+                                    fontWeight: "400",
+                                    color: "#696868",
+                                    backgroundColor: "#f4f8fc"
+                                }}>
+                                    <th>Total Calls</th>
+                                    <th>Total Connected Calls</th>
+                                    <th>Total Duration</th>
+                                    <th>Avg Calls</th>
+                                    <th>Avg Connected Calls</th>
+                                    <th>Avg Duration</th>
+                                    {Array.from({ length: 11 }).map((_, i) => (
+                                        <React.Fragment key={i}>
+                                            <th>Total Calls</th>
+                                            <th>Total Connected Calls</th>
+                                            <th>Total Duration</th>
+                                            <th>Avg Calls</th>
+                                            <th>Avg Connected Calls</th>
+                                            <th>Avg Duration</th>
+                                            <th>No Of Days With No Calls In Time Slot</th>
+                                        </React.Fragment>
+                                    ))}
+                                </tr>
+                            </thead>
+
+                            <tbody>
+                                {summaryData.length > 0 ? (
+                                    summaryData.map((item, index) => (
+                                        <tr key={index}>
+                                            <td>{item.phone}</td>
+                                            <td>{item.totalCalls}</td>
+                                            <td>{item.connectedCalls}</td>
+                                            <td>{item.totalDuration}</td>
+                                            <td>{(item.totalCalls / timeSlots.length).toFixed(0)}</td>
+                                            <td>{(item.connectedCalls / timeSlots.length).toFixed(0)}</td>
+                                            <td>{item.totalDuration}</td>
+
+                                            {/* Before 10:00 */}
+                                            <td>{item.before10.totalCalls}</td>
+                                            <td>{item.before10.connected}</td>
+                                            <td>{item.before10.duration}</td>
+                                            <td>—</td><td>—</td><td>—</td><td>—</td>
+
+                                            {/* Hourly slots */}
+                                            {timeSlots.map((slot, i) => {
+                                                const hourData = item.hourlySlots.find(h => h.hourSlot === slot) || {};
+                                                return (
+                                                    <React.Fragment key={i}>
+                                                        <td>{hourData.totalCalls || 0}</td>
+                                                        <td>{hourData.connected || 0}</td>
+                                                        <td>{hourData.duration || "0h 0m 0s"}</td>
+                                                        <td>—</td><td>—</td><td>—</td><td>—</td>
+                                                    </React.Fragment>
+                                                );
+                                            })}
+
+                                            {/* After 19:00 */}
+                                            <td>{item.after19.totalCalls}</td>
+                                            <td>{item.after19.connected}</td>
+                                            <td>{item.after19.duration}</td>
+                                            <td>—</td><td>—</td><td>—</td><td>—</td>
+                                        </tr>
+                                    ))
+                                ) : (
+                                    <tr>
+                                        <td colSpan="85" style={{ textAlign: 'left', padding: '10px' }}>No records found !!</td>
+                                    </tr>
+                                )}
+
                             </tbody>
                         </table>
                     </div>

@@ -10,7 +10,7 @@ import 'react-date-range/dist/theme/default.css';
 
 import calenderIcon from '../assets/calendar.png';
 
-const DateRangeFilter = ({ align = "left" }) => {
+const DateRangeFilter = ({ align = "left", onDateChange }) => {
     const [state, setState] = useState([
         {
             startDate: new Date(),
@@ -20,7 +20,6 @@ const DateRangeFilter = ({ align = "left" }) => {
     ]);
     const [showPicker, setShowPicker] = useState(false);
     const [position, setPosition] = useState({ top: 0, left: 0 });
-
     const buttonRef = useRef(null);
 
     const predefinedRanges = [
@@ -46,8 +45,7 @@ const DateRangeFilter = ({ align = "left" }) => {
 
             if (align === "right") {
                 leftPos = rect.right + window.scrollX - 400;
-            }
-            else if (align === "left") {
+            } else if (align === "left") {
                 leftPos = rect.right + window.scrollX - 225;
             }
 
@@ -57,6 +55,15 @@ const DateRangeFilter = ({ align = "left" }) => {
             });
         }
         setShowPicker(!showPicker);
+    };
+
+    const handleDateChange = (item) => {
+        setState([item.selection]);
+        if (onDateChange) {
+            const start = format(item.selection.startDate, 'yyyy-MM-dd');
+            const end = format(item.selection.endDate, 'yyyy-MM-dd');
+            onDateChange(start, end); 
+        }
     };
 
     return (
@@ -78,7 +85,7 @@ const DateRangeFilter = ({ align = "left" }) => {
                         }}
                     >
                         <DateRangePicker
-                            onChange={item => setState([item.selection])}
+                            onChange={handleDateChange}  
                             showSelectionPreview={true}
                             moveRangeOnFirstSelection={false}
                             months={1}

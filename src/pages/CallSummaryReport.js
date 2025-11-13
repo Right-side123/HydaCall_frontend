@@ -1,21 +1,67 @@
 import React, { useState, useEffect } from 'react';
 import '../styles/Reports.css';
 import Layout from '../Components/Layout';
-// import reportCallIcon from '../assets/reportcall.png';
-// import analysisIcon from '../assets/reportsicon.png';
-// import hourlyIcon from '../assets/hourrport.png';
-// import dayAnalysisIcon from '../assets/dayreport.png';
-// import nevericon from '../assets/neverattend.png';
-// import notPickupIcon from '../assets/reportclient.png';
 import Sidebar from '../Components/Sidebar';
 import DateRange from '../Components/DateRange';
 import api from '../Components/Api';
 import downloadicon from '../assets/downloadicon.png';
-// import { tr } from 'date-fns/locale';
+import * as XLSX from "xlsx";
+import { saveAs } from "file-saver";
+
 
 const CallSummaryReport = () => {
     const [departments, setDepartments] = useState([]);
     const [users, setUsers] = useState([]);
+    const [numbers, setNumbers] = useState([]);
+    const [clearDate, setClearDate] = useState(false);
+
+    const [filters, setFilters] = useState({
+        startDate: "",
+        endDate: "",
+        department: "",
+        simNumber: "",
+        userId: "",
+    });
+
+    const [reportData, setReportData] = useState({
+        total_calls: 0,
+        answered_calls: 0,
+        missed_calls: 0,
+        call_duration: "0h 0m 0s",
+        outbound_total_calls: 0,
+        outbound_answered_calls: 0,
+        busy_calls: 0,
+        noanswer_calls: 0,
+        notreachable_calls: 0,
+        outbound_call_duration: "0h 0m 0s",
+        never_attended: 0,
+        connected_calls: 0,
+        unique_clients: 0
+    });
+
+    const [numberWiseReportData, setNumberWiseReportdata] = useState([]);
+
+    console.log(numberWiseReportData);
+
+
+
+    // const [reportData, setReportData] = useState({
+    //     inbound: {
+    //         total_calls: 0,
+    //         answered_calls: 0,
+    //         missed_calls: 0,
+    //         call_duration: "0h 0m 0s",
+    //     },
+    //     outbound: {
+    //         total_calls: 0,
+    //         answered_calls: 0,
+    //         busy_calls: 0,
+    //         noanswer_calls: 0,
+    //         notreachable_calls: 0,
+    //         call_duration: "0h 0m 0s",
+    //     }
+    // });
+
 
     const fetchDepartments = async () => {
         try {
@@ -35,16 +81,134 @@ const CallSummaryReport = () => {
         }
     }
 
+    const fetchSimNumbers = async () => {
+        try {
+            const res = await api.get("/simnumber");
+            setNumbers(res.data);
+        } catch (err) {
+            console.error("Error fetching SIM Number:", err);
+        }
+    }
+
     useEffect(() => {
         fetchDepartments();
         fetchUsers();
+        fetchSimNumbers();
     }, []);
+
+
+    const handleChange = (e) => {
+        setFilters({ ...filters, [e.target.name]: e.target.value });
+    };
+
+    const handleDateChange = (start, end) => {
+        setFilters({ ...filters, startDate: start, endDate: end });
+    };
+
+    // ---------------- Fetch Report API ----------------
+    const fetchReport = async () => {
+        try {
+            const { startDate, endDate, department, simNumber, userId } = filters;
+
+            if (!startDate || !endDate) {
+                alert("Please select start and end date");
+                return;
+            }
+
+            const res = await api.get(`/report?startDate=${startDate}&endDate=${endDate}&department=${department}&simNumber=${simNumber}&userId=${userId}`);
+
+            setReportData(res.data);
+            console.log("Report Data:", res.data);
+        } catch (err) {
+            console.error("Error fetching report:", err);
+            alert("Error fetching report");
+        }
+    };
+
+
+    // **************************************     Number Wise report data Fetch  ************----------------
+
+    const fetchNumberWiseReport = async () => {
+        try {
+            const { startDate, endDate, department, simNumber, userId } = filters;
+
+            if (!startDate || !endDate) {
+                alert("Please select start and end date");
+                return;
+            }
+
+            const res = await api.get(`/callsummeryreport?startDate=${startDate}&endDate=${endDate}&department=${department}&simNumber=${simNumber}&userId=${userId}`);
+
+            setNumberWiseReportdata(res.data);
+            console.log("Report Data:", res.data);
+        } catch (err) {
+            console.error("Error fetching report:", err);
+            alert("Error fetching report");
+        }
+    };
+
+    const handlesubmit = () => {
+        fetchReport();
+        fetchNumberWiseReport();
+    }
+
+    // ---------------- Clear All Filters ----------------
+    const clearFilters = () => {
+        setFilters({
+            startDate: "",
+            endDate: "",
+            department: "",
+            simNumber: "",
+            userId: "",
+        });
+        setReportData({
+            total_calls: 0,
+            answered_calls: 0,
+            missed_calls: 0,
+            outbound_total_calls: 0,
+            outbound_answered_calls: 0,
+            busy_calls: 0,
+            noanswer_calls: 0,
+            notreachable_calls: 0,
+            outbound_call_duration: 0,
+        });
+        setClearDate(true);
+    };
+
+    const downloadExcel = (data) => {
+        const worksheet = XLSX.utils.json_to_sheet(data);
+        const workbook = XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(workbook, worksheet, "Call Summary");
+        const excelBuffer = XLSX.write(workbook, { bookType: "xlsx", type: "array" });
+        const blob = new Blob([excelBuffer], { type: "application/octet-stream" });
+        saveAs(blob, `CallSummary_${new Date().toISOString().split("T")[0]}.xlsx`);
+    };
+
+    // Convert "11h 34m 0s" -> seconds
+    const timeToSeconds = (time) => {
+        if (!time) return 0;
+        const hMatch = time.match(/(\d+)h/);
+        const mMatch = time.match(/(\d+)m/);
+        const sMatch = time.match(/(\d+)s/);
+        const hours = hMatch ? parseInt(hMatch[1]) : 0;
+        const minutes = mMatch ? parseInt(mMatch[1]) : 0;
+        const seconds = sMatch ? parseInt(sMatch[1]) : 0;
+        return hours * 3600 + minutes * 60 + seconds;
+    };
+
+    // Convert seconds -> "Xh Ym Zs"
+    const formatSeconds = (seconds) => {
+        const h = Math.floor(seconds / 3600);
+        const m = Math.floor((seconds % 3600) / 60);
+        const s = Math.floor(seconds % 60);
+        return `${h}h ${m}m ${s}s`;
+    };
+
 
 
     return (
         <div className='main-layout'>
             <Sidebar />
-
             <div className='page-content'>
                 <div className="department_titel_container">
                     <h1 className='department_title'>CALL SUMMARY REPORT</h1>
@@ -54,25 +218,24 @@ const CallSummaryReport = () => {
                     <div className='call_summary_top_container_title'>
                         <h3>Filter</h3>
                         <div className='call_summary_top_container_btn'>
-                            <button className='call_summary_top_container_btn_clearall'>Clear All</button>
-                            <button className='call_summary_top_container_btn_apply'>Apply Filter</button>
+                            <button className='call_summary_top_container_btn_clearall' onClick={clearFilters}>Clear All</button>
+                            <button className='call_summary_top_container_btn_apply' onClick={handlesubmit}>Apply Filter</button>
                         </div>
                     </div>
                     <div className='call_summary_top_container_filter'>
                         <div className='call_summary_top_container_filter_content'>
                             <p>Date Range</p>
                             <div className='call_summary_top_container_filter_content_daterange'>
-                                <DateRange align='left'></DateRange>
+                                <DateRange align='left' onDateChange={handleDateChange} clearSignal={clearDate} />
                                 X
                             </div>
                         </div>
                         <div className='call_summary_top_container_filter_content'>
                             <p>Department</p>
                             <select
-                                name="department_id"
-                                // value={department_id}
-                                // onChange={handleChange}
-                                required
+                                name="department"
+                                value={filters.department}
+                                onChange={handleChange}
                             >
                                 <option value=""></option>
                                 {departments.map((dept) => (
@@ -85,10 +248,9 @@ const CallSummaryReport = () => {
                         <div className='call_summary_top_container_filter_content'>
                             <p>User</p>
                             <select
-                                name="user_id"
-                                // value={department_id}
-                                // onChange={handleChange}
-                                required
+                                name="userId"
+                                value={filters.userId}
+                                onChange={handleChange}
                             >
                                 <option value=""></option>
                                 {users.map((user) => (
@@ -101,16 +263,16 @@ const CallSummaryReport = () => {
                         <div className='call_summary_top_container_filter_content'>
                             <p>SIM Number</p>
                             <select
-                                name="department_id"
-                                // value={department_id}
-                                // onChange={handleChange}
-                                required
+                                name="simNumber"
+                                value={filters.simNumber}
+                                onChange={handleChange}
                             >
                                 <option value=""></option>
-                                {departments.map((dept) => (
-                                    <option key={dept.id} value={dept.id}>
-                                        {dept.name}
+                                {numbers.map((num) => (
+                                    <option key={num.SIM_Number} value={num.SIM_Number}>
+                                        {num.SIM_Number} - {num.Name}
                                     </option>
+
                                 ))}
                             </select>
                         </div>
@@ -141,19 +303,19 @@ const CallSummaryReport = () => {
                                 <tbody>
                                     <tr>
                                         <td>Answered</td>
-                                        <td>0</td>
-                                        <td>0h 0m 0s</td>
+                                        <td>{reportData.answered_calls}</td>
+                                        <td>{reportData.call_duration}</td>
                                     </tr>
                                     <tr>
                                         <td>Missed</td>
-                                        <td>1</td>
+                                        <td>{reportData.missed_calls}</td>
                                         <td>-</td>
                                     </tr>
 
                                     <tr className='call_summary_middel_container_card_table_total_row'>
                                         <td>Total</td>
-                                        <td>1</td>
-                                        <td>0h 0m 0s</td>
+                                        <td>{reportData.total_calls}</td>
+                                        <td>{reportData.call_duration}</td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -175,29 +337,29 @@ const CallSummaryReport = () => {
                                 <tbody>
                                     <tr>
                                         <td>Answered</td>
-                                        <td>0</td>
-                                        <td>0h 0m 0s</td>
+                                        <td>{reportData.outbound_answered_calls}</td>
+                                        <td>{reportData.outbound_call_duration}</td>
                                     </tr>
                                     <tr>
                                         <td>Busy</td>
-                                        <td>0</td>
+                                        <td>{reportData.busy_calls}</td>
                                         <td>-</td>
                                     </tr>
                                     <tr>
                                         <td>No Answered</td>
-                                        <td>0</td>
+                                        <td>{reportData.noanswer_calls}</td>
                                         <td>-</td>
                                     </tr>
                                     <tr>
                                         <td>Not Reachable</td>
-                                        <td>0</td>
+                                        <td>{reportData.notreachable_calls}</td>
                                         <td>-</td>
                                     </tr>
 
                                     <tr className='call_summary_middel_container_card_table_total_row'>
                                         <td>Total</td>
-                                        <td>1</td>
-                                        <td>0h 0m 0s</td>
+                                        <td>{reportData.outbound_total_calls}</td>
+                                        <td>{reportData.outbound_call_duration}</td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -212,19 +374,19 @@ const CallSummaryReport = () => {
                                 <div>
                                     <p>Never Attended</p>
                                 </div>
-                                <p className='call_summary_middel_container_card_callinsight_content_neverAttend_count'>1</p>
+                                <p className='call_summary_middel_container_card_callinsight_content_neverAttend_count'>{reportData.never_attended}</p>
                             </div>
                             <div className='call_summary_middel_container_card_callinsight_content_connected_call'>
                                 <div>
                                     <p>Connected Calls</p>
                                 </div>
-                                <p className='call_summary_middel_container_card_callinsight_content_neverAttend_count'>0</p>
+                                <p className='call_summary_middel_container_card_callinsight_content_neverAttend_count'>{reportData.connected_calls}</p>
                             </div>
                             <div className='call_summary_middel_container_card_callinsight_content_connected_call'>
                                 <div>
                                     <p>Unique Clients</p>
                                 </div>
-                                <p className='call_summary_middel_container_card_callinsight_content_neverAttend_count'>1</p>
+                                <p className='call_summary_middel_container_card_callinsight_content_neverAttend_count'>{reportData.unique_clients}</p>
                             </div>
 
                         </div>
@@ -238,8 +400,8 @@ const CallSummaryReport = () => {
                             <h3>Employee Summary</h3>
                         </div>
                         <div className='call_summary_bottom_container_card_downloadbtn_container'>
-                            <p>Total Records : 4</p>
-                            <button> <img src={downloadicon} alt='department' className='dept_icon' />Download Excel</button>
+                            <p>Total Records: {numberWiseReportData.length}</p>
+                            <button onClick={() => downloadExcel(numberWiseReportData)}> <img src={downloadicon} alt='department' className='dept_icon' />Download Excel</button>
                         </div>
 
                     </div>
@@ -274,7 +436,60 @@ const CallSummaryReport = () => {
                                     <th>Conn. Calls Avg. Duration</th>
                                 </tr>
                             </thead>
+
                             <tbody>
+                                {numberWiseReportData.map((data, index) => (
+                                    <tr key={index}>
+                                        <td>{index + 1}</td>
+                                        <td>{data.SIM_Number}</td>
+                                        <td>{data.total_calls}</td>
+                                        <td>{data.call_duration}</td>
+                                        <td>{data.connected_calls}</td>
+                                        <td>{data.connected_call_duration}</td>
+                                        <td>
+                                            {(() => {
+                                                const connectedSec = timeToSeconds(data.connected_call_duration);
+                                                const avgSec = data.connected_calls ? connectedSec / data.connected_calls : 0;
+                                                return formatSeconds(avgSec);
+                                            })()}
+                                        </td>
+                                        <td>{data.unique_clients}</td>
+
+                                        {/* Inbound */}
+                                        <td style={{ backgroundColor: '#e4eef8ff' }}>{data.inbound_total_calls}</td>
+                                        <td style={{ backgroundColor: '#e4eef8ff' }}>{data.inbound_call_duration}</td>
+                                        <td style={{ backgroundColor: '#e4eef8ff' }}>{data.inbound_connected_calls}</td>
+                                        <td style={{ backgroundColor: '#e4eef8ff' }}>{data.inbound_connected_call_duration}</td>
+                                        <td style={{ backgroundColor: '#e4eef8ff' }}>
+                                            {(() => {
+                                                const connectedSec = timeToSeconds(data.inbound_connected_call_duration);
+                                                const avgSec = data.inbound_connected_calls ? connectedSec / data.inbound_connected_calls : 0;
+                                                return formatSeconds(avgSec);
+                                            })()}
+                                        </td>
+
+                                        {/* Outbound */}
+                                        <td style={{ backgroundColor: '#e4e3e1ff' }}>{data.outbound_total_calls}</td>
+                                        <td style={{ backgroundColor: '#e4e3e1ff' }}>{data.outbound_call_duration}</td>
+                                        <td style={{ backgroundColor: '#e4e3e1ff' }}>{data.outbound_connected_calls}</td>
+                                        <td style={{ backgroundColor: '#e4e3e1ff' }}>{data.outbound_connected_call_duration}</td>
+                                        <td style={{ backgroundColor: '#e4e3e1ff' }}>
+                                            {(() => {
+                                                const connectedSec = timeToSeconds(data.outbound_connected_call_duration);
+                                                const avgSec = data.outbound_connected_calls ? connectedSec / data.outbound_connected_calls : 0;
+                                                return formatSeconds(avgSec);
+                                            })()}
+                                        </td>
+
+                                        <td>{data.missed_calls}</td>
+                                        <td>{data.never_attended}</td>
+
+                                    </tr>
+                                ))}
+                            </tbody>
+
+
+                            {/* <tbody>
                                 <tr>
                                     <td>1</td>
                                     <td>9876543210</td>
@@ -407,7 +622,7 @@ const CallSummaryReport = () => {
                                     <td>3</td>
                                     <td>2</td>
                                 </tr>
-                            </tbody>
+                            </tbody> */}
                         </table>
                     </div>
 

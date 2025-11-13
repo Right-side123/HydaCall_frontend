@@ -608,7 +608,7 @@
 .day_wise_container_table {
     width: 100%;
     height: auto;
-       overflow: auto;
+    overflow: auto;
     border: 1px solid #ccc;
     margin-top: 10px;
 }
@@ -618,7 +618,7 @@
     border-collapse: collapse;
     min-width: 1200px;
     width: 100%;
- 
+
 
 }
 
