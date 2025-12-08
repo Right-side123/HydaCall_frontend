@@ -1,0 +1,19 @@
+0 verbose cli D:\Program Files\nodejs\node.exe D:\Program Files\nodejs\node_modules\npm\bin\npm-cli.js
+1 info using npm@10.9.2
+2 info using node@v22.14.0
+3 silly config load:file:D:\Program Files\nodejs\node_modules\npm\npmrc
+4 silly config load:file:D:\HydaCallProject\frontend\.npmrc
+5 silly config load:file:C:\Users\RightSide\.npmrc
+6 silly config load:file:C:\Users\RightSide\AppData\Roaming\npm\etc\npmrc
+7 verbose title npm start
+8 verbose argv "start"
+9 verbose logfile logs-max:10 dir:D:\npm-cache\_logs\2025-11-13T06_54_29_783Z-
+10 verbose logfile D:\npm-cache\_logs\2025-11-13T06_54_29_783Z-debug-0.log
+11 silly logfile start cleaning logs, removing 2 files
+12 silly logfile done cleaning log files
+13 verbose cwd D:\HydaCallProject\frontend
+14 verbose os Windows_NT 10.0.22631
+15 verbose node v22.14.0
+16 verbose npm  v10.9.2
+17 verbose exit 3221226505
+18 verbose code 3221226505

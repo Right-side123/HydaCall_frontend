@@ -172,7 +172,7 @@ const HourlyAnalysisReport = () => {
                 return;
             }
 
-            const res = await api.get("/hourlyreport", {
+            const res = await api.get("/hourlyreportsimnumber", {
                 params: { startDate, endDate, department_id: department, simNumber, userId, callType, startTime, endTime }
             });
 
@@ -182,7 +182,6 @@ const HourlyAnalysisReport = () => {
             console.error("Error fetching Employee Summary:", err);
         }
     };
-
 
     const timeSlots = [
         "Before 10:00",
@@ -197,6 +196,19 @@ const HourlyAnalysisReport = () => {
         "18:00 - 18:59",
         "After 19:00",
     ];
+
+    const timeSlotsSummery = [
+        "10:00 - 10:59",
+        "11:00 - 11:59",
+        "12:00 - 12:59",
+        "13:00 - 13:59",
+        "14:00 - 14:59",
+        "15:00 - 15:59",
+        "16:00 - 16:59",
+        "17:00 - 17:59",
+        "18:00 - 18:59"
+    ];
+
 
     // const TimeSlotData = {
     //     "10:00 - 10:59": { totalCalls: 0, connectedCalls: 0, duration: 0 },
@@ -294,6 +306,15 @@ const HourlyAnalysisReport = () => {
     const handlesubmit = () => {
         fetchHourlyTablereport();
         fetchEmployeeSummary();
+    }
+
+
+    function durationToSeconds(duration) {
+        if (!duration) return 0;
+        const h = (duration.match(/(\d+)h/)?.[1] || 0) * 3600;
+        const m = (duration.match(/(\d+)m/)?.[1] || 0) * 60;
+        const s = (duration.match(/(\d+)s/)?.[1] || 0) * 1;
+        return h + m + s;
     }
 
 
@@ -607,50 +628,68 @@ const HourlyAnalysisReport = () => {
                             </thead>
 
                             <tbody>
-                                {summaryData.length > 0 ? (
+                                {summaryData?.length > 0 ? (
                                     summaryData.map((item, index) => (
                                         <tr key={index}>
-                                            <td>{item.phone}</td>
-                                            <td>{item.totalCalls}</td>
-                                            <td>{item.connectedCalls}</td>
-                                            <td>{item.totalDuration}</td>
-                                            <td>{(item.totalCalls / timeSlots.length).toFixed(0)}</td>
-                                            <td>{(item.connectedCalls / timeSlots.length).toFixed(0)}</td>
-                                            <td>{item.totalDuration}</td>
+                                            <td>{item?.phone || "--"}</td>
+                                            <td>{item?.totalCalls || 0}</td>
+                                            <td>{item?.connectedCalls || 0}</td>
+                                            <td>{item?.totalDuration || "0h 0m 0s"}</td>
+                                            <td>{((item?.totalCalls || 0) / timeSlotsSummery.length).toFixed(0)}</td>
+                                            <td>{((item?.connectedCalls || 0) / timeSlotsSummery.length).toFixed(0)}</td>
+                                            <td>{formatDuration(Math.floor(durationToSeconds(item?.totalDuration) / timeSlotsSummery.length))}</td>
 
                                             {/* Before 10:00 */}
-                                            <td>{item.before10.totalCalls}</td>
-                                            <td>{item.before10.connected}</td>
-                                            <td>{item.before10.duration}</td>
-                                            <td>—</td><td>—</td><td>—</td><td>—</td>
+                                            <td>{item?.before10?.totalCalls || 0}</td>
+                                            <td>{item?.before10?.connected || 0}</td>
+                                            <td>{item?.before10?.duration || "0h 0m 0s"}</td>
+                                            <td>{((item?.before10?.totalCalls || 0) / timeSlotsSummery.length).toFixed(0)}</td>
+                                            <td>{((item?.before10?.connectedCalls || 0) / timeSlotsSummery.length).toFixed(0)}</td>
+                                            <td>{formatDuration(Math.floor(durationToSeconds(item?.before10?.duration) / timeSlotsSummery.length))}</td>
+                                            <td>{item?.before10?.noCallDays || 0}</td>
 
                                             {/* Hourly slots */}
-                                            {timeSlots.map((slot, i) => {
-                                                const hourData = item.hourlySlots.find(h => h.hourSlot === slot) || {};
+                                            {timeSlotsSummery.map((slot, i) => {
+                                                const clean = (s) =>
+                                                    s?.toString().replace(/\s+/g, "").replace(/–/g, "-").trim().toLowerCase();
+
+                                                const hourData = item?.hourlySlots?.find(
+                                                    (h) => clean(h?.hourSlot) === clean(slot)
+                                                ) || {};
+
+
                                                 return (
                                                     <React.Fragment key={i}>
-                                                        <td>{hourData.totalCalls || 0}</td>
-                                                        <td>{hourData.connected || 0}</td>
-                                                        <td>{hourData.duration || "0h 0m 0s"}</td>
-                                                        <td>—</td><td>—</td><td>—</td><td>—</td>
+                                                        <td>{hourData?.totalCalls || 0}</td>
+                                                        <td>{hourData?.connected || 0}</td>
+                                                        <td>{hourData?.duration || "0h 0m 0s"}</td>
+                                                        <td>{((hourData?.totalCalls || 0) / timeSlotsSummery.length).toFixed(0)}</td>
+                                                        <td>{((hourData?.connected || 0) / timeSlotsSummery.length).toFixed(0)}</td>
+                                                        <td>{formatDuration(Math.floor(durationToSeconds(hourData?.duration) / timeSlotsSummery.length))}</td>
+                                                        <td>{hourData?.noCallDays || 0}</td>
                                                     </React.Fragment>
                                                 );
                                             })}
 
                                             {/* After 19:00 */}
-                                            <td>{item.after19.totalCalls}</td>
-                                            <td>{item.after19.connected}</td>
-                                            <td>{item.after19.duration}</td>
-                                            <td>—</td><td>—</td><td>—</td><td>—</td>
+                                            <td>{item?.after19?.totalCalls || 0}</td>
+                                            <td>{item?.after19?.connected || 0}</td>
+                                            <td>{item?.after19?.duration || "0h 0m 0s"}</td>
+                                            <td>{((item?.after19?.totalCalls || 0) / timeSlotsSummery.length).toFixed(0)}</td>
+                                            <td>{((item?.after19?.connectedCalls || 0) / timeSlotsSummery.length).toFixed(0)}</td>
+                                            <td>{formatDuration(Math.floor(durationToSeconds(item?.after19?.duration) / timeSlotsSummery.length))}</td>
+                                            <td>{item?.after19?.noCallDays || 0}</td>
                                         </tr>
                                     ))
                                 ) : (
                                     <tr>
-                                        <td colSpan="85" style={{ textAlign: 'left', padding: '10px' }}>No records found !!</td>
+                                        <td colSpan="85" style={{ textAlign: "left", padding: "10px" }}>
+                                            No records found !!
+                                        </td>
                                     </tr>
                                 )}
-
                             </tbody>
+
                         </table>
                     </div>
 

@@ -1,0 +1,24 @@
+'Log files:
+D:\npm-cache\_logs\2025-10-29T08_21_13_085Z-debug-0.log
+
+# npm resolution error report
+
+While resolving: react-date-range@2.0.1
+Found: date-fns@2.29.3
+node_modules/date-fns
+  date-fns@"^2.29.3" from the root project
+
+Could not resolve dependency:
+peer date-fns@"3.0.6 || >=3.0.0" from react-date-range@2.0.1
+node_modules/react-date-range
+  react-date-range@"^2.0.1" from the root project
+
+Conflicting peer dependency: date-fns@4.1.0
+node_modules/date-fns
+  peer date-fns@"3.0.6 || >=3.0.0" from react-date-range@2.0.1
+  node_modules/react-date-range
+    react-date-range@"^2.0.1" from the root project
+
+Fix the upstream dependency conflict, or retry
+this command with --force or --legacy-peer-deps
+to accept an incorrect (and potentially broken) dependency resolution.
