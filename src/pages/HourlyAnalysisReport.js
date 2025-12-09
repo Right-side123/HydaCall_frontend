@@ -131,7 +131,7 @@ const HourlyAnalysisReport = () => {
             });
 
             const formattedData = res.data.reduce((acc, item) => {
-                const hour = parseInt(item.hourSlot); // e.g. "07" or "18" → 7, 18
+                const hour = parseInt(item.hourSlot);
 
                 let slot = "";
                 if (hour < 10) slot = "Before 10:00";
@@ -209,15 +209,6 @@ const HourlyAnalysisReport = () => {
         "18:00 - 18:59"
     ];
 
-
-    // const TimeSlotData = {
-    //     "10:00 - 10:59": { totalCalls: 0, connectedCalls: 0, duration: 0 },
-    //     "15:00 - 15:59": { totalCalls: 2, connectedCalls: 1, duration: 0 },
-    //     "16:00 - 16:59": { totalCalls: 0, connectedCalls: 0, duration: 0 },
-    //     "17:00 - 17:59": { totalCalls: 1, connectedCalls: 1, duration: 0 },
-    // };
-
-
     const totalCallsSum = Object.values(tableData).reduce((sum, d) => sum + d.totalCalls, 0);
     const totalConnectedSum = Object.values(tableData).reduce((sum, d) => sum + d.connectedCalls, 0);
     const totalDurationSum = Object.values(tableData).reduce((sum, d) => sum + d.duration, 0);
@@ -284,9 +275,12 @@ const HourlyAnalysisReport = () => {
         setFilters({
             startDate: "",
             endDate: "",
+            startTime: "",
+            endTime: "",
+            callType: "",
             department: "",
-            simNumber: "",
             userId: "",
+            simNumber: ""
         });
         setTableData({
             total_calls: 0,
@@ -367,8 +361,12 @@ const HourlyAnalysisReport = () => {
                         <div className='call_summary_top_container_filter_content'>
                             <p>Call Type</p>
 
-                            <select className='analysis_report_type_select'>
+                            <select className='analysis_report_type_select'
+                                name="callType"
+                                value={filters.callType}
+                                onChange={handleChange}>
                                 <option className='calllogs_type_option'></option>
+
                                 <option className='calllogs_type_option'>INBOUND</option>
                                 <option className='calllogs_type_option'>OUTBOUND</option>
                             </select>

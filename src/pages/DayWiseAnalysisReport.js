@@ -5,28 +5,51 @@ import Sidebar from '../Components/Sidebar';
 import DateRange from '../Components/DateRange';
 import api from '../Components/Api';
 
-import CallVsConnectedChartHourlyReport from '../Components/CallvsConnectedCallHourly'
+import CallVsConnectedChartDaywiseReport from '../Components/callvsConnectedCallDaywise'
 
 const DayWiseAnalysisReport = () => {
     const [departments, setDepartments] = useState([]);
     const [startTime, setStartTime] = useState("00:00");
     const [endTime, setEndTime] = useState("23:59");
 
+    const [clearDate, setClearDate] = useState(false);
+    const [numbers, setNumbers] = useState([]);
+    const [users, setUsers] = useState([]);
 
-    const fetchDepartments = async () => {
-        try {
-            const res = await api.get("/department");
-            setDepartments(res.data);
-        } catch (err) {
-            console.error("Error fetching department:", err);
-        }
-    }
-
-    useEffect(() => {
-        fetchDepartments();
-    }, []);
+    const [summaryData, setSummaryData] = useState([]);
 
 
+
+    const timeSlotsSummery = [
+        "10:00 - 10:59",
+        "11:00 - 11:59",
+        "12:00 - 12:59",
+        "13:00 - 13:59",
+        "14:00 - 14:59",
+        "15:00 - 15:59",
+        "16:00 - 16:59",
+        "17:00 - 17:59",
+        "18:00 - 18:59"
+    ];
+
+    const slotToKey = {
+        "10:00 - 10:59": "hr10",
+        "11:00 - 11:59": "hr11",
+        "12:00 - 12:59": "hr12",
+        "13:00 - 13:59": "hr13",
+        "14:00 - 14:59": "hr14",
+        "15:00 - 15:59": "hr15",
+        "16:00 - 16:59": "hr16",
+        "17:00 - 17:59": "hr17",
+        "18:00 - 18:59": "hr18"
+    };
+
+
+    const convertToSeconds = (duration) => {
+        if (!duration) return 0;
+        const [h, m, s] = duration.split(/[hms ]+/).filter(Boolean).map(Number);
+        return (h * 3600) + (m * 60) + s;
+    };
 
     //  Format seconds → h m s
     const formatDuration = (seconds) => {
@@ -35,6 +58,15 @@ const DayWiseAnalysisReport = () => {
         const s = Math.floor(seconds % 60);
         return `${h}h ${m}m ${s}s`;
     };
+
+    function formatDate(dateString) {
+        const date = new Date(dateString);
+        const day = String(date.getDate()).padStart(2, "0");
+        const month = String(date.getMonth() + 1).padStart(2, "0");
+        const year = date.getFullYear();
+        return `${day}/${month}/${year}`;
+    }
+
 
 
 
@@ -71,13 +103,105 @@ const DayWiseAnalysisReport = () => {
             hr17: { calls: 0, connected: 0, duration: 0 },
             hr18: { calls: 0, connected: 0, duration: 0 },
             after19: { calls: 0, connected: 0, duration: 0 },
-
         },
-        // aur days
     ];
 
 
+    const fetchEmployeeSummary = async () => {
+        try {
+            const { startDate, endDate, department, simNumber, userId, callType } = filters;
 
+            if (!startDate || !endDate) {
+                alert("Please select start and end date");
+                return;
+            }
+
+            const res = await api.get("/daywisereport", {
+                params: { startDate, endDate, department_id: department, simNumber, userId, callType, startTime, endTime }
+            });
+
+            console.log("Employee Summary Data:", res.data);
+            setSummaryData(res.data);
+        } catch (err) {
+            console.error("Error fetching Employee Summary:", err);
+        }
+    };
+
+    const [filters, setFilters] = useState({
+        startDate: "",
+        endDate: "",
+        startTime: "",
+        endTime: "",
+        callType: "",
+        department: "",
+        simNumber: "",
+        userId: "",
+    });
+    const handleChange = (e) => {
+        setFilters({ ...filters, [e.target.name]: e.target.value });
+    };
+
+    const handleDateChange = (start, end) => {
+        setFilters({ ...filters, startDate: start, endDate: end });
+    };
+
+    const fetchDepartments = async () => {
+        try {
+            const res = await api.get("/department");
+            setDepartments(res.data);
+        } catch (err) {
+            console.error("Error fetching department:", err);
+        }
+    }
+
+    const fetchUsers = async () => {
+        try {
+            const res = await api.get("/user");
+            setUsers(res.data);
+        } catch (err) {
+            console.error("Error fetching user:", err)
+        }
+    }
+
+    const fetchSimNumbers = async () => {
+        try {
+            const res = await api.get("/simnumber");
+            setNumbers(res.data);
+        } catch (err) {
+            console.error("Error fetching SIM Number:", err);
+        }
+    }
+
+    useEffect(() => {
+        fetchDepartments();
+        fetchSimNumbers();
+        fetchUsers();
+    }, []);
+
+    const clearFilters = () => {
+        setFilters({
+            startDate: "",
+            endDate: "",
+            startTime: "",
+            endTime: "",
+            callType: "",
+            department: "",
+            userId: "",
+            simNumber: ""
+        });
+        setClearDate(true);
+    };
+
+    const handlesubmit = () => {
+        fetchEmployeeSummary();
+    }
+
+
+    const chartData = summaryData.map(day => ({
+    date: new Date(day.date).toLocaleDateString("en-GB"), // 2025-12-03T18:30:00.000Z => 03/12/2025
+    totalCalls: day.totalCalls || 0,
+    connectedCalls: day.connectedCalls || 0,
+}));
 
 
     return (
@@ -94,15 +218,15 @@ const DayWiseAnalysisReport = () => {
                     <div className='call_summary_top_container_title'>
                         <h3>Filter</h3>
                         <div className='call_summary_top_container_btn'>
-                            <button className='call_summary_top_container_btn_clearall'>Clear All</button>
-                            <button className='call_summary_top_container_btn_apply'>Apply Filter</button>
+                            <button className='call_summary_top_container_btn_clearall' onClick={clearFilters}>Clear All</button>
+                            <button className='call_summary_top_container_btn_apply' onClick={handlesubmit}>Apply Filter</button>
                         </div>
                     </div>
                     <div className='call_summary_top_container_filter'>
                         <div className='call_summary_top_container_filter_content'>
                             <p>Date Range</p>
                             <div className='call_summary_top_container_filter_content_daterange'>
-                                <DateRange align='left'></DateRange>
+                                <DateRange align='left' onDateChange={handleDateChange} clearSignal={clearDate} />
                                 X
                             </div>
                         </div>
@@ -129,8 +253,12 @@ const DayWiseAnalysisReport = () => {
                         <div className='call_summary_top_container_filter_content'>
                             <p>Call Type</p>
 
-                            <select className='analysis_report_type_select'>
+                            <select className='analysis_report_type_select'
+                                name="callType"
+                                value={filters.callType}
+                                onChange={handleChange}>
                                 <option className='calllogs_type_option'></option>
+
                                 <option className='calllogs_type_option'>INBOUND</option>
                                 <option className='calllogs_type_option'>OUTBOUND</option>
                             </select>
@@ -139,10 +267,9 @@ const DayWiseAnalysisReport = () => {
                         <div className='call_summary_top_container_filter_content'>
                             <p>Department</p>
                             <select
-                                name="department_id"
-                                // value={department_id}
-                                // onChange={handleChange}
-                                required
+                                name="department"
+                                value={filters.department}
+                                onChange={handleChange}
                             >
                                 <option value=""></option>
                                 {departments.map((dept) => (
@@ -159,13 +286,12 @@ const DayWiseAnalysisReport = () => {
                         <div className='call_summary_top_container_filter_content'>
                             <p>User</p>
                             <select
-                                name="department_id"
-                                // value={department_id}
-                                // onChange={handleChange}
-                                required
+                                name="userId"
+                                value={filters.userId}
+                                onChange={handleChange}
                             >
                                 <option value=""></option>
-                                {departments.map((dept) => (
+                                {users.map((dept) => (
                                     <option key={dept.id} value={dept.id}>
                                         {dept.name}
                                     </option>
@@ -175,16 +301,16 @@ const DayWiseAnalysisReport = () => {
                         <div className='call_summary_top_container_filter_content'>
                             <p>SIM Number</p>
                             <select
-                                name="department_id"
-                                // value={department_id}
-                                // onChange={handleChange}
-                                required
+                                name="simNumber"
+                                value={filters.simNumber}
+                                onChange={handleChange}
                             >
                                 <option value=""></option>
-                                {departments.map((dept) => (
-                                    <option key={dept.id} value={dept.id}>
-                                        {dept.name}
+                                {numbers.map((num) => (
+                                    <option key={num.SIM_Number} value={num.SIM_Number}>
+                                        {num.SIM_Number} - {num.Name}
                                     </option>
+
                                 ))}
                             </select>
                         </div>
@@ -203,7 +329,7 @@ const DayWiseAnalysisReport = () => {
                         <button>Download Excel</button>
                     </div>
                     <div className='day_wise_container_table'>
-                        <table>
+                        {/* <table>
                             <thead>
                                 <tr>
                                     <th rowSpan='2' style={{ padding: '0px 100px' }}>Days</th>
@@ -224,7 +350,7 @@ const DayWiseAnalysisReport = () => {
                                     <th>Total Calls</th>
                                     <th>Total Connected Calls</th>
                                     <th>Total Duration</th>
-                                    {/* before 10 */}
+                                  
                                     <th>Total Calls</th>
                                     <th>Total Connected Calls</th>
                                     <th>Total Duration</th>
@@ -326,7 +452,7 @@ const DayWiseAnalysisReport = () => {
                                     </tr>
                                 ))}
 
-                                {/* Total row */}
+                            
                                 <tr>
                                     <td>Total</td>
                                     <td>
@@ -462,7 +588,7 @@ const DayWiseAnalysisReport = () => {
                                     </td>
                                 </tr>
 
-                                {/* Daily Average row */}
+                      
                                 <tr>
                                     <td>Daily Average</td>
                                     <td>
@@ -608,11 +734,11 @@ const DayWiseAnalysisReport = () => {
                                     </td>
                                 </tr>
 
-                                {/* No of Days with no calls */}
+                   
                                 <tr>
                                     <td>No of Days with no calls in Time Slot</td>
                                     <td>
-                                        {dayWiseData.filter(day => day.total.calls === 0).length}
+                                        {dayWiseData.filter(day => day.totalCalls === 0).length}
                                     </td>
                                     <td></td>
                                     <td></td>
@@ -697,6 +823,340 @@ const DayWiseAnalysisReport = () => {
                                 </tr>
                             </tbody>
 
+                        </table> */}
+
+                        <table>
+                            <thead>
+                                <tr style={{
+                                    fontSize: "14px",
+                                    fontWeight: "400",
+                                    color: "#696868",
+                                    backgroundColor: "#f4f8fc"
+                                }}>
+                                    <th rowSpan="2" style={{ padding: "8px", border: "1px solid #ccc" }}>Days</th>
+                                    <th colSpan="3">Total</th>
+
+                                    <th colSpan="3">Before 10:00</th>
+                                    <th colSpan="3">10:00 - 10:59</th>
+                                    <th colSpan="3">11:00 - 11:59</th>
+                                    <th colSpan="3">12:00 - 12:59</th>
+                                    <th colSpan="3">13:00 - 13:59</th>
+                                    <th colSpan="3">14:00 - 14:59</th>
+                                    <th colSpan="3">15:00 - 15:59</th>
+                                    <th colSpan="3">16:00 - 16:59</th>
+                                    <th colSpan="3">17:00 - 17:59</th>
+                                    <th colSpan="3">18:00 - 18:59</th>
+                                    <th colSpan="3">After 19:00</th>
+                                </tr>
+                                <tr style={{
+                                    fontSize: "14px",
+                                    fontWeight: "400",
+                                    color: "#696868",
+                                    backgroundColor: "#f4f8fc"
+                                }}>
+                                    <th>Total Calls</th>
+                                    <th>Total Connected Calls</th>
+                                    <th>Total Duration</th>
+
+                                    {Array.from({ length: 11 }).map((_, i) => (
+                                        <React.Fragment key={i}>
+                                            <th>Total Calls</th>
+                                            <th>Total Connected Calls</th>
+                                            <th>Total Duration</th>
+
+                                        </React.Fragment>
+                                    ))}
+                                </tr>
+                            </thead>
+
+                            <tbody>
+                                {summaryData?.length > 0 ? (
+                                    summaryData.map((item, index) => (
+                                        <tr key={index}>
+                                            <td>{formatDate(item?.date || "--")}</td>
+                                            <td>{item?.totalCalls || 0}</td>
+                                            <td>{item?.connectedCalls || 0}</td>
+                                            <td>{item?.totalDuration || "0h 0m 0s"}</td>
+
+                                            {/* Before 10:00 */}
+                                            <td>{item?.before10?.totalCalls || 0}</td>
+                                            <td>{item?.before10?.connected || 0}</td>
+                                            <td>{item?.before10?.duration || "0h 0m 0s"}</td>
+
+                                            {/* Hourly slots */}
+                                            {timeSlotsSummery.map((slot, i) => {
+                                                const clean = (s) =>
+                                                    s?.toString().replace(/\s+/g, "").replace(/–/g, "-").trim().toLowerCase();
+
+                                                const hourData = item?.hourlySlots?.find(
+                                                    (h) => clean(h?.hourSlot) === clean(slot)
+                                                ) || {};
+
+
+                                                return (
+                                                    <React.Fragment key={i}>
+                                                        <td>{hourData?.totalCalls || 0}</td>
+                                                        <td>{hourData?.connected || 0}</td>
+                                                        <td>{hourData?.duration || "0h 0m 0s"}</td>
+                                                    </React.Fragment>
+                                                );
+                                            })}
+
+                                            {/* After 19:00 */}
+                                            <td>{item?.after19?.totalCalls || 0}</td>
+                                            <td>{item?.after19?.connected || 0}</td>
+                                            <td>{item?.after19?.duration || "0h 0m 0s"}</td>
+
+                                        </tr>
+                                    ))
+                                ) : (
+                                    <tr>
+                                        <td colSpan="85" style={{ textAlign: "left", padding: "10px" }}>
+                                            No records found !!
+                                        </td>
+                                    </tr>
+                                )}
+
+                                <tr>
+                                    <td>Total</td>
+                                    <td>
+                                        {summaryData.reduce((acc, day) => acc + day.totalCalls, 0)}
+                                    </td>
+                                    <td>
+                                        {summaryData.reduce((acc, day) => acc + day.connectedCalls, 0)}
+                                    </td>
+                                    <td>
+                                        {formatDuration(
+                                            summaryData.reduce((acc, day) => {
+                                                return acc + convertToSeconds(day.totalDuration);
+                                            }, 0)
+                                        )}
+                                    </td>
+
+                                    <td>
+                                        {summaryData.reduce((acc, day) => acc + day.before10.totalCalls, 0)}
+                                    </td>
+                                    <td>
+                                        {summaryData.reduce((acc, day) => acc + day.before10.connected, 0)}
+                                    </td>
+                                    <td>
+                                        {formatDuration(
+                                            summaryData.reduce((acc, day) => {
+                                                return acc + convertToSeconds(day.before10.duration);
+                                            }, 0)
+                                        )}
+                                    </td>
+
+                                    {timeSlotsSummery.map((slot, index) => {
+                                        return (
+                                            <React.Fragment key={index}>
+                                                <td>
+                                                    {summaryData.reduce((acc, day) => {
+                                                        const slotData = day.hourlySlots?.[slot];
+                                                        return acc + (slotData?.totalCalls || 0);
+                                                    }, 0)}
+                                                </td>
+
+                                                <td>
+                                                    {summaryData.reduce((acc, day) => {
+                                                        const slotData = day.hourlySlots?.[slot];
+                                                        return acc + (slotData?.connected || 0);
+                                                    }, 0)}
+                                                </td>
+
+                                                <td>
+                                                    {formatDuration(
+                                                        summaryData.reduce((acc, day) => {
+                                                            const slotData = day.hourlySlots?.[slot];
+                                                            return acc + (slotData?.duration || 0);
+                                                        }, 0)
+                                                    )}
+                                                </td>
+                                            </React.Fragment>
+                                        );
+                                    })}
+
+                                    <td>
+                                        {summaryData.reduce((acc, day) => acc + day.after19.totalCalls, 0)}
+                                    </td>
+                                    <td>
+                                        {summaryData.reduce((acc, day) => acc + day.after19.connected, 0)}
+                                    </td>
+                                    <td>
+                                        {formatDuration(
+                                            summaryData.reduce((acc, day) => {
+                                                return acc + convertToSeconds(day.after19.duration);
+                                            }, 0)
+                                        )}
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td>Daily Average</td>
+                                    <td>
+                                        {(
+                                            summaryData.reduce((acc, day) => acc + day.totalCalls, 0) / summaryData.length
+                                        ).toFixed(2)}
+                                    </td>
+
+                                    <td>
+                                        {(
+                                            summaryData.reduce((acc, day) => acc + day.connectedCalls, 0) / summaryData.length
+                                        ).toFixed(2)}
+                                    </td>
+
+                                    <td>
+                                        {formatDuration(
+                                            summaryData.reduce((acc, day) => {
+                                                return acc + convertToSeconds(day.totalDuration);
+                                            }, 0) / summaryData.length
+                                        )}
+                                    </td>
+
+                                    <td>
+                                        {(
+                                            summaryData.reduce((acc, day) => acc + day.before10.totalCalls, 0) / summaryData.length
+                                        ).toFixed(2)}
+                                    </td>
+
+                                    <td>
+                                        {(
+                                            summaryData.reduce((acc, day) => acc + day.before10.connected, 0) / summaryData.length
+                                        ).toFixed(2)}
+                                    </td>
+
+                                    <td>
+                                        {formatDuration(
+                                            summaryData.reduce((acc, day) => {
+                                                return acc + convertToSeconds(day.before10.duration);
+                                            }, 0) / summaryData.length
+                                        )}
+                                    </td>
+
+                                    {timeSlotsSummery.map((slot, index) => {
+                                        const key = slotToKey[slot];
+
+                                        return (
+                                            <React.Fragment key={index}>
+                                                <td>
+                                                    {summaryData.reduce((acc, day) => acc + day[key]?.totalCalls, 0) / summaryData.length}
+                                                </td>
+                                                <td>
+                                                    {summaryData.reduce((acc, day) => acc + day[key]?.connected, 0) / summaryData.length}
+                                                </td>
+                                                <td>
+                                                    {formatDuration(summaryData.reduce((acc, day) => acc + day[key]?.duration, 0) / summaryData.length)}
+                                                </td>
+                                            </React.Fragment>
+                                        );
+                                    })}
+
+                                    <td>
+                                        {(
+                                            summaryData.reduce((acc, day) => acc + day.after19.totalCalls, 0) / summaryData.length
+                                        ).toFixed(2)}
+                                    </td>
+
+                                    <td>
+                                        {(
+                                            summaryData.reduce((acc, day) => acc + day.after19.connected, 0) / summaryData.length
+                                        ).toFixed(2)}
+                                    </td>
+                                    <td>
+                                        {formatDuration(
+                                            summaryData.reduce((acc, day) => {
+                                                return acc + convertToSeconds(day.after19.duration);
+                                            }, 0) / summaryData.length
+                                        )}
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td>No of Days with no calls in Time Slot</td>
+                                    <td>
+                                        {summaryData.filter(day => day.totalCalls === 0).length}
+                                    </td>
+                                    <td></td>
+                                    <td></td>
+
+                                    <td>
+                                        {summaryData.filter(day => day.before10.totalCalls === 0).length}
+                                    </td>
+                                    <td></td>
+                                    <td></td>
+
+
+                                    <td>
+                                        {dayWiseData.filter(day => day.hr10.calls === 0).length}
+                                    </td>
+                                    <td></td>
+                                    <td></td>
+
+
+                                    <td>
+                                        {dayWiseData.filter(day => day.hr11.calls === 0).length}
+                                    </td>
+                                    <td></td>
+                                    <td></td>
+
+
+                                    <td>
+                                        {dayWiseData.filter(day => day.hr12.calls === 0).length}
+                                    </td>
+                                    <td></td>
+                                    <td></td>
+
+
+                                    <td>
+                                        {dayWiseData.filter(day => day.hr13.calls === 0).length}
+                                    </td>
+                                    <td></td>
+                                    <td></td>
+
+
+                                    <td>
+                                        {dayWiseData.filter(day => day.hr14.calls === 0).length}
+                                    </td>
+                                    <td></td>
+                                    <td></td>
+
+
+                                    <td>
+                                        {dayWiseData.filter(day => day.hr15.calls === 0).length}
+                                    </td>
+                                    <td></td>
+                                    <td></td>
+
+
+                                    <td>
+                                        {dayWiseData.filter(day => day.hr16.calls === 0).length}
+                                    </td>
+                                    <td></td>
+                                    <td></td>
+
+
+                                    <td>
+                                        {dayWiseData.filter(day => day.hr17.calls === 0).length}
+                                    </td>
+                                    <td></td>
+                                    <td></td>
+
+
+                                    <td>
+                                        {dayWiseData.filter(day => day.hr18.calls === 0).length}
+                                    </td>
+                                    <td></td>
+                                    <td></td>
+
+
+                                    <td>
+                                        {summaryData.filter(day => day.after19.totalCalls === 0).length}
+                                    </td>
+                                    <td></td>
+                                    <td></td>
+                                </tr>
+                            </tbody>
+
                         </table>
                     </div>
                 </div>
@@ -704,7 +1164,7 @@ const DayWiseAnalysisReport = () => {
                 {/* ********************    Chart *********************** */}
 
                 <div className='call_summary_bottom_container'>
-                    <CallVsConnectedChartHourlyReport />
+                    <CallVsConnectedChartDaywiseReport data={chartData} />
                 </div>
             </div>
 
