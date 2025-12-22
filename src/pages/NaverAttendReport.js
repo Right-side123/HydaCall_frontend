@@ -14,7 +14,42 @@ import api from '../Components/Api';
 
 const NeverAttendReport = () => {
     const [departments, setDepartments] = useState([]);
+    const [numbers, setNumbers] = useState([]);
+    const [users, setUsers] = useState([]);
+    const [neverAttendData, setNeverAttentData] = useState([])
+    const [clearDate, setClearDate] = useState(false);
 
+    const [filters, setFilters] = useState({
+        startDate: "",
+        endDate: "",
+        startTime: "",
+        endTime: "",
+        callType: "",
+        department: "",
+        simNumber: "",
+        userId: "",
+    });
+    const handleChange = (e) => {
+        setFilters({ ...filters, [e.target.name]: e.target.value });
+    };
+    const handleDateChange = (start, end) => {
+        setFilters({ ...filters, startDate: start, endDate: end });
+    };
+
+
+
+    const [currentPage, setCurrentPage] = useState(1);
+    const itemsPerPage = 10;
+
+    // Calculate indexes
+    const indexOfLastItem = currentPage * itemsPerPage;
+    const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+
+    // Apply search + pagination together
+    const currentNeverAttendData = neverAttendData.slice(indexOfFirstItem, indexOfLastItem);
+
+    // Total pages
+    const totalPages = Math.ceil(neverAttendData.length / itemsPerPage);
 
     const fetchDepartments = async () => {
         try {
@@ -25,9 +60,96 @@ const NeverAttendReport = () => {
         }
     }
 
+    const fetchUsers = async () => {
+        try {
+            const res = await api.get("/user");
+            setUsers(res.data);
+        } catch (err) {
+            console.error("Error fetching user:", err)
+        }
+    }
+
+    const fetchSimNumbers = async () => {
+        try {
+            const res = await api.get("/simnumber");
+            setNumbers(res.data);
+        } catch (err) {
+            console.error("Error fetching SIM Number:", err);
+        }
+    }
+
+    const fetchNeverAttendData = async () => {
+        try {
+            const { startDate, endDate, department, simNumber, userId } = filters;
+
+            if (!startDate || !endDate) {
+                alert("Please select start and end date");
+                return;
+            }
+
+            const res = await api.get("/neverattendreport", {
+                params: { startDate, endDate, department_id: department, simNumber, userId }
+            });
+
+            console.log("Employee Summary Data:", res.data);
+            setNeverAttentData(res.data);
+        } catch (err) {
+            console.error("Error fetching Employee Summary:", err);
+        }
+    };
+
+
+
     useEffect(() => {
         fetchDepartments();
+        fetchSimNumbers();
+        fetchUsers();
     }, []);
+
+
+    const clearFilters = () => {
+        setFilters({
+            startDate: "",
+            endDate: "",
+            startTime: "",
+            endTime: "",
+            department: "",
+            userId: "",
+            simNumber: ""
+        });
+        setClearDate(true);
+    };
+
+    const handlesubmit = () => {
+        fetchNeverAttendData();
+    }
+
+    const downloadCSV = () => {
+        if (neverAttendData.length === 0) return;
+
+        const headers = ["#", "Employee", "To Number", "Call Type", "Date", "Time"];
+
+        const rows = neverAttendData.map(c => [
+            c["#"],
+            `${c.Employee} - ${c.EmployeeName}`,
+            c.ToNumber,
+            c.CallType,
+            c.Date,
+            c.Time
+        ]);
+
+        let csvContent =
+            "data:text/csv;charset=utf-8," +
+            [headers, ...rows].map(r => r.join(",")).join("\n");
+
+        const encodedUri = encodeURI(csvContent);
+        const link = document.createElement("a");
+        link.setAttribute("href", encodedUri);
+        link.setAttribute("download", "NeverAttendedReport.csv");
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+    };
 
 
     return (
@@ -44,25 +166,25 @@ const NeverAttendReport = () => {
                     <div className='call_summary_top_container_title'>
                         <h3>Filter</h3>
                         <div className='call_summary_top_container_btn'>
-                            <button className='call_summary_top_container_btn_clearall'>Clear All</button>
-                            <button className='call_summary_top_container_btn_apply'>Apply Filter</button>
+                            <button className='call_summary_top_container_btn_clearall' onClick={clearFilters}>Clear All</button>
+                            <button className='call_summary_top_container_btn_apply' onClick={handlesubmit}>Apply Filter</button>
                         </div>
                     </div>
                     <div className='call_summary_top_container_filter'>
                         <div className='call_summary_top_container_filter_content'>
                             <p>Date Range</p>
                             <div className='call_summary_top_container_filter_content_daterange'>
-                                <DateRange align='left'></DateRange>
+                                <DateRange align='left' onDateChange={handleDateChange} clearSignal={clearDate} />
                                 X
                             </div>
                         </div>
                         <div className='call_summary_top_container_filter_content'>
                             <p>Department</p>
                             <select
-                                name="department_id"
-                                // value={department_id}
-                                // onChange={handleChange}
-                                required
+                                name="department"
+                                value={filters.department}
+                                onChange={handleChange}
+
                             >
                                 <option value=""></option>
                                 {departments.map((dept) => (
@@ -75,15 +197,14 @@ const NeverAttendReport = () => {
                         <div className='call_summary_top_container_filter_content'>
                             <p>User</p>
                             <select
-                                name="department_id"
-                                // value={department_id}
-                                // onChange={handleChange}
-                                required
+                                name="userId"
+                                value={filters.userId}
+                                onChange={handleChange}
                             >
                                 <option value=""></option>
-                                {departments.map((dept) => (
-                                    <option key={dept.id} value={dept.id}>
-                                        {dept.name}
+                                {users.map((user) => (
+                                    <option key={user.id} value={user.id}>
+                                        {user.name}
                                     </option>
                                 ))}
                             </select>
@@ -91,16 +212,16 @@ const NeverAttendReport = () => {
                         <div className='call_summary_top_container_filter_content'>
                             <p>SIM Number</p>
                             <select
-                                name="department_id"
-                                // value={department_id}
-                                // onChange={handleChange}
-                                required
+                                name="simNumber"
+                                value={filters.simNumber}
+                                onChange={handleChange}
                             >
                                 <option value=""></option>
-                                {departments.map((dept) => (
-                                    <option key={dept.id} value={dept.id}>
-                                        {dept.name}
+                                {numbers.map((num) => (
+                                    <option key={num.SIM_Number} value={num.SIM_Number}>
+                                        {num.SIM_Number} - {num.Name}
                                     </option>
+
                                 ))}
                             </select>
                         </div>
@@ -117,37 +238,74 @@ const NeverAttendReport = () => {
                 <div className='call_summary_top_container'>
                     <div className='never_attend_container_card_title'>
                         <h3>Never Attended</h3>
-                        <button>Download CSV</button>
+                        <button onClick={downloadCSV}>Download CSV</button>
                     </div>
+
 
                     <div className='never_attend_container_table'>
                         <table>
                             <thead>
                                 <tr>
-                                    <th>#</th>
-                                    <th>Employee</th>
-                                    <th>To Number</th>
-                                    <th>
-                                        <tr className='never_attend_nested_th'>
-                                            <th>Call Type</th>
-                                            <th>Date</th>
-                                            <th>Time</th>
-                                        </tr>
-                                    </th>
-
+                                    <th rowSpan="2">#</th>
+                                    <th rowSpan="2">Employee</th>
+                                    <th rowSpan="2">To Number</th>
+                                    <th colSpan="3"></th>
+                                </tr>
+                                <tr style={{ border: "none" }}>
+                                    <th>Call Type</th>
+                                    <th>Date</th>
+                                    <th>Time</th>
                                 </tr>
                             </thead>
+                            <tbody>
+                                {currentNeverAttendData.length === 0 ? (
+                                    <tr><td colSpan="6" style={{ textAlign: 'center' }}>No data found</td></tr>
+                                ) : currentNeverAttendData.map((call, index) => (
+                                    <tr key={index}>
+                                        <td>{call["#"]}</td>
+                                        <td>{`${call.Employee} - ${call.EmployeeName}`}</td>
+                                        <td>{call.ToNumber}</td>
+                                        <td>{call.CallType}</td>
+                                        <td>{call.Date}</td>
+                                        <td>{call.Time}</td>
+                                    </tr>
+                                ))}
+                            </tbody>
+
+
                         </table>
+
                     </div>
+
 
 
 
                 </div>
 
                 <div className="pagination_container">
-                    <button>Previous</button>
-                    <button className="active_page">1</button>
-                    <button>Next</button>
+                    <button
+                        disabled={currentPage === 1}
+                        onClick={() => setCurrentPage(currentPage - 1)}
+                    >
+                        Previous
+                    </button>
+
+                    {[...Array(totalPages)].map((_, index) => (
+                        <button
+                            key={index}
+                            className={currentPage === index + 1 ? "active_page" : ""}
+                            onClick={() => setCurrentPage(index + 1)}
+                        >
+                            {index + 1}
+                        </button>
+                    ))}
+
+                    <button
+                        disabled={currentPage === totalPages || totalPages === 0}
+                        onClick={() => setCurrentPage(currentPage + 1)}
+                    >
+                        Next
+                    </button>
                 </div>
             </div>
         </div>

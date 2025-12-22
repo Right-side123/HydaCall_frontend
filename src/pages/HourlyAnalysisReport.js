@@ -29,8 +29,6 @@ const HourlyAnalysisReport = () => {
         userId: "",
     });
 
-
-
     const handleChange = (e) => {
         setFilters({ ...filters, [e.target.name]: e.target.value });
     };
@@ -65,8 +63,6 @@ const HourlyAnalysisReport = () => {
             console.error("Error fetching SIM Number:", err);
         }
     }
-
-
 
     useEffect(() => {
         fetchDepartments();
@@ -106,7 +102,6 @@ const HourlyAnalysisReport = () => {
     //     avgDuration: '27m',
     // },
     // ]
-
 
     const fetchHourlyTablereport = async () => {
         try {
@@ -160,7 +155,6 @@ const HourlyAnalysisReport = () => {
             alert("Error fetching report");
         }
     };
-
 
 
     const fetchEmployeeSummary = async () => {
@@ -254,7 +248,6 @@ const HourlyAnalysisReport = () => {
     });
 
 
-
     const totalRow = {
         timeSlot: "Total",
         totalCalls: totalCallsSum,
@@ -296,12 +289,10 @@ const HourlyAnalysisReport = () => {
         setClearDate(true);
     };
 
-
     const handlesubmit = () => {
         fetchHourlyTablereport();
         fetchEmployeeSummary();
     }
-
 
     function durationToSeconds(duration) {
         if (!duration) return 0;
@@ -310,7 +301,6 @@ const HourlyAnalysisReport = () => {
         const s = (duration.match(/(\d+)s/)?.[1] || 0) * 1;
         return h + m + s;
     }
-
 
     return (
         <div className='main-layout'>
@@ -475,7 +465,6 @@ const HourlyAnalysisReport = () => {
                                     <td style={{ backgroundColor: "#f3f3f3ff" }}></td>
                                     <td style={{ backgroundColor: "#f3f3f3ff" }}></td>
                                 </tr>
-
 
                                 <tr>
                                     <td>{avgRow.timeSlot}</td>

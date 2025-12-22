@@ -14,6 +14,29 @@ import api from '../Components/Api';
 
 const UniqueClientReport = () => {
     const [departments, setDepartments] = useState([]);
+    const [numbers, setNumbers] = useState([]);
+    const [users, setUsers] = useState([]);
+
+    const [uniqueclient, setUniqueClient] = useState([])
+    const [clearDate, setClearDate] = useState(false);
+
+
+    const [filters, setFilters] = useState({
+        startDate: "",
+        endDate: "",
+        startTime: "",
+        endTime: "",
+        callType: "",
+        department: "",
+        simNumber: "",
+        userId: "",
+    });
+    const handleChange = (e) => {
+        setFilters({ ...filters, [e.target.name]: e.target.value });
+    };
+    const handleDateChange = (start, end) => {
+        setFilters({ ...filters, startDate: start, endDate: end });
+    };
 
 
     const fetchDepartments = async () => {
@@ -25,9 +48,67 @@ const UniqueClientReport = () => {
         }
     }
 
+    const fetchUsers = async () => {
+        try {
+            const res = await api.get("/user");
+            setUsers(res.data);
+        } catch (err) {
+            console.error("Error fetching user:", err)
+        }
+    }
+
+    const fetchSimNumbers = async () => {
+        try {
+            const res = await api.get("/simnumber");
+            setNumbers(res.data);
+        } catch (err) {
+            console.error("Error fetching SIM Number:", err);
+        }
+    }
+
     useEffect(() => {
         fetchDepartments();
+        fetchUsers();
+        fetchSimNumbers();
     }, []);
+
+    const fetchUniqueData = async () => {
+        try {
+            const { startDate, endDate, callType, department, simNumber, userId } = filters;
+
+            if (!startDate || !endDate) {
+                alert("Please select start and end date");
+                return;
+            }
+
+            const res = await api.get("/uniqueclient", {
+                params: { startDate, endDate, callType, department_id: department, simNumber, userId }
+            });
+
+            console.log("Employee Summary Data:", res.data);
+            setUniqueClient(res.data);
+        } catch (err) {
+            console.error("Error fetching Employee Summary:", err);
+        }
+    };
+
+    const clearFilters = () => {
+        setFilters({
+            startDate: "",
+            endDate: "",
+            startTime: "",
+            endTime: "",
+            callType: "",
+            department: "",
+            userId: "",
+            simNumber: ""
+        });
+        setClearDate(true);
+    };
+
+    const handlesubmit = () => {
+        fetchUniqueData();
+    }
 
 
     return (
@@ -35,22 +116,22 @@ const UniqueClientReport = () => {
             <Sidebar />
             <div className='page-content'>
                 <div className="department_titel_container">
-                    <h1 className='department_title'>NOT PICKUP BY CLIENT REPORT</h1>
+                    <h1 className='department_title'>UNIQUE CLIENT REPORT</h1>
                     <Layout></Layout>
                 </div>
                 <div className='call_summary_top_container'>
                     <div className='call_summary_top_container_title'>
                         <h3>Filter</h3>
                         <div className='call_summary_top_container_btn'>
-                            <button className='call_summary_top_container_btn_clearall'>Clear All</button>
-                            <button className='call_summary_top_container_btn_apply'>Apply Filter</button>
+                            <button className='call_summary_top_container_btn_clearall' onClick={clearFilters}>Clear All</button>
+                            <button className='call_summary_top_container_btn_apply' onClick={handlesubmit}>Apply Filter</button>
                         </div>
                     </div>
                     <div className='call_summary_top_container_filter'>
                         <div className='call_summary_top_container_filter_content'>
                             <p>Date Range</p>
                             <div className='call_summary_top_container_filter_content_daterange'>
-                                <DateRange align='left'></DateRange>
+                                <DateRange align='left' onDateChange={handleDateChange} clearSignal={clearDate}></DateRange>
                                 X
                             </div>
                         </div>
@@ -58,8 +139,12 @@ const UniqueClientReport = () => {
                         <div className='call_summary_top_container_filter_content'>
                             <p>Call Type</p>
 
-                            <select className='analysis_report_type_select'>
+                            <select className='analysis_report_type_select'
+                                name="callType"
+                                value={filters.callType}
+                                onChange={handleChange}>
                                 <option className='calllogs_type_option'></option>
+
                                 <option className='calllogs_type_option'>INBOUND</option>
                                 <option className='calllogs_type_option'>OUTBOUND</option>
                             </select>
@@ -68,10 +153,10 @@ const UniqueClientReport = () => {
                         <div className='call_summary_top_container_filter_content'>
                             <p>Department</p>
                             <select
-                                name="department_id"
-                                // value={department_id}
-                                // onChange={handleChange}
-                                required
+                                name="department"
+                                value={filters.department}
+                                onChange={handleChange}
+
                             >
                                 <option value=""></option>
                                 {departments.map((dept) => (
@@ -84,34 +169,34 @@ const UniqueClientReport = () => {
                         <div className='call_summary_top_container_filter_content'>
                             <p>User</p>
                             <select
-                                name="department_id"
-                                // value={department_id}
-                                // onChange={handleChange}
+                                name="userId"
+                                value={filters.userId}
+                                onChange={handleChange}
                                 required
                             >
                                 <option value=""></option>
-                                {departments.map((dept) => (
-                                    <option key={dept.id} value={dept.id}>
-                                        {dept.name}
+                                {users.map((user) => (
+                                    <option key={user.id} value={user.id}>
+                                        {user.name}
                                     </option>
                                 ))}
                             </select>
                         </div>
 
                     </div>
-                    <div style={{ display: 'flex', gap: '30px'}}>
+                    <div style={{ display: 'flex', gap: '30px' }}>
                         <div className='call_summary_top_container_filter_content'>
                             <p>SIM Number</p>
                             <select
-                                name="department_id"
-                                // value={department_id}
-                                // onChange={handleChange}
-                                required
+                                name="simNumber"
+                                value={filters.simNumber}
+                                onChange={handleChange}
+
                             >
                                 <option value=""></option>
-                                {departments.map((dept) => (
-                                    <option key={dept.id} value={dept.id}>
-                                        {dept.name}
+                                {numbers.map((num) => (
+                                    <option key={num.SIM_Number} value={num.SIM_Number}>
+                                        {num.SIM_Number} - {num.Name}
                                     </option>
                                 ))}
                             </select>
@@ -124,8 +209,8 @@ const UniqueClientReport = () => {
                 </div>
                 <div className='call_summary_top_container'>
                     <div className='never_attend_container_card_title'>
-                        <h3>Not Pickup By Client Call Logs</h3>
-                        <p>Total record: 0</p>
+                        <h3>Unique Client</h3>
+                        <p>Total record: {uniqueclient.length}</p>
                     </div>
                     <div className='never_attend_container_table'>
                         <table>
@@ -147,6 +232,26 @@ const UniqueClientReport = () => {
                                     <th>Last Call Details</th>
                                 </tr>
                             </thead>
+                            <tbody>
+                                {uniqueclient.length === 0 ? (
+                                    <tr><td colSpan="12" style={{ textAlign: 'center' }}>No data found</td></tr>
+                                ) : uniqueclient.map((data, index) => (
+                                    <tr key={index}>
+                                        <td>{data["#"]}</td>
+                                        <td>{data.CustomerNumber}</td>
+                                        <td>{data.TotalCalls}</td>
+                                        <td>{data.TotalDuration}</td>
+                                        <td>{data.IncomingCalls}</td>
+                                        <td>{data.IncomingDuration}</td>
+                                        <td>{data.OutgoingCalls}</td>
+                                        <td>{data.OutgoingDuration}</td>
+                                        <td>{data.Missed}</td>
+                                        <td>{data.ConnectedCalls}</td>
+                                        <td>{data.NeverAttend}</td>
+                                        <td>{data.LastCallDate}-{data.LastCallTime}</td>
+                                    </tr>
+                                ))}
+                            </tbody>
                         </table>
                     </div>
                 </div>

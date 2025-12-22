@@ -18,6 +18,10 @@ const DayWiseAnalysisReport = () => {
 
     const [summaryData, setSummaryData] = useState([]);
 
+    const clean = (s) =>
+        s?.toString().replace(/\s+/g, "").replace(/–/g, "-").trim().toLowerCase();
+
+
 
 
     const timeSlotsSummery = [
@@ -32,17 +36,17 @@ const DayWiseAnalysisReport = () => {
         "18:00 - 18:59"
     ];
 
-    const slotToKey = {
-        "10:00 - 10:59": "hr10",
-        "11:00 - 11:59": "hr11",
-        "12:00 - 12:59": "hr12",
-        "13:00 - 13:59": "hr13",
-        "14:00 - 14:59": "hr14",
-        "15:00 - 15:59": "hr15",
-        "16:00 - 16:59": "hr16",
-        "17:00 - 17:59": "hr17",
-        "18:00 - 18:59": "hr18"
-    };
+    // const slotToKey = {
+    //     "10:00 - 10:59": "hr10",
+    //     "11:00 - 11:59": "hr11",
+    //     "12:00 - 12:59": "hr12",
+    //     "13:00 - 13:59": "hr13",
+    //     "14:00 - 14:59": "hr14",
+    //     "15:00 - 15:59": "hr15",
+    //     "16:00 - 16:59": "hr16",
+    //     "17:00 - 17:59": "hr17",
+    //     "18:00 - 18:59": "hr18"
+    // };
 
 
     const convertToSeconds = (duration) => {
@@ -66,46 +70,6 @@ const DayWiseAnalysisReport = () => {
         const year = date.getFullYear();
         return `${day}/${month}/${year}`;
     }
-
-
-
-
-
-    const dayWiseData = [
-        {
-            date: '11/10/2025',
-            total: { calls: 4, connected: 2, duration: 180 },
-            before10: { calls: 0, connected: 0, duration: 0 },
-            hr10: { calls: 0, connected: 0, duration: 0 },
-            hr11: { calls: 1, connected: 0, duration: 10 },
-            hr12: { calls: 10, connected: 2, duration: 10 },
-            hr13: { calls: 2, connected: 1, duration: 60 },
-            hr14: { calls: 0, connected: 0, duration: 0 },
-            hr15: { calls: 3, connected: 2, duration: 100 },
-            hr16: { calls: 0, connected: 0, duration: 0 },
-            hr17: { calls: 0, connected: 0, duration: 0 },
-            hr18: { calls: 0, connected: 0, duration: 0 },
-            after19: { calls: 0, connected: 0, duration: 0 },
-
-        },
-
-        {
-            date: '12/10/2025',
-            total: { calls: 4, connected: 2, duration: 180 },
-            before10: { calls: 0, connected: 0, duration: 0 },
-            hr10: { calls: 0, connected: 0, duration: 0 },
-            hr11: { calls: 1, connected: 0, duration: 10 },
-            hr12: { calls: 10, connected: 2, duration: 10 },
-            hr13: { calls: 2, connected: 1, duration: 60 },
-            hr14: { calls: 0, connected: 0, duration: 0 },
-            hr15: { calls: 3, connected: 2, duration: 100 },
-            hr16: { calls: 0, connected: 0, duration: 0 },
-            hr17: { calls: 0, connected: 0, duration: 0 },
-            hr18: { calls: 0, connected: 0, duration: 0 },
-            after19: { calls: 0, connected: 0, duration: 0 },
-        },
-    ];
-
 
     const fetchEmployeeSummary = async () => {
         try {
@@ -198,10 +162,10 @@ const DayWiseAnalysisReport = () => {
 
 
     const chartData = summaryData.map(day => ({
-    date: new Date(day.date).toLocaleDateString("en-GB"), // 2025-12-03T18:30:00.000Z => 03/12/2025
-    totalCalls: day.totalCalls || 0,
-    connectedCalls: day.connectedCalls || 0,
-}));
+        date: new Date(day.date).toLocaleDateString("en-GB"), 
+        totalCalls: day.totalCalls || 0,
+        connectedCalls: day.connectedCalls || 0,
+    }));
 
 
     return (
@@ -329,502 +293,6 @@ const DayWiseAnalysisReport = () => {
                         <button>Download Excel</button>
                     </div>
                     <div className='day_wise_container_table'>
-                        {/* <table>
-                            <thead>
-                                <tr>
-                                    <th rowSpan='2' style={{ padding: '0px 100px' }}>Days</th>
-                                    <th colSpan='3'>Total</th>
-                                    <th colSpan='3'>Before 10:00</th>
-                                    <th colSpan='3'>10:00-10:59</th>
-                                    <th colSpan='3'>11:00-11:59</th>
-                                    <th colSpan='3'>12:00-12:59</th>
-                                    <th colSpan='3'>13:00-13:59</th>
-                                    <th colSpan='3'>14:00-14:59</th>
-                                    <th colSpan='3'>15:00-15:59</th>
-                                    <th colSpan='3'>16:00-16:59</th>
-                                    <th colSpan='3'>17:00-17:59</th>
-                                    <th colSpan='3'>18:00-18:59</th>
-                                    <th colSpan='3'>After 19:00</th>
-                                </tr>
-                                <tr>
-                                    <th>Total Calls</th>
-                                    <th>Total Connected Calls</th>
-                                    <th>Total Duration</th>
-                                  
-                                    <th>Total Calls</th>
-                                    <th>Total Connected Calls</th>
-                                    <th>Total Duration</th>
-
-                                    <th>Total Calls</th>
-                                    <th>Total Connected Calls</th>
-                                    <th>Total Duration</th>
-
-                                    <th>Total Calls</th>
-                                    <th>Total Connected Calls</th>
-                                    <th>Total Duration</th>
-
-                                    <th>Total Calls</th>
-                                    <th>Total Connected Calls</th>
-                                    <th>Total Duration</th>
-
-                                    <th>Total Calls</th>
-                                    <th>Total Connected Calls</th>
-                                    <th>Total Duration</th>
-
-                                    <th>Total Calls</th>
-                                    <th>Total Connected Calls</th>
-                                    <th>Total Duration</th>
-
-                                    <th>Total Calls</th>
-                                    <th>Total Connected Calls</th>
-                                    <th>Total Duration</th>
-
-                                    <th>Total Calls</th>
-                                    <th>Total Connected Calls</th>
-                                    <th>Total Duration</th>
-
-                                    <th>Total Calls</th>
-                                    <th>Total Connected Calls</th>
-                                    <th>Total Duration</th>
-
-                                    <th>Total Calls</th>
-                                    <th>Total Connected Calls</th>
-                                    <th>Total Duration</th>
-
-                                    <th>Total Calls</th>
-                                    <th>Total Connected Calls</th>
-                                    <th>Total Duration</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {dayWiseData.map((day, idx) => (
-                                    <tr key={idx}>
-                                        <td>{day.date}</td>
-                                        <td>{day.total.calls}</td>
-                                        <td>{day.total.connected}</td>
-                                        <td>{formatDuration(day.total.duration)}</td>
-
-                                        <td>{day.before10.calls}</td>
-                                        <td>{day.before10.connected}</td>
-                                        <td>{formatDuration(day.before10.duration)}</td>
-
-                                        <td>{day.hr10.calls}</td>
-                                        <td>{day.hr10.connected}</td>
-                                        <td>{formatDuration(day.hr10.duration)}</td>
-
-                                        <td>{day.hr11.calls}</td>
-                                        <td>{day.hr11.connected}</td>
-                                        <td>{formatDuration(day.hr11.duration)}</td>
-
-                                        <td>{day.hr12.calls}</td>
-                                        <td>{day.hr12.connected}</td>
-                                        <td>{formatDuration(day.hr12.duration)}</td>
-
-                                        <td>{day.hr13.calls}</td>
-                                        <td>{day.hr13.connected}</td>
-                                        <td>{formatDuration(day.hr13.duration)}</td>
-
-                                        <td>{day.hr14.calls}</td>
-                                        <td>{day.hr14.connected}</td>
-                                        <td>{formatDuration(day.hr14.duration)}</td>
-
-                                        <td>{day.hr15.calls}</td>
-                                        <td>{day.hr15.connected}</td>
-                                        <td>{formatDuration(day.hr15.duration)}</td>
-
-                                        <td>{day.hr16.calls}</td>
-                                        <td>{day.hr16.connected}</td>
-                                        <td>{formatDuration(day.hr16.duration)}</td>
-
-                                        <td>{day.hr17.calls}</td>
-                                        <td>{day.hr17.connected}</td>
-                                        <td>{formatDuration(day.hr17.duration)}</td>
-
-                                        <td>{day.hr18.calls}</td>
-                                        <td>{day.hr18.connected}</td>
-                                        <td>{formatDuration(day.hr18.duration)}</td>
-
-                                        <td>{day.after19.calls}</td>
-                                        <td>{day.after19.connected}</td>
-                                        <td>{formatDuration(day.after19.duration)}</td>
-
-
-                                    </tr>
-                                ))}
-
-                            
-                                <tr>
-                                    <td>Total</td>
-                                    <td>
-                                        {dayWiseData.reduce((acc, day) => acc + day.total.calls, 0)}
-                                    </td>
-                                    <td>
-                                        {dayWiseData.reduce((acc, day) => acc + day.total.connected, 0)}
-                                    </td>
-                                    <td>
-                                        {formatDuration(dayWiseData.reduce((acc, day) => acc + day.total.duration, 0))}
-                                    </td>
-
-
-                                    <td>
-                                        {dayWiseData.reduce((acc, day) => acc + day.before10.calls, 0)}
-                                    </td>
-                                    <td>
-                                        {dayWiseData.reduce((acc, day) => acc + day.before10.connected, 0)}
-                                    </td>
-                                    <td>
-                                        {formatDuration(dayWiseData.reduce((acc, day) => acc + day.before10.duration, 0))}
-                                    </td>
-
-
-                                    <td>
-                                        {dayWiseData.reduce((acc, day) => acc + day.hr10.calls, 0)}
-                                    </td>
-                                    <td>
-                                        {dayWiseData.reduce((acc, day) => acc + day.hr10.connected, 0)}
-                                    </td>
-                                    <td>
-                                        {formatDuration(dayWiseData.reduce((acc, day) => acc + day.hr10.duration, 0))}
-                                    </td>
-
-
-
-                                    <td>
-                                        {dayWiseData.reduce((acc, day) => acc + day.hr11.calls, 0)}
-                                    </td>
-                                    <td>
-                                        {dayWiseData.reduce((acc, day) => acc + day.hr11.connected, 0)}
-                                    </td>
-                                    <td>
-                                        {formatDuration(dayWiseData.reduce((acc, day) => acc + day.hr11.duration, 0))}
-                                    </td>
-
-
-                                    <td>
-                                        {dayWiseData.reduce((acc, day) => acc + day.hr12.calls, 0)}
-                                    </td>
-                                    <td>
-                                        {dayWiseData.reduce((acc, day) => acc + day.hr12.connected, 0)}
-                                    </td>
-                                    <td>
-                                        {formatDuration(dayWiseData.reduce((acc, day) => acc + day.hr12.duration, 0))}
-                                    </td>
-
-
-                                    <td>
-                                        {dayWiseData.reduce((acc, day) => acc + day.hr13.calls, 0)}
-                                    </td>
-                                    <td>
-                                        {dayWiseData.reduce((acc, day) => acc + day.hr13.connected, 0)}
-                                    </td>
-                                    <td>
-                                        {formatDuration(dayWiseData.reduce((acc, day) => acc + day.hr13.duration, 0))}
-                                    </td>
-
-
-                                    <td>
-                                        {dayWiseData.reduce((acc, day) => acc + day.hr14.calls, 0)}
-                                    </td>
-                                    <td>
-                                        {dayWiseData.reduce((acc, day) => acc + day.hr14.connected, 0)}
-                                    </td>
-                                    <td>
-                                        {formatDuration(dayWiseData.reduce((acc, day) => acc + day.hr14.duration, 0))}
-                                    </td>
-
-
-                                    <td>
-                                        {dayWiseData.reduce((acc, day) => acc + day.hr15.calls, 0)}
-                                    </td>
-                                    <td>
-                                        {dayWiseData.reduce((acc, day) => acc + day.hr15.connected, 0)}
-                                    </td>
-                                    <td>
-                                        {formatDuration(dayWiseData.reduce((acc, day) => acc + day.hr15.duration, 0))}
-                                    </td>
-
-
-                                    <td>
-                                        {dayWiseData.reduce((acc, day) => acc + day.hr16.calls, 0)}
-                                    </td>
-                                    <td>
-                                        {dayWiseData.reduce((acc, day) => acc + day.hr16.connected, 0)}
-                                    </td>
-                                    <td>
-                                        {formatDuration(dayWiseData.reduce((acc, day) => acc + day.hr16.duration, 0))}
-                                    </td>
-
-
-                                    <td>
-                                        {dayWiseData.reduce((acc, day) => acc + day.hr17.calls, 0)}
-                                    </td>
-                                    <td>
-                                        {dayWiseData.reduce((acc, day) => acc + day.hr17.connected, 0)}
-                                    </td>
-                                    <td>
-                                        {formatDuration(dayWiseData.reduce((acc, day) => acc + day.hr17.duration, 0))}
-                                    </td>
-
-
-                                    <td>
-                                        {dayWiseData.reduce((acc, day) => acc + day.hr18.calls, 0)}
-                                    </td>
-                                    <td>
-                                        {dayWiseData.reduce((acc, day) => acc + day.hr18.connected, 0)}
-                                    </td>
-                                    <td>
-                                        {formatDuration(dayWiseData.reduce((acc, day) => acc + day.hr18.duration, 0))}
-                                    </td>
-
-
-                                    <td>
-                                        {dayWiseData.reduce((acc, day) => acc + day.after19.calls, 0)}
-                                    </td>
-                                    <td>
-                                        {dayWiseData.reduce((acc, day) => acc + day.after19.connected, 0)}
-                                    </td>
-                                    <td>
-                                        {formatDuration(dayWiseData.reduce((acc, day) => acc + day.after19.duration, 0))}
-                                    </td>
-                                </tr>
-
-                      
-                                <tr>
-                                    <td>Daily Average</td>
-                                    <td>
-                                        {dayWiseData.reduce((acc, day) => acc + day.total.calls, 0) / dayWiseData.length}
-                                    </td>
-                                    <td>
-                                        {dayWiseData.reduce((acc, day) => acc + day.total.connected, 0) / dayWiseData.length}
-                                    </td>
-                                    <td>
-                                        {formatDuration(dayWiseData.reduce((acc, day) => acc + day.total.duration, 0) / dayWiseData.length)}
-                                    </td>
-
-
-
-                                    <td>
-                                        {dayWiseData.reduce((acc, day) => acc + day.before10.calls, 0) / dayWiseData.length}
-                                    </td>
-                                    <td>
-                                        {dayWiseData.reduce((acc, day) => acc + day.before10.connected, 0) / dayWiseData.length}
-                                    </td>
-                                    <td>
-                                        {formatDuration(dayWiseData.reduce((acc, day) => acc + day.before10.duration, 0) / dayWiseData.length)}
-                                    </td>
-
-
-
-                                    <td>
-                                        {dayWiseData.reduce((acc, day) => acc + day.hr10.calls, 0) / dayWiseData.length}
-                                    </td>
-                                    <td>
-                                        {dayWiseData.reduce((acc, day) => acc + day.hr10.connected, 0) / dayWiseData.length}
-                                    </td>
-                                    <td>
-                                        {formatDuration(dayWiseData.reduce((acc, day) => acc + day.hr10.duration, 0) / dayWiseData.length)}
-                                    </td>
-
-
-
-                                    <td>
-                                        {dayWiseData.reduce((acc, day) => acc + day.hr11.calls, 0) / dayWiseData.length}
-                                    </td>
-                                    <td>
-                                        {dayWiseData.reduce((acc, day) => acc + day.hr11.connected, 0) / dayWiseData.length}
-                                    </td>
-                                    <td>
-                                        {formatDuration(dayWiseData.reduce((acc, day) => acc + day.hr11.duration, 0) / dayWiseData.length)}
-                                    </td>
-
-
-
-                                    <td>
-                                        {dayWiseData.reduce((acc, day) => acc + day.hr12.calls, 0) / dayWiseData.length}
-                                    </td>
-                                    <td>
-                                        {dayWiseData.reduce((acc, day) => acc + day.hr12.connected, 0) / dayWiseData.length}
-                                    </td>
-                                    <td>
-                                        {formatDuration(dayWiseData.reduce((acc, day) => acc + day.hr12.duration, 0) / dayWiseData.length)}
-                                    </td>
-
-
-
-                                    <td>
-                                        {dayWiseData.reduce((acc, day) => acc + day.hr13.calls, 0) / dayWiseData.length}
-                                    </td>
-                                    <td>
-                                        {dayWiseData.reduce((acc, day) => acc + day.hr13.connected, 0) / dayWiseData.length}
-                                    </td>
-                                    <td>
-                                        {formatDuration(dayWiseData.reduce((acc, day) => acc + day.hr13.duration, 0) / dayWiseData.length)}
-                                    </td>
-
-
-
-                                    <td>
-                                        {dayWiseData.reduce((acc, day) => acc + day.hr14.calls, 0) / dayWiseData.length}
-                                    </td>
-                                    <td>
-                                        {dayWiseData.reduce((acc, day) => acc + day.hr14.connected, 0) / dayWiseData.length}
-                                    </td>
-                                    <td>
-                                        {formatDuration(dayWiseData.reduce((acc, day) => acc + day.hr14.duration, 0) / dayWiseData.length)}
-                                    </td>
-
-
-
-                                    <td>
-                                        {dayWiseData.reduce((acc, day) => acc + day.hr15.calls, 0) / dayWiseData.length}
-                                    </td>
-                                    <td>
-                                        {dayWiseData.reduce((acc, day) => acc + day.hr15.connected, 0) / dayWiseData.length}
-                                    </td>
-                                    <td>
-                                        {formatDuration(dayWiseData.reduce((acc, day) => acc + day.hr15.duration, 0) / dayWiseData.length)}
-                                    </td>
-
-
-
-                                    <td>
-                                        {dayWiseData.reduce((acc, day) => acc + day.hr16.calls, 0) / dayWiseData.length}
-                                    </td>
-                                    <td>
-                                        {dayWiseData.reduce((acc, day) => acc + day.hr16.connected, 0) / dayWiseData.length}
-                                    </td>
-                                    <td>
-                                        {formatDuration(dayWiseData.reduce((acc, day) => acc + day.hr16.duration, 0) / dayWiseData.length)}
-                                    </td>
-
-
-
-                                    <td>
-                                        {dayWiseData.reduce((acc, day) => acc + day.hr17.calls, 0) / dayWiseData.length}
-                                    </td>
-                                    <td>
-                                        {dayWiseData.reduce((acc, day) => acc + day.hr17.connected, 0) / dayWiseData.length}
-                                    </td>
-                                    <td>
-                                        {formatDuration(dayWiseData.reduce((acc, day) => acc + day.hr17.duration, 0) / dayWiseData.length)}
-                                    </td>
-
-
-
-                                    <td>
-                                        {dayWiseData.reduce((acc, day) => acc + day.hr18.calls, 0) / dayWiseData.length}
-                                    </td>
-                                    <td>
-                                        {dayWiseData.reduce((acc, day) => acc + day.hr18.connected, 0) / dayWiseData.length}
-                                    </td>
-                                    <td>
-                                        {formatDuration(dayWiseData.reduce((acc, day) => acc + day.hr18.duration, 0) / dayWiseData.length)}
-                                    </td>
-
-
-
-                                    <td>
-                                        {dayWiseData.reduce((acc, day) => acc + day.after19.calls, 0) / dayWiseData.length}
-                                    </td>
-                                    <td>
-                                        {dayWiseData.reduce((acc, day) => acc + day.after19.connected, 0) / dayWiseData.length}
-                                    </td>
-                                    <td>
-                                        {formatDuration(dayWiseData.reduce((acc, day) => acc + day.after19.duration, 0) / dayWiseData.length)}
-                                    </td>
-                                </tr>
-
-                   
-                                <tr>
-                                    <td>No of Days with no calls in Time Slot</td>
-                                    <td>
-                                        {dayWiseData.filter(day => day.totalCalls === 0).length}
-                                    </td>
-                                    <td></td>
-                                    <td></td>
-
-
-                                    <td>
-                                        {dayWiseData.filter(day => day.before10.calls === 0).length}
-                                    </td>
-                                    <td></td>
-                                    <td></td>
-
-
-                                    <td>
-                                        {dayWiseData.filter(day => day.hr10.calls === 0).length}
-                                    </td>
-                                    <td></td>
-                                    <td></td>
-
-
-                                    <td>
-                                        {dayWiseData.filter(day => day.hr11.calls === 0).length}
-                                    </td>
-                                    <td></td>
-                                    <td></td>
-
-
-                                    <td>
-                                        {dayWiseData.filter(day => day.hr12.calls === 0).length}
-                                    </td>
-                                    <td></td>
-                                    <td></td>
-
-
-                                    <td>
-                                        {dayWiseData.filter(day => day.hr13.calls === 0).length}
-                                    </td>
-                                    <td></td>
-                                    <td></td>
-
-
-                                    <td>
-                                        {dayWiseData.filter(day => day.hr14.calls === 0).length}
-                                    </td>
-                                    <td></td>
-                                    <td></td>
-
-
-                                    <td>
-                                        {dayWiseData.filter(day => day.hr15.calls === 0).length}
-                                    </td>
-                                    <td></td>
-                                    <td></td>
-
-
-                                    <td>
-                                        {dayWiseData.filter(day => day.hr16.calls === 0).length}
-                                    </td>
-                                    <td></td>
-                                    <td></td>
-
-
-                                    <td>
-                                        {dayWiseData.filter(day => day.hr17.calls === 0).length}
-                                    </td>
-                                    <td></td>
-                                    <td></td>
-
-
-                                    <td>
-                                        {dayWiseData.filter(day => day.hr18.calls === 0).length}
-                                    </td>
-                                    <td></td>
-                                    <td></td>
-
-
-                                    <td>
-                                        {dayWiseData.filter(day => day.after19.calls === 0).length}
-                                    </td>
-                                    <td></td>
-                                    <td></td>
-
-                                </tr>
-                            </tbody>
-
-                        </table> */}
-
                         <table>
                             <thead>
                                 <tr style={{
@@ -947,34 +415,284 @@ const DayWiseAnalysisReport = () => {
                                         )}
                                     </td>
 
-                                    {timeSlotsSummery.map((slot, index) => {
-                                        return (
-                                            <React.Fragment key={index}>
-                                                <td>
-                                                    {summaryData.reduce((acc, day) => {
-                                                        const slotData = day.hourlySlots?.[slot];
-                                                        return acc + (slotData?.totalCalls || 0);
-                                                    }, 0)}
-                                                </td>
+                                    <td>
+                                        {summaryData.reduce((acc, day) => {
+                                            const hourData = day.hourlySlots?.find(
+                                                (h) => clean(h.hourSlot) === clean("10:00 - 10:59")
+                                            );
+                                            return acc + (hourData?.totalCalls || 0);
+                                        }, 0)}
+                                    </td>
 
-                                                <td>
-                                                    {summaryData.reduce((acc, day) => {
-                                                        const slotData = day.hourlySlots?.[slot];
-                                                        return acc + (slotData?.connected || 0);
-                                                    }, 0)}
-                                                </td>
+                                    <td>
+                                        {summaryData.reduce((acc, day) => {
+                                            const hourData = day.hourlySlots?.find(
+                                                (h) => clean(h.hourSlot) === clean("10:00 - 10:59")
+                                            );
+                                            return acc + (hourData?.connected || 0);
+                                        }, 0)}
+                                    </td>
 
-                                                <td>
-                                                    {formatDuration(
-                                                        summaryData.reduce((acc, day) => {
-                                                            const slotData = day.hourlySlots?.[slot];
-                                                            return acc + (slotData?.duration || 0);
-                                                        }, 0)
-                                                    )}
-                                                </td>
-                                            </React.Fragment>
-                                        );
-                                    })}
+                                    <td>
+                                        {formatDuration(
+                                            summaryData.reduce((acc, day) => {
+                                                const hourData = day.hourlySlots?.find(
+                                                    (h) => clean(h.hourSlot) === clean("10:00 - 10:59")
+                                                );
+
+                                                return acc + convertToSeconds(hourData?.duration || "0h 0m 0s");
+                                            }, 0)
+                                        )}
+                                    </td>
+
+                                    <td>
+                                        {summaryData.reduce((acc, day) => {
+                                            const hourData = day.hourlySlots?.find(
+                                                (h) => clean(h.hourSlot) === clean("11:00 - 11:59")
+                                            );
+                                            return acc + (hourData?.totalCalls || 0);
+                                        }, 0)}
+                                    </td>
+
+                                    <td>
+                                        {summaryData.reduce((acc, day) => {
+                                            const hourData = day.hourlySlots?.find(
+                                                (h) => clean(h.hourSlot) === clean("11:00 - 11:59")
+                                            );
+                                            return acc + (hourData?.connected || 0);
+                                        }, 0)}
+                                    </td>
+
+                                    <td>
+                                        {formatDuration(
+                                            summaryData.reduce((acc, day) => {
+                                                const hourData = day.hourlySlots?.find(
+                                                    (h) => clean(h.hourSlot) === clean("11:00 - 11:59")
+                                                );
+
+                                                return acc + convertToSeconds(hourData?.duration || "0h 0m 0s");
+                                            }, 0)
+                                        )}
+                                    </td>
+
+
+                                    <td>
+                                        {summaryData.reduce((acc, day) => {
+                                            const hourData = day.hourlySlots?.find(
+                                                (h) => clean(h.hourSlot) === clean("12:00 - 12:59")
+                                            );
+                                            return acc + (hourData?.totalCalls || 0);
+                                        }, 0)}
+                                    </td>
+
+                                    <td>
+                                        {summaryData.reduce((acc, day) => {
+                                            const hourData = day.hourlySlots?.find(
+                                                (h) => clean(h.hourSlot) === clean("12:00 - 12:59")
+                                            );
+                                            return acc + (hourData?.connected || 0);
+                                        }, 0)}
+                                    </td>
+
+                                    <td>
+                                        {formatDuration(
+                                            summaryData.reduce((acc, day) => {
+                                                const hourData = day.hourlySlots?.find(
+                                                    (h) => clean(h.hourSlot) === clean("12:00 - 12:59")
+                                                );
+
+                                                return acc + convertToSeconds(hourData?.duration || "0h 0m 0s");
+                                            }, 0)
+                                        )}
+                                    </td>
+
+                                    <td>
+                                        {summaryData.reduce((acc, day) => {
+                                            const hourData = day.hourlySlots?.find(
+                                                (h) => clean(h.hourSlot) === clean("13:00 - 13:59")
+                                            );
+                                            return acc + (hourData?.totalCalls || 0);
+                                        }, 0)}
+                                    </td>
+
+                                    <td>
+                                        {summaryData.reduce((acc, day) => {
+                                            const hourData = day.hourlySlots?.find(
+                                                (h) => clean(h.hourSlot) === clean("13:00 - 13:59")
+                                            );
+                                            return acc + (hourData?.connected || 0);
+                                        }, 0)}
+                                    </td>
+
+                                    <td>
+                                        {formatDuration(
+                                            summaryData.reduce((acc, day) => {
+                                                const hourData = day.hourlySlots?.find(
+                                                    (h) => clean(h.hourSlot) === clean("13:00 - 13:59")
+                                                );
+
+                                                return acc + convertToSeconds(hourData?.duration || "0h 0m 0s");
+                                            }, 0)
+                                        )}
+                                    </td>
+
+                                    <td>
+                                        {summaryData.reduce((acc, day) => {
+                                            const hourData = day.hourlySlots?.find(
+                                                (h) => clean(h.hourSlot) === clean("14:00 - 14:59")
+                                            );
+                                            return acc + (hourData?.totalCalls || 0);
+                                        }, 0)}
+                                    </td>
+
+                                    <td>
+                                        {summaryData.reduce((acc, day) => {
+                                            const hourData = day.hourlySlots?.find(
+                                                (h) => clean(h.hourSlot) === clean("14:00 - 14:59")
+                                            );
+                                            return acc + (hourData?.connected || 0);
+                                        }, 0)}
+                                    </td>
+
+                                    <td>
+                                        {formatDuration(
+                                            summaryData.reduce((acc, day) => {
+                                                const hourData = day.hourlySlots?.find(
+                                                    (h) => clean(h.hourSlot) === clean("14:00 - 14:59")
+                                                );
+
+                                                return acc + convertToSeconds(hourData?.duration || "0h 0m 0s");
+                                            }, 0)
+                                        )}
+                                    </td>
+
+                                    <td>
+                                        {summaryData.reduce((acc, day) => {
+                                            const hourData = day.hourlySlots?.find(
+                                                (h) => clean(h.hourSlot) === clean("15:00 - 15:59")
+                                            );
+                                            return acc + (hourData?.totalCalls || 0);
+                                        }, 0)}
+                                    </td>
+
+                                    <td>
+                                        {summaryData.reduce((acc, day) => {
+                                            const hourData = day.hourlySlots?.find(
+                                                (h) => clean(h.hourSlot) === clean("15:00 - 15:59")
+                                            );
+                                            return acc + (hourData?.connected || 0);
+                                        }, 0)}
+                                    </td>
+
+                                    <td>
+                                        {formatDuration(
+                                            summaryData.reduce((acc, day) => {
+                                                const hourData = day.hourlySlots?.find(
+                                                    (h) => clean(h.hourSlot) === clean("15:00 - 15:59")
+                                                );
+
+                                                return acc + convertToSeconds(hourData?.duration || "0h 0m 0s");
+                                            }, 0)
+                                        )}
+                                    </td>
+
+
+
+                                    <td>
+                                        {summaryData.reduce((acc, day) => {
+                                            const hourData = day.hourlySlots?.find(
+                                                (h) => clean(h.hourSlot) === clean("16:00 - 16:59")
+                                            );
+                                            return acc + (hourData?.totalCalls || 0);
+                                        }, 0)}
+                                    </td>
+
+                                    <td>
+                                        {summaryData.reduce((acc, day) => {
+                                            const hourData = day.hourlySlots?.find(
+                                                (h) => clean(h.hourSlot) === clean("16:00 - 16:59")
+                                            );
+                                            return acc + (hourData?.connected || 0);
+                                        }, 0)}
+                                    </td>
+
+                                    <td>
+                                        {formatDuration(
+                                            summaryData.reduce((acc, day) => {
+                                                const hourData = day.hourlySlots?.find(
+                                                    (h) => clean(h.hourSlot) === clean("16:00 - 16:59")
+                                                );
+
+                                                return acc + convertToSeconds(hourData?.duration || "0h 0m 0s");
+                                            }, 0)
+                                        )}
+                                    </td>
+
+
+                                    <td>
+                                        {summaryData.reduce((acc, day) => {
+                                            const hourData = day.hourlySlots?.find(
+                                                (h) => clean(h.hourSlot) === clean("17:00 - 17:59")
+                                            );
+                                            return acc + (hourData?.totalCalls || 0);
+                                        }, 0)}
+                                    </td>
+
+                                    <td>
+                                        {summaryData.reduce((acc, day) => {
+                                            const hourData = day.hourlySlots?.find(
+                                                (h) => clean(h.hourSlot) === clean("17:00 - 17:59")
+                                            );
+                                            return acc + (hourData?.connected || 0);
+                                        }, 0)}
+                                    </td>
+
+                                    <td>
+                                        {formatDuration(
+                                            summaryData.reduce((acc, day) => {
+                                                const hourData = day.hourlySlots?.find(
+                                                    (h) => clean(h.hourSlot) === clean("17:00 - 17:59")
+                                                );
+
+                                                return acc + convertToSeconds(hourData?.duration || "0h 0m 0s");
+                                            }, 0)
+                                        )}
+                                    </td>
+
+
+                                    <td>
+                                        {summaryData.reduce((acc, day) => {
+                                            const hourData = day.hourlySlots?.find(
+                                                (h) => clean(h.hourSlot) === clean("18:00 - 18:59")
+                                            );
+                                            return acc + (hourData?.totalCalls || 0);
+                                        }, 0)}
+                                    </td>
+
+                                    <td>
+                                        {summaryData.reduce((acc, day) => {
+                                            const hourData = day.hourlySlots?.find(
+                                                (h) => clean(h.hourSlot) === clean("18:00 - 18:59")
+                                            );
+                                            return acc + (hourData?.connected || 0);
+                                        }, 0)}
+                                    </td>
+
+                                    <td>
+                                        {formatDuration(
+                                            summaryData.reduce((acc, day) => {
+                                                const hourData = day.hourlySlots?.find(
+                                                    (h) => clean(h.hourSlot) === clean("18:00 - 18:59")
+                                                );
+
+                                                return acc + convertToSeconds(hourData?.duration || "0h 0m 0s");
+                                            }, 0)
+                                        )}
+                                    </td>
+
+
+
+
 
                                     <td>
                                         {summaryData.reduce((acc, day) => acc + day.after19.totalCalls, 0)}
@@ -1033,23 +751,324 @@ const DayWiseAnalysisReport = () => {
                                         )}
                                     </td>
 
-                                    {timeSlotsSummery.map((slot, index) => {
-                                        const key = slotToKey[slot];
+                                    <td>
+                                        {(
+                                            summaryData.reduce((acc, day) => {
+                                                const h = day.hourlySlots?.find(
+                                                    (x) => clean(x.hourSlot) === clean("10:00 - 10:59")
+                                                );
+                                                return acc + (h?.totalCalls || 0);
+                                            }, 0) / summaryData.length
+                                        ).toFixed(2)}
+                                    </td>
 
-                                        return (
-                                            <React.Fragment key={index}>
-                                                <td>
-                                                    {summaryData.reduce((acc, day) => acc + day[key]?.totalCalls, 0) / summaryData.length}
-                                                </td>
-                                                <td>
-                                                    {summaryData.reduce((acc, day) => acc + day[key]?.connected, 0) / summaryData.length}
-                                                </td>
-                                                <td>
-                                                    {formatDuration(summaryData.reduce((acc, day) => acc + day[key]?.duration, 0) / summaryData.length)}
-                                                </td>
-                                            </React.Fragment>
-                                        );
-                                    })}
+                                    <td>
+                                        {(
+                                            summaryData.reduce((acc, day) => {
+                                                const h = day.hourlySlots?.find(
+                                                    (x) => clean(x.hourSlot) === clean("10:00 - 10:59")
+                                                );
+                                                return acc + (h?.connected || 0);
+                                            }, 0) / summaryData.length
+                                        ).toFixed(2)}
+                                    </td>
+
+                                    <td>
+                                        {formatDuration(
+                                            (
+                                                summaryData.reduce((acc, day) => {
+                                                    const h = day.hourlySlots?.find(
+                                                        (x) => clean(x.hourSlot) === clean("10:00 - 10:59")
+                                                    );
+                                                    return acc + convertToSeconds(h?.duration || "0h 0m 0s");
+                                                }, 0) / summaryData.length
+                                            )
+                                        )}
+                                    </td>
+
+
+                                    <td>
+                                        {(
+                                            summaryData.reduce((acc, day) => {
+                                                const h = day.hourlySlots?.find(
+                                                    (x) => clean(x.hourSlot) === clean("11:00 - 11:59")
+                                                );
+                                                return acc + (h?.totalCalls || 0);
+                                            }, 0) / summaryData.length
+                                        ).toFixed(2)}
+                                    </td>
+
+                                    <td>
+                                        {(
+                                            summaryData.reduce((acc, day) => {
+                                                const h = day.hourlySlots?.find(
+                                                    (x) => clean(x.hourSlot) === clean("11:00 - 11:59")
+                                                );
+                                                return acc + (h?.connected || 0);
+                                            }, 0) / summaryData.length
+                                        ).toFixed(2)}
+                                    </td>
+
+                                    <td>
+                                        {formatDuration(
+                                            (
+                                                summaryData.reduce((acc, day) => {
+                                                    const h = day.hourlySlots?.find(
+                                                        (x) => clean(x.hourSlot) === clean("11:00 - 11:59")
+                                                    );
+                                                    return acc + convertToSeconds(h?.duration || "0h 0m 0s");
+                                                }, 0) / summaryData.length
+                                            )
+                                        )}
+                                    </td>
+
+                                    <td>
+                                        {(
+                                            summaryData.reduce((acc, day) => {
+                                                const h = day.hourlySlots?.find(
+                                                    (x) => clean(x.hourSlot) === clean("12:00 - 12:59")
+                                                );
+                                                return acc + (h?.totalCalls || 0);
+                                            }, 0) / summaryData.length
+                                        ).toFixed(2)}
+                                    </td>
+
+                                    <td>
+                                        {(
+                                            summaryData.reduce((acc, day) => {
+                                                const h = day.hourlySlots?.find(
+                                                    (x) => clean(x.hourSlot) === clean("12:00 - 12:59")
+                                                );
+                                                return acc + (h?.connected || 0);
+                                            }, 0) / summaryData.length
+                                        ).toFixed(2)}
+                                    </td>
+
+                                    <td>
+                                        {formatDuration(
+                                            (
+                                                summaryData.reduce((acc, day) => {
+                                                    const h = day.hourlySlots?.find(
+                                                        (x) => clean(x.hourSlot) === clean("12:00 - 12:59")
+                                                    );
+                                                    return acc + convertToSeconds(h?.duration || "0h 0m 0s");
+                                                }, 0) / summaryData.length
+                                            )
+                                        )}
+                                    </td>
+
+
+                                    <td>
+                                        {(
+                                            summaryData.reduce((acc, day) => {
+                                                const h = day.hourlySlots?.find(
+                                                    (x) => clean(x.hourSlot) === clean("13:00 - 13:59")
+                                                );
+                                                return acc + (h?.totalCalls || 0);
+                                            }, 0) / summaryData.length
+                                        ).toFixed(2)}
+                                    </td>
+
+                                    <td>
+                                        {(
+                                            summaryData.reduce((acc, day) => {
+                                                const h = day.hourlySlots?.find(
+                                                    (x) => clean(x.hourSlot) === clean("13:00 - 13:59")
+                                                );
+                                                return acc + (h?.connected || 0);
+                                            }, 0) / summaryData.length
+                                        ).toFixed(2)}
+                                    </td>
+
+                                    <td>
+                                        {formatDuration(
+                                            (
+                                                summaryData.reduce((acc, day) => {
+                                                    const h = day.hourlySlots?.find(
+                                                        (x) => clean(x.hourSlot) === clean("13:00 - 13:59")
+                                                    );
+                                                    return acc + convertToSeconds(h?.duration || "0h 0m 0s");
+                                                }, 0) / summaryData.length
+                                            )
+                                        )}
+                                    </td>
+
+
+                                    <td>
+                                        {(
+                                            summaryData.reduce((acc, day) => {
+                                                const h = day.hourlySlots?.find(
+                                                    (x) => clean(x.hourSlot) === clean("14:00 - 14:59")
+                                                );
+                                                return acc + (h?.totalCalls || 0);
+                                            }, 0) / summaryData.length
+                                        ).toFixed(2)}
+                                    </td>
+
+                                    <td>
+                                        {(
+                                            summaryData.reduce((acc, day) => {
+                                                const h = day.hourlySlots?.find(
+                                                    (x) => clean(x.hourSlot) === clean("14:00 - 14:59")
+                                                );
+                                                return acc + (h?.connected || 0);
+                                            }, 0) / summaryData.length
+                                        ).toFixed(2)}
+                                    </td>
+
+                                    <td>
+                                        {formatDuration(
+                                            (
+                                                summaryData.reduce((acc, day) => {
+                                                    const h = day.hourlySlots?.find(
+                                                        (x) => clean(x.hourSlot) === clean("14:00 - 14:59")
+                                                    );
+                                                    return acc + convertToSeconds(h?.duration || "0h 0m 0s");
+                                                }, 0) / summaryData.length
+                                            )
+                                        )}
+                                    </td>
+
+                                    <td>
+                                        {(
+                                            summaryData.reduce((acc, day) => {
+                                                const h = day.hourlySlots?.find(
+                                                    (x) => clean(x.hourSlot) === clean("15:00 - 15:59")
+                                                );
+                                                return acc + (h?.totalCalls || 0);
+                                            }, 0) / summaryData.length
+                                        ).toFixed(2)}
+                                    </td>
+
+                                    <td>
+                                        {(
+                                            summaryData.reduce((acc, day) => {
+                                                const h = day.hourlySlots?.find(
+                                                    (x) => clean(x.hourSlot) === clean("15:00 - 15:59")
+                                                );
+                                                return acc + (h?.connected || 0);
+                                            }, 0) / summaryData.length
+                                        ).toFixed(2)}
+                                    </td>
+
+                                    <td>
+                                        {formatDuration(
+                                            (
+                                                summaryData.reduce((acc, day) => {
+                                                    const h = day.hourlySlots?.find(
+                                                        (x) => clean(x.hourSlot) === clean("15:00 - 15:59")
+                                                    );
+                                                    return acc + convertToSeconds(h?.duration || "0h 0m 0s");
+                                                }, 0) / summaryData.length
+                                            )
+                                        )}
+                                    </td>
+
+                                    <td>
+                                        {(
+                                            summaryData.reduce((acc, day) => {
+                                                const h = day.hourlySlots?.find(
+                                                    (x) => clean(x.hourSlot) === clean("16:00 - 16:59")
+                                                );
+                                                return acc + (h?.totalCalls || 0);
+                                            }, 0) / summaryData.length
+                                        ).toFixed(2)}
+                                    </td>
+
+                                    <td>
+                                        {(
+                                            summaryData.reduce((acc, day) => {
+                                                const h = day.hourlySlots?.find(
+                                                    (x) => clean(x.hourSlot) === clean("16:00 - 16:59")
+                                                );
+                                                return acc + (h?.connected || 0);
+                                            }, 0) / summaryData.length
+                                        ).toFixed(2)}
+                                    </td>
+
+                                    <td>
+                                        {formatDuration(
+                                            (
+                                                summaryData.reduce((acc, day) => {
+                                                    const h = day.hourlySlots?.find(
+                                                        (x) => clean(x.hourSlot) === clean("16:00 - 16:59")
+                                                    );
+                                                    return acc + convertToSeconds(h?.duration || "0h 0m 0s");
+                                                }, 0) / summaryData.length
+                                            )
+                                        )}
+                                    </td>
+
+
+                                    <td>
+                                        {(
+                                            summaryData.reduce((acc, day) => {
+                                                const h = day.hourlySlots?.find(
+                                                    (x) => clean(x.hourSlot) === clean("17:00 - 17:59")
+                                                );
+                                                return acc + (h?.totalCalls || 0);
+                                            }, 0) / summaryData.length
+                                        ).toFixed(2)}
+                                    </td>
+
+                                    <td>
+                                        {(
+                                            summaryData.reduce((acc, day) => {
+                                                const h = day.hourlySlots?.find(
+                                                    (x) => clean(x.hourSlot) === clean("17:00 - 17:59")
+                                                );
+                                                return acc + (h?.connected || 0);
+                                            }, 0) / summaryData.length
+                                        ).toFixed(2)}
+                                    </td>
+
+                                    <td>
+                                        {formatDuration(
+                                            (
+                                                summaryData.reduce((acc, day) => {
+                                                    const h = day.hourlySlots?.find(
+                                                        (x) => clean(x.hourSlot) === clean("17:00 - 17:59")
+                                                    );
+                                                    return acc + convertToSeconds(h?.duration || "0h 0m 0s");
+                                                }, 0) / summaryData.length
+                                            )
+                                        )}
+                                    </td>
+
+                                    <td>
+                                        {(
+                                            summaryData.reduce((acc, day) => {
+                                                const h = day.hourlySlots?.find(
+                                                    (x) => clean(x.hourSlot) === clean("18:00 - 18:59")
+                                                );
+                                                return acc + (h?.totalCalls || 0);
+                                            }, 0) / summaryData.length
+                                        ).toFixed(2)}
+                                    </td>
+
+                                    <td>
+                                        {(
+                                            summaryData.reduce((acc, day) => {
+                                                const h = day.hourlySlots?.find(
+                                                    (x) => clean(x.hourSlot) === clean("18:00 - 18:59")
+                                                );
+                                                return acc + (h?.connected || 0);
+                                            }, 0) / summaryData.length
+                                        ).toFixed(2)}
+                                    </td>
+
+                                    <td>
+                                        {formatDuration(
+                                            (
+                                                summaryData.reduce((acc, day) => {
+                                                    const h = day.hourlySlots?.find(
+                                                        (x) => clean(x.hourSlot) === clean("18:00 - 18:59")
+                                                    );
+                                                    return acc + convertToSeconds(h?.duration || "0h 0m 0s");
+                                                }, 0) / summaryData.length
+                                            )
+                                        )}
+                                    </td>
 
                                     <td>
                                         {(
@@ -1085,69 +1104,124 @@ const DayWiseAnalysisReport = () => {
                                     <td></td>
                                     <td></td>
 
+                                    <td>
+                                        {
+                                            summaryData.filter(day => {
+                                                const h = day.hourlySlots?.find(
+                                                    (x) => clean(x.hourSlot) === clean("10:00 - 10:59")
+                                                );
+                                                return (h?.totalCalls || 0) === 0;
+                                            }).length
+                                        }
+                                    </td>
+                                    <td></td>
+                                    <td></td>
 
                                     <td>
-                                        {dayWiseData.filter(day => day.hr10.calls === 0).length}
+                                        {
+                                            summaryData.filter(day => {
+                                                const h = day.hourlySlots?.find(
+                                                    (x) => clean(x.hourSlot) === clean("11:00 - 11:59")
+                                                );
+                                                return (h?.totalCalls || 0) === 0;
+                                            }).length
+                                        }
+                                    </td>
+                                    <td></td>
+                                    <td></td>
+
+                                    <td>
+                                        {
+                                            summaryData.filter(day => {
+                                                const h = day.hourlySlots?.find(
+                                                    (x) => clean(x.hourSlot) === clean("12:00 - 12:59")
+                                                );
+                                                return (h?.totalCalls || 0) === 0;
+                                            }).length
+                                        }
+                                    </td>
+                                    <td></td>
+                                    <td></td>
+
+                                    <td>
+                                        {
+                                            summaryData.filter(day => {
+                                                const h = day.hourlySlots?.find(
+                                                    (x) => clean(x.hourSlot) === clean("13:00 - 13:59")
+                                                );
+                                                return (h?.totalCalls || 0) === 0;
+                                            }).length
+                                        }
+                                    </td>
+                                    <td></td>
+                                    <td></td>
+
+                                    <td>
+                                        {
+                                            summaryData.filter(day => {
+                                                const h = day.hourlySlots?.find(
+                                                    (x) => clean(x.hourSlot) === clean("14:00 - 14:59")
+                                                );
+                                                return (h?.totalCalls || 0) === 0;
+                                            }).length
+                                        }
+                                    </td>
+                                    <td></td>
+                                    <td></td>
+
+                                    <td>
+                                        {
+                                            summaryData.filter(day => {
+                                                const h = day.hourlySlots?.find(
+                                                    (x) => clean(x.hourSlot) === clean("15:00 - 15:59")
+                                                );
+                                                return (h?.totalCalls || 0) === 0;
+                                            }).length
+                                        }
+                                    </td>
+                                    <td></td>
+                                    <td></td>
+
+                                    <td>
+                                        {
+                                            summaryData.filter(day => {
+                                                const h = day.hourlySlots?.find(
+                                                    (x) => clean(x.hourSlot) === clean("16:00 - 16:59")
+                                                );
+                                                return (h?.totalCalls || 0) === 0;
+                                            }).length
+                                        }
                                     </td>
                                     <td></td>
                                     <td></td>
 
 
                                     <td>
-                                        {dayWiseData.filter(day => day.hr11.calls === 0).length}
+                                        {
+                                            summaryData.filter(day => {
+                                                const h = day.hourlySlots?.find(
+                                                    (x) => clean(x.hourSlot) === clean("17:00 - 17:59")
+                                                );
+                                                return (h?.totalCalls || 0) === 0;
+                                            }).length
+                                        }
                                     </td>
                                     <td></td>
                                     <td></td>
 
 
                                     <td>
-                                        {dayWiseData.filter(day => day.hr12.calls === 0).length}
+                                        {
+                                            summaryData.filter(day => {
+                                                const h = day.hourlySlots?.find(
+                                                    (x) => clean(x.hourSlot) === clean("18:00 - 18:59")
+                                                );
+                                                return (h?.totalCalls || 0) === 0;
+                                            }).length
+                                        }
                                     </td>
                                     <td></td>
                                     <td></td>
-
-
-                                    <td>
-                                        {dayWiseData.filter(day => day.hr13.calls === 0).length}
-                                    </td>
-                                    <td></td>
-                                    <td></td>
-
-
-                                    <td>
-                                        {dayWiseData.filter(day => day.hr14.calls === 0).length}
-                                    </td>
-                                    <td></td>
-                                    <td></td>
-
-
-                                    <td>
-                                        {dayWiseData.filter(day => day.hr15.calls === 0).length}
-                                    </td>
-                                    <td></td>
-                                    <td></td>
-
-
-                                    <td>
-                                        {dayWiseData.filter(day => day.hr16.calls === 0).length}
-                                    </td>
-                                    <td></td>
-                                    <td></td>
-
-
-                                    <td>
-                                        {dayWiseData.filter(day => day.hr17.calls === 0).length}
-                                    </td>
-                                    <td></td>
-                                    <td></td>
-
-
-                                    <td>
-                                        {dayWiseData.filter(day => day.hr18.calls === 0).length}
-                                    </td>
-                                    <td></td>
-                                    <td></td>
-
 
                                     <td>
                                         {summaryData.filter(day => day.after19.totalCalls === 0).length}
@@ -1166,6 +1240,14 @@ const DayWiseAnalysisReport = () => {
                 <div className='call_summary_bottom_container'>
                     <CallVsConnectedChartDaywiseReport data={chartData} />
                 </div>
+
+                {/* <CallVsConnectedChartDaywiseReport
+                    data={chartData}
+                    startDate={startTime}
+                    endDate={endTime}
+                    isBarChart={true}
+                /> */}
+
             </div>
 
         </div>
