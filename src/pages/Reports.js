@@ -11,12 +11,9 @@ import Sidebar from '../Components/Sidebar';
 import { NavLink } from 'react-router-dom';
 
 const Reports = () => {
-
-
     return (
         <div className='main-layout'>
             <Sidebar />
-
             <div className='page-content'>
                 <div className="department_titel_container">
                     <h1 className='department_title'>REPORTS</h1>

@@ -11,7 +11,6 @@
     height: 80px;
     display: flex;
     align-items: center;
-    /* justify-content: center; */
     padding-left: 20px;
     gap: 20px;
     font-size: 18px;
@@ -62,17 +61,6 @@
 .report_card:hover .report_card_title {
     color: #fff;
 }
-
-
-
-/* .report_card_img_icon {
-    filter: invert(100%);
-}
-
-.report_card_img_icon:hover {
-    filter: invert(100%);
-} */
-
 
 /* *********************************************************** */
 
@@ -157,7 +145,6 @@
 .call_summary_top_container_btn_clearall:hover {
     color: #fff;
     background-color: #14004a;
-    /* border: 1px solid #14004a; */
     border-radius: 8px;
     transform: translateY(-5px);
 }
@@ -240,16 +227,13 @@
     width: 100%;
     border-collapse: collapse;
     min-width: 400px;
-    /* Ensure enough width to prevent tight columns */
     background-color: #fff;
     border-radius: 8px;
     margin-top: 25px;
-    /* box-shadow: 0 0 10px rgba(0, 0, 0, 0.05); */
 }
 
 .call_summary_middel_container_card_table th {
     padding: 8px;
-    /* border-bottom: 1px solid #eee; */
     color: #777;
     font-weight: 400;
     font-size: 16px;
@@ -312,11 +296,6 @@
     box-sizing: border-box;
 }
 
-/* .call_summary_bottom_container_card_title_container {
-    display: flex;
-    justify-content: space-between;
-} */
-
 .call_summary_bottom_container_card_title h3 {
     display: flex;
     justify-content: space-between;
@@ -377,22 +356,21 @@
     white-space: nowrap;
 }
 
-/* Sticky phone number column */
+
 .call_summary_bottom_container_table th:nth-child(2) {
     position: sticky;
     left: 0;
     background: #f7f8ff;
     z-index: 2;
-    /* Upar rahe */
+
 }
 
-/* Header row styling */
 .call_summary_bottom_container_table thead th {
     background-color: #f7f8ff;
     font-weight: bold;
 }
 
-/* Scroll bar styling (optional) */
+
 .call_summary_bottom_container_table::-webkit-scrollbar {
     height: 8px;
 }
@@ -719,7 +697,5 @@
 
 .never_attend_nested_th th {
     border: none;
-    /* padding: 8px 12px; */
     text-align: center;
-    /* white-space: nowrap; */
 }

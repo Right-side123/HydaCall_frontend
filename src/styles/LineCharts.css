@@ -55,12 +55,12 @@
     margin-right: 6px;
 }
 
-.linechart_dwonload_container{
+.linechart_dwonload_container {
     display: flex;
     justify-content: space-between;
 }
 
-.linechart_download_btn{
+.linechart_download_btn {
     width: 40px;
     height: 30px;
     align-items: end;

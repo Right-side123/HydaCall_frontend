@@ -52,14 +52,6 @@
   opacity: 1;
 }
 
-/* .logout_button {
-  background-color: transparent;
-  border: none;
-  cursor: pointer;
-  padding: 2px;
-  border-radius: 4px;
-} */
-
 .logout-wrapper {
   position: relative;
 }
@@ -122,13 +114,11 @@
 .logout_model_container {
   width: 350px;
   height: 200px;
-  /* padding-bottom: 15px; */
   background-color: #fff;
   border-radius: 10px;
   border-top-left-radius: 15px;
   border-top-right-radius: 15px;
   padding: 30px;
-  /* line-height: 2.5; */
 }
 
 .logout_model_container_title {
@@ -146,7 +136,6 @@
 
 .model_logout_btn_container {
   display: flex;
-  /* align-items: center; */
   justify-content: center;
   gap: 30px;
   margin-top: 25px;

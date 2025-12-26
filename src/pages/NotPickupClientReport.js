@@ -39,14 +39,11 @@ const NotPickupClientReport = () => {
     const [currentPage, setCurrentPage] = useState(1);
     const itemsPerPage = 10;
 
-    // Calculate indexes
     const indexOfLastItem = currentPage * itemsPerPage;
     const indexOfFirstItem = indexOfLastItem - itemsPerPage;
 
-    // Apply search + pagination together
     const currentNotPickupData = notPickupClientData.slice(indexOfFirstItem, indexOfLastItem);
 
-    // Total pages
     const totalPages = Math.ceil(notPickupClientData.length / itemsPerPage);
 
 
@@ -263,7 +260,6 @@ const NotPickupClientReport = () => {
                         Next
                     </button>
                 </div>
-
             </div>
         </div>
     );

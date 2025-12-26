@@ -16,11 +16,8 @@ const UniqueClientReport = () => {
     const [departments, setDepartments] = useState([]);
     const [numbers, setNumbers] = useState([]);
     const [users, setUsers] = useState([]);
-
     const [uniqueclient, setUniqueClient] = useState([])
     const [clearDate, setClearDate] = useState(false);
-
-
     const [filters, setFilters] = useState({
         startDate: "",
         endDate: "",

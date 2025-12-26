@@ -22,13 +22,10 @@
 
 .dashboard_top_container_card {
     display: flex;
-    /* justify-content: center; */
     width: 200px;
     height: 40px;
     background-color: #fff;
     border-radius: 10px;
-    /* padding: 6px 10px; */
-    /* box-sizing: border-box; */
 }
 
 .dashboard_top_container_card_left {
@@ -308,7 +305,6 @@
 
 .dashboard_second_container_middle_third_card_container {
     display: flex;
-    /* justify-content: space-around; */
     gap: 15px;
     margin-top: 20px;
 }
@@ -397,28 +393,6 @@
     border: none;
 }
 
-
-
-/* .callinsights_container {
-    background: white;
-    padding: 20px;
-    border-radius: 12px;
-    box-shadow: 0 0 8px rgba(0, 0, 0, 0.05);
-} */
-
-
-/* .callinsights_header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-} */
-
-/* .callinsights_tabs {
-    margin-top: 20px;
-    display: flex;
-    gap: 10px;
-} */
-
 .tab {
     background: #f3f3f3;
     border: none;
@@ -433,12 +407,6 @@
     color: white;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
-
-/* .dropdown {
-    padding: 6px 12px;
-    border-radius: 6px;
-    border: 1px solid #ccc;
-} */
 
 .dashboard_container_third_left_table {
     margin-top: 10px;
@@ -475,8 +443,6 @@
 }
 
 .eye_icon_td {
-    /* width: 30px;
-    height: 10px; */
     align-items: end;
     background-color: #f7f8ff;
     border-radius: 5px;
@@ -489,11 +455,6 @@
     width: 14px;
     height: 14px;
 }
-
-
-
-
-
 
 .dashboard_container_third_right {
     width: 35%;
@@ -525,10 +486,6 @@
     border-radius: 20px;
 }
 
-
-
-/* 88888888888888888888888888888888888888888888888888888888888888888888888 */
-
-.dashboard_daterange{
+.dashboard_daterange {
     margin-right: 500px;
 }

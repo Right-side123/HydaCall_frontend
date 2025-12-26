@@ -70,39 +70,6 @@ const HourlyAnalysisReport = () => {
         fetchUsers();
     }, []);
 
-    // const fetchHourlyTablereport = async () => {
-    //     try {
-    //         const { startDate, endDate, department, simNumber, userId } = filters;
-
-    //         if (!startDate || !endDate) {
-    //             alert("Please select start and end date");
-    //             return;
-    //         }
-
-    //         const res = await api.get(`/hourlyreport?startDate=${startDate}&endDate=${endDate}&department=${department}&simNumber=${simNumber}&userId=${userId}`);
-
-    //         setTableData(res.data);
-    //         console.log("Report Data:", res.data);
-    //     } catch (err) {
-    //         console.error("Error fetching report:", err);
-    //         alert("Error fetching report");
-    //     }
-    // };
-
-
-    // ***********************    manual data for employee summary table  ********************
-    // const employeesummarydata = [
-    // {
-    //     phone: '9876543210',
-    //     totalCalls: 50,
-    //     connectedCalls: 45,
-    //     totalDuration: '2h 15m',
-    //     avgCalls: 10,
-    //     avgConnected: 9,
-    //     avgDuration: '27m',
-    // },
-    // ]
-
     const fetchHourlyTablereport = async () => {
         try {
             const { startDate, endDate, department, simNumber, userId } = filters;
@@ -484,78 +451,6 @@ const HourlyAnalysisReport = () => {
                     <div className='call_summary_bottom_container_card_title'>
                         <h3>Employee Summary</h3>
                     </div>
-                    {/* <div className='hourly_analysis_report_timeslot_container_table'>
-                        <table>
-                            <thead className='hourly_analysis_report_timeslot_container_table_th'>
-                                <tr>
-                                    <th rowSpan="2">Phone Number</th>
-                                    <th colSpan="3">Total</th>
-                                    <th colSpan="3">Daily Average</th>
-                                    <th>Before 10:00</th>
-                                    <th>10:00 - 10:59</th>
-                                    <th>11:00 - 11:59</th>
-                                    <th>12:00 - 12:59</th>
-                                    <th>13:00 - 13:59</th>
-                                    <th>14:00 - 14:59</th>
-                                    <th>15:00 - 15:59</th>
-                                    <th>16:00 - 16:59</th>
-                                    <th>17:00 - 17:59</th>
-                                    <th>18:00 - 18:59</th>
-                                    <th>After 19:00</th>
-                                </tr>
-                                <tr>
-                                    <th>Total Calls</th>
-                                    <th>Total Connected Calls</th>
-                                    <th>Total Duration</th>
-                                    <th>Avg Calls</th>
-                                    <th>Avg Connected Calls</th>
-                                    <th>Avg Duration</th>
-                                    <th>Total Calls</th>
-                                    <th>Total Connected Calls</th>
-                                    <th>Total Duration</th>
-                                    <th>Avg Calls</th>
-                                    <th>Avg Connected Calls</th>
-                                    <th>Avg Duration</th>
-                                    <th>No Of Days With No Calls In Time Slot</th>
-                                    <th>Total Calls</th>
-                                    <th>Total Connected Calls</th>
-                                    <th>Total Duration</th>
-                                    <th>Avg Calls</th>
-                                    <th>Avg Connected Calls</th>
-                                    <th>Avg Duration</th>
-                                    <th>No Of Days With No Calls In Time Slot</th>
-                                    <th>Total Calls</th>
-                                    <th>Total Connected Calls</th>
-                                    <th>Total Duration</th>
-                                    <th>Avg Calls</th>
-                                    <th>Avg Connected Calls</th>
-                                    <th>Avg Duration</th>
-                                    <th>No Of Days With No Calls In Time Slot</th>  
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {employeesummarydata.length > 0 ? (
-                                    employeesummarydata.map((item, index) => (
-                                        <tr key={index}>
-                                            <td>{item.phone}</td>
-                                            <td>{item.totalCalls}</td>
-                                            <td>{item.connectedCalls}</td>
-                                            <td>{item.totalDuration}</td>
-                                            <td>{item.avgCalls}</td>
-                                            <td>{item.avgConnected}</td>
-                                            <td>{item.avgDuration}</td>
-                                        </tr>
-                                    ))
-                                ) : (
-                                    <tr>
-                                        <td colSpan="7" style={{ textAlign: 'center' }}>
-                                            No records found !!
-                                        </td>
-                                    </tr>
-                                )}
-                            </tbody>
-                        </table>
-                    </div> */}
                     <div
                         className='hourly_analysis_report_timeslot_container_table'
                         style={{

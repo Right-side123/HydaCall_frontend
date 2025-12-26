@@ -4,10 +4,7 @@ import Layout from '../Components/Layout';
 import Sidebar from '../Components/Sidebar';
 import DateRange from '../Components/DateRange';
 import api from '../Components/Api';
-
-
 import AnalysisReportChart from '../Components/AnalysisReportBaarChart';
-// import downloadicon from '../assets/downloadicon.png';
 
 const AnalysisReport = () => {
     const [departments, setDepartments] = useState([]);
@@ -369,10 +366,10 @@ const AnalysisReport = () => {
                         </ResponsiveContainer>
                         <p style={{ textAlign: "center" }}>As Per Total Call</p>
                     </div> */}
-    <AnalysisReportChart/>
+                    <AnalysisReportChart />
                 </div>
 
-            
+
 
             </div>
 

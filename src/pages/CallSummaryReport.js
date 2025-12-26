@@ -41,27 +41,7 @@ const CallSummaryReport = () => {
 
     const [numberWiseReportData, setNumberWiseReportdata] = useState([]);
 
-    console.log(numberWiseReportData);
-
-
-
-    // const [reportData, setReportData] = useState({
-    //     inbound: {
-    //         total_calls: 0,
-    //         answered_calls: 0,
-    //         missed_calls: 0,
-    //         call_duration: "0h 0m 0s",
-    //     },
-    //     outbound: {
-    //         total_calls: 0,
-    //         answered_calls: 0,
-    //         busy_calls: 0,
-    //         noanswer_calls: 0,
-    //         notreachable_calls: 0,
-    //         call_duration: "0h 0m 0s",
-    //     }
-    // });
-
+    // console.log(numberWiseReportData);
 
     const fetchDepartments = async () => {
         try {

@@ -118,16 +118,6 @@ const Department = () => {
     };
 
 
-    // const filterDepartment = department.filter(department =>
-    //     department.departmentname.toLowerCase().includes(search.toLowerCase()) ||
-    //     department.agentmobile.includes(search)
-    // );
-
-    // Filtered data (search applied)
-
-
-
-
     return (
         <div className='main-layout'>
             <Sidebar />
@@ -165,22 +155,6 @@ const Department = () => {
                                     <th>Action</th>
                                 </tr>
                             </thead>
-                            {/* <tbody className='table_body'>
-                                {department.map((dept, index) => (
-                                    <tr key={dept.id}>
-                                        <td>{index + 1}</td>
-                                        <td>{dept.name}</td>
-                                        <td >
-                                            <div className='action_icons'>
-                                                <img src={editicon} alt='edit' className='editicon' onClick={() => { setEditDepartment(true); setSelectedDepartment(dept); }} />
-                                                <span className='divider'></span>
-                                                <img src={deleteicon} alt='delete' className='deleteicon' onClick={() => { handleDeleteDepartment(dept.id) }} />
-                                            </div>
-                                        </td>
-                                    </tr>
-                                ))}
-                            </tbody> */}
-
                             <tbody className='table_body'>
                                 {currentDepartments.map((dept, index) => (
                                     <tr key={dept.id}>
@@ -206,7 +180,6 @@ const Department = () => {
                                     </tr>
                                 ))}
                             </tbody>
-
                         </table>
                     </div>
                 </div>

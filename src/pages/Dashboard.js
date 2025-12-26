@@ -294,33 +294,6 @@ const Dashboard = () => {
             </div>
 
             <div className='dashboard_container_third_left_table'>
-              {/* <table>
-              <thead>
-                <tr>
-                  <th>Sr. No.</th>
-                  <th>Caller Number</th>
-                  <th>SIM Number</th>
-                  <th>Count</th>
-                  <th>View</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td>1</td>
-                  <td>15565465</td>
-                  <td>54+94+45+945rohit</td>
-                  <td>2</td>
-                  <td >
-                    <button className='eye_icon_td'>
-                      <img src={eyeicon} alt='view' className='eye_icon' />
-                    </button>
-                  </td>
-                </tr>
-                <td colSpan="5" className='no-records'>No Records Found!!</td>
-              </tbody>
-            </table> */}
-
-
               {activeTab === 'mostCalls' ? (
                 <table>
                   <thead>
@@ -396,22 +369,6 @@ const Dashboard = () => {
           <div className='dashboard_container_fourth_left'>
 
             <h3>Callback & Missed Call Overview</h3>
-
-            {/* <div className='dashboard_container_third_left_tab'>
-            <button
-              className={activeTab === 'mostCalls' ? 'tab active' : 'tab'}
-              onClick={() => setActiveTab('mostCalls')}
-            >
-              📞 Top Missed Calls
-            </button>
-            <button
-              className={activeTab === 'talkTime' ? 'tab active' : 'tab'}
-              onClick={() => setActiveTab('talkTime')}
-            >
-              📞 Top Pending Callbacks
-            </button>
-          </div> */}
-
             <div className='dashboard_container_third_left_tab'>
               <button
                 className={callbackTab === 'missed' ? 'tab active' : 'tab'}
@@ -429,33 +386,6 @@ const Dashboard = () => {
 
 
             <div className='dashboard_container_third_left_table'>
-              {/* <table>
-              <thead>
-                <tr>
-                  <th>Sr. No.</th>
-                  <th>SIM Number</th>
-                  <th>Count</th>
-                  <th>View</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td>1</td>
-
-                  <td>54+94+45+945rohit</td>
-                  <td>2</td>
-                  <td >
-                    <button className='eye_icon_td'>
-                      <img src={eyeicon} alt='view' className='eye_icon' />
-                    </button>
-                  </td>
-                </tr>
-                <td colSpan="5" className='no-records'>No Records Found!!</td>
-              </tbody>
-            </table> */}
-
-
-
               <table>
                 <thead>
                   <tr>

@@ -277,9 +277,6 @@ const NeverAttendReport = () => {
 
                     </div>
 
-
-
-
                 </div>
 
                 <div className="pagination_container">

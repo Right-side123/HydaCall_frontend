@@ -28,16 +28,6 @@
     gap: 10px;
 }
 
-/* .search_container {
-  display: flex;
-  align-items: center;
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  padding: 5px 10px;
-  background-color: white;
-  width: fit-content; 
-} */
-
 .search_box_container {
     display: flex;
     align-items: center;
@@ -62,24 +52,6 @@
     font-size: 14px;
     background-color: #f7f8ff;
 }
-
-/* .add_dept_btn_container {
-    color: #fff;
-    height: 35px;
-    background-color: #14004a;
-    padding: 0px 10px;
-    border-radius: 10px;
-    display: flex;
-    align-items: center;
-    gap: 5px;
-} */
-
-/* .add_dept_btn_container:hover {
-    color: #14004a;
-    height: 35px;
-    background-color: transparent;
-    border: 1 px solid #14004a;
-} */
 
 .dept_icon {
     width: 16px;
@@ -109,22 +81,18 @@
     overflow-x: auto;
     padding: 1rem;
     box-sizing: border-box;
-    /* padding: 0px 0px; */
 }
 
 .main_container_table table {
     width: 100%;
     border-collapse: collapse;
     min-width: 400px;
-    /* Ensure enough width to prevent tight columns */
     background-color: #fff;
     border-radius: 8px;
-    /* box-shadow: 0 0 10px rgba(0, 0, 0, 0.05); */
 }
 
 .table_heading th {
     padding: 8px;
-    /* border-bottom: 1px solid #eee; */
     color: #777;
     font-weight: 400;
     font-size: 16px;
@@ -153,7 +121,6 @@
     gap: 10px;
     background-color: #edeffa;
     width: 80px;
-    /* height: 35px; */
     border-radius: 25px;
     padding: 8px 10px;
 }
@@ -195,13 +162,11 @@
 }
 
 .pagination_container button:hover {
-    /* border: 1px solid #e2e8f0; */
     background-image: linear-gradient(to right, #14004a, #2b02c0);
     color: #f9c865;
 }
 
 .pagination_container .active_page {
-    /* background-color: #14004a; */
     background-image: linear-gradient(to right, #14004a, #2b02c0);
     color: #f9c865;
     font-weight: bold;
@@ -225,7 +190,6 @@
 .department_model_container {
     width: 750px;
     height: auto;
-    /* padding-bottom: 15px; */
     background-color: #fff;
     border-radius: 10px;
     border-top-left-radius: 15px;
@@ -256,7 +220,6 @@
     height: 180px;
     display: flex;
     flex-direction: column;
-    /* align-items: center; */
     justify-content: center;
     gap: 20px;
     padding: 0px 20px;

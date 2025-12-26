@@ -43,7 +43,6 @@
 .users_second_container_card_lefts p {
     font-size: 20px;
     font-weight: 500;
-    /* margin-top: 30px; */
 }
 
 .users_second_container_card_right {
@@ -58,12 +57,6 @@
     object-fit: contain;
 }
 
-/* .department_second_container_top_right{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-} */
-
 .add_dept_btn_container {
     display: flex;
     background-color: red;
@@ -76,7 +69,6 @@
     gap: 5px;
     background-color: #edeffa;
     width: 120px;
-    /* height: 35px; */
     border-radius: 25px;
     padding: 8px 8px;
 }
@@ -188,7 +180,6 @@
 .user_model_container {
     width: 750px;
     height: auto;
-    /* padding-bottom: 15px; */
     background-color: #fff;
     border-radius: 10px;
     border-top-left-radius: 15px;
@@ -219,7 +210,6 @@
     height: 180px;
     display: flex;
     flex-direction: column;
-    /* align-items: center; */
     justify-content: center;
     gap: 20px;
     padding: 0px 20px;
@@ -236,7 +226,6 @@
     border: 1px solid #efeff1;
 }
 
-/*  */
 
 .user_content_container_model {
     padding: 0px 25px;
@@ -309,16 +298,6 @@
     padding: 2px 6px;
 }
 
-/* .status-active {
-  color: green;
-  font-weight: bold;
-}
-
-.status-inactive {
-  color: red;
-  font-weight: bold;
-} */
-
 
 .multiselect_option {
     width: 320px;
@@ -360,22 +339,18 @@
     overflow-x: auto;
     padding: 1rem;
     box-sizing: border-box;
-    /* padding: 0px 0px; */
 }
 
 .assined_phone_number_table_container table {
     width: 100%;
     border-collapse: collapse;
     min-width: 400px;
-    /* Ensure enough width to prevent tight columns */
     background-color: #fff;
     border-radius: 8px;
-    /* box-shadow: 0 0 10px rgba(0, 0, 0, 0.05); */
 }
 
 .assined_phone_number_table_container th {
     padding: 8px;
-    /* border-bottom: 1px solid #eee; */
     color: #777;
     font-weight: 400;
     font-size: 16px;
@@ -390,6 +365,6 @@
     font-size: 14px;
 }
 
-.assined_phone_number_content_container{
+.assined_phone_number_content_container {
     padding: 20px 10px;
 }

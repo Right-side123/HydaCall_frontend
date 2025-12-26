@@ -162,7 +162,7 @@ const DayWiseAnalysisReport = () => {
 
 
     const chartData = summaryData.map(day => ({
-        date: new Date(day.date).toLocaleDateString("en-GB"), 
+        date: new Date(day.date).toLocaleDateString("en-GB"),
         totalCalls: day.totalCalls || 0,
         connectedCalls: day.connectedCalls || 0,
     }));
@@ -1240,16 +1240,7 @@ const DayWiseAnalysisReport = () => {
                 <div className='call_summary_bottom_container'>
                     <CallVsConnectedChartDaywiseReport data={chartData} />
                 </div>
-
-                {/* <CallVsConnectedChartDaywiseReport
-                    data={chartData}
-                    startDate={startTime}
-                    endDate={endTime}
-                    isBarChart={true}
-                /> */}
-
             </div>
-
         </div>
     );
 };

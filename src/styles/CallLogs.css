@@ -9,10 +9,6 @@
     letter-spacing: 2px;
 }
 
-/* .titel_container_time{
-    padding: 200px;
-} */
-
 .callllogs_top_container {
     display: flex;
     gap: 15px;
@@ -100,12 +96,7 @@
 .calllogs_second_main_container {
     width: 100%;
     background-color: #ffffff;
-    /* height: auto; */
-
     margin-top: 20px;
-    /* padding-bottom: 20px;
-    padding-left: 20px;
-    padding-right: 20px; */
     padding: 20px;
     box-sizing: border-box;
     border-radius: 15px;
@@ -280,18 +271,11 @@
 
 .calllogs_last_container_table_table th {
     padding: 8px;
-    /* border-bottom: 1px solid #eee; */
     color: #777;
     font-weight: 400;
     font-size: 16px;
     text-align: center;
 }
-
-/* .calllogs_last_container_table_table thead{
-    border-bottom: 1px solid #777676;
-} */
-
-
 
 .calllogs_last_container_table_table td {
     padding: 8px;

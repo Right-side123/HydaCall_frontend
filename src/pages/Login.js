@@ -23,23 +23,6 @@ const Login = () => {
     const [password, setPassword] = useState("");
     const navigate = useNavigate();
 
-
-
-    // const handleSubmit = (e) => {
-    //     e.preventDefault();
-
-
-    //     if (email === "admin@test.com" && password === "1234") {
-    //         localStorage.setItem("auth", "true");
-
-    //         // setIsAuthenticated(true)
-    //         navigate("/dashboard");
-    //     } else {
-    //         alert("Invalid email or password");
-    //     }
-
-    // };
-
     const handleSubmit = (e) => {
         e.preventDefault();
         if (email === "admin@test.com" && password === "1234") {
@@ -163,11 +146,6 @@ const Login = () => {
                         Sign In
                     </button>
                 </form>
-
-                {/* <div className="">
-                    Powered by <span className="">Rightside</span>
-                </div> */}
-
             </div>
             <ToastContainer />
         </div>
